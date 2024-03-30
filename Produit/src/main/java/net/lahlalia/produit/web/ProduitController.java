@@ -38,7 +38,7 @@ public class ProduitController {
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id){
         Boolean deletedProduct = produitService.deleteProductById(id);
         return deletedProduct ? ResponseEntity.noContent().build() :ResponseEntity.notFound().build();
-        
+
     }
 
 

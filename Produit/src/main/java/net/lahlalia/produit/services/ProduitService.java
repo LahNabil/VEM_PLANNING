@@ -40,4 +40,21 @@ public class ProduitService {
         return produitRepository.findAll().stream().map(productMapper::toModel).toList();
     }
 
+    public ProductDto saveProduct(ProductDto dto){
+        return productMapper.toModel(produitRepository.save(
+                productMapper.toEntity(dto)
+        ));
+    }
+
+    public boolean deleteProductById(Long id)throws EntityNotFoundException{
+            ProductDto dto = getProductById(id);
+            if( dto != null){
+                produitRepository.deleteById(id);
+                return true;
+            } else {
+                return false;
+            }
+
+    }
+
 }

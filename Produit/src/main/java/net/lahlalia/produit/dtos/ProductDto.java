@@ -1,6 +1,7 @@
 package net.lahlalia.produit.dtos;
 
 import lombok.*;
+import net.lahlalia.produit.entities.Regime;
 import net.lahlalia.produit.enums.TypeProduit;
 
 @Getter
@@ -13,6 +14,7 @@ private Long idProduit;
 private String name;
 private String status;
 private TypeProduit type;
+private Regime regime;
 
 
 }

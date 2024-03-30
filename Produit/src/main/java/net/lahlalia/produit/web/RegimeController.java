@@ -5,12 +5,10 @@ import lombok.RequiredArgsConstructor;
 import net.lahlalia.produit.dtos.ProductDto;
 import net.lahlalia.produit.dtos.RegimeDto;
 import net.lahlalia.produit.services.RegimeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,10 @@ public class RegimeController {
     public ResponseEntity<RegimeDto> getRegimeById(@PathVariable Long idRegime)throws EntityNotFoundException {
         RegimeDto dto = regimeService.getRegimeById(idRegime);
         return ResponseEntity.ok(dto);
+    }
+    @PostMapping(value = "/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RegimeDto> saveRegime(@RequestBody RegimeDto dto){
+        RegimeDto savedDto = regimeService.saveRegime(dto);
+        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
 }

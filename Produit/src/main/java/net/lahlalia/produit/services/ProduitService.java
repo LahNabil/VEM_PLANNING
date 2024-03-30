@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.produit.dtos.ProductDto;
 import net.lahlalia.produit.mappers.ProductMapper;
 import net.lahlalia.produit.repositories.ProduitRepository;
+import net.lahlalia.produit.repositories.RegimeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +15,13 @@ import java.util.List;
 public class ProduitService {
     private final ProduitRepository produitRepository;
     private final ProductMapper productMapper;
+    private final RegimeRepository regimeRepository;
 
-    public ProduitService(ProduitRepository produitRepository,ProductMapper productMapper) {
+    public ProduitService(ProduitRepository produitRepository,RegimeRepository regimeRepository,ProductMapper productMapper) {
         this.produitRepository = produitRepository;
         this.productMapper = productMapper;
+        this.regimeRepository = regimeRepository;
+
     }
 
     public ProductDto getProductById(Long idProduit) throws EntityNotFoundException {
@@ -41,6 +45,7 @@ public class ProduitService {
     }
 
     public ProductDto saveProduct(ProductDto dto){
+
         return productMapper.toModel(produitRepository.save(
                 productMapper.toEntity(dto)
         ));

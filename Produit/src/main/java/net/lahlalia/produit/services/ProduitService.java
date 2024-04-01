@@ -1,28 +1,32 @@
 package net.lahlalia.produit.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.produit.dtos.ProductDto;
+import net.lahlalia.produit.dtos.RegimeDto;
+import net.lahlalia.produit.entities.Produit;
+import net.lahlalia.produit.entities.Regime;
 import net.lahlalia.produit.mappers.ProductMapper;
+import net.lahlalia.produit.mappers.RegimeMapper;
 import net.lahlalia.produit.repositories.ProduitRepository;
 import net.lahlalia.produit.repositories.RegimeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ProduitService {
     private final ProduitRepository produitRepository;
     private final ProductMapper productMapper;
     private final RegimeRepository regimeRepository;
+    private final RegimeMapper regimeMapper;
+    private final RegimeService regimeService;
 
-    public ProduitService(ProduitRepository produitRepository,RegimeRepository regimeRepository,ProductMapper productMapper) {
-        this.produitRepository = produitRepository;
-        this.productMapper = productMapper;
-        this.regimeRepository = regimeRepository;
 
-    }
 
     public ProductDto getProductById(Long idProduit) throws EntityNotFoundException {
         if(idProduit == null){
@@ -43,13 +47,36 @@ public class ProduitService {
     public List<ProductDto> getAllProducts(){
         return produitRepository.findAll().stream().map(productMapper::toModel).toList();
     }
+//    public Produit createProduct(Produit p)throws EntityNotFoundException{
+//        Regime regime = regimeRepository.findById(p.getRegime().getIdRegime())
+//                .orElseThrow(
+//                        ()-> new EntityNotFoundException("Regime Not found"));
+//        p.setRegime(regime);
+//        return produitRepository.save(p);
+//
+//
+//    }
 
-    public ProductDto saveProduct(ProductDto dto){
 
-        return productMapper.toModel(produitRepository.save(
-                productMapper.toEntity(dto)
-        ));
+    public ProductDto saveProduct(ProductDto dto)throws EntityNotFoundException {
+        RegimeDto regimeDto = regimeService.getRegimeById(dto.getRegimeId());
+        Regime regime = regimeMapper.toEntity(regimeDto);
+        Produit produit = productMapper.toEntity(dto);
+        produit.setRegime(regime);
+        Produit savedProduct = produitRepository.save(produit);
+        return productMapper.toModel(savedProduct);
+
+
     }
+    // Regime regime = regimeRepository.findById(dto.getRegimeId()).get();
+    // Version 2 :
+
+
+    // Version 1:
+//        return productMapper.toModel(produitRepository.save(
+//                productMapper.toEntity(dto)
+//        ));
+
 
     public boolean deleteProductById(Long id)throws EntityNotFoundException{
             ProductDto dto = getProductById(id);

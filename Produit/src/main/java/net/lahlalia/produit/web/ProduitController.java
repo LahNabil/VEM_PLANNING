@@ -35,6 +35,8 @@ public class ProduitController {
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
 
     }
+
+
 //@PostMapping(value = "/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 //public ResponseEntity<Produit> saveProduct(@RequestBody Produit produit){
 //    Produit savedProduct = produitService.createProduct(produit);

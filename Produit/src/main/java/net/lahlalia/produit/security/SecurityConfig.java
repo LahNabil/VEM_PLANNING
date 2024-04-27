@@ -26,7 +26,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)throws Exception{
         return httpSecurity
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(ar->ar.requestMatchers("/actuator/info","/swagger-ui.html","/swagger-ui/**","/v3/**").permitAll())
+                .authorizeHttpRequests(ar->ar.requestMatchers("/api/products/**","/api/products/","/actuator/info","/swagger-ui.html","/swagger-ui/**","/v3/**").permitAll())
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
                 .oauth2ResourceServer(o2rs->o2rs.jwt(jwt->jwt.jwtAuthenticationConverter(jwtAuthConverter)))
                 .build();

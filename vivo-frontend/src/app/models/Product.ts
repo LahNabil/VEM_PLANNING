@@ -1,8 +1,10 @@
+import {Regime} from "./Regime";
+
 export class Product{
-  id: number|undefined;
+  idProduit: number|undefined;
   name: String|undefined;
   status: String|undefined;
-  typeProduit: any|undefined;
-  regime: any| undefined;
+  type: any|undefined;
+  regime!: Regime;
 
 }

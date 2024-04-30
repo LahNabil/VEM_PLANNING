@@ -16,11 +16,11 @@
         </thead>
         <tbody>
         <tr *ngFor="let product of products">
-          <td>{{ product.id }}</td>
+          <td>{{ product.idProduit }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.status }}</td> <!-- Use Angular date pipe for formatting -->
-          <td>{{ product.typeProduit }}</td>
-          <td>{{product.regime}}</td>
+          <td>{{ product.type }}</td>
+          <td>{{product.regime.regime}}</td>
           <td><button class="btnn">View Details</button></td>
         </tr>
         </tbody>

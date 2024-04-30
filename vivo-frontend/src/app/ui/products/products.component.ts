@@ -22,6 +22,14 @@ export class ProductsComponent implements OnInit{
       this.products = data;
     })
   }
+  deleteProduct(idProduit: number|undefined){
+    const isConfirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette assurance ?");
+    if (isConfirmed) {
+      this.productService.deleteProduct(idProduit).subscribe(data => {
+        window.location.reload();
+      });
+    }
+  }
   productDetail(idProduit:number|undefined){
     if(idProduit !== undefined){
       this.router.navigate(['products_details', idProduit])

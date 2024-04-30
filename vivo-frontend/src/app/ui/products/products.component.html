@@ -21,9 +21,11 @@
           <td>{{ product.status }}</td> <!-- Use Angular date pipe for formatting -->
           <td>{{ product.type }}</td>
           <td>{{product.regime.regime}}</td>
-          <td><a class="btn btn-primary btn-action mr-1" data-toggle="tooltip" title="" data-original-title="Edit"><i class="fas fa-pencil-alt"></i></a>
-            <a class="btn btn-danger btn-action" data-toggle="tooltip" title="" data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?" data
-            <button class="btnn" (click)="productDetail(product.idProduit)">View Details</button></td>
+          <td>
+
+            <button class="btnn" (click)="productDetail(product.idProduit)">View Details</button>
+            <button class="btn btn-outline-danger me-2" (click)= "deleteProduct(product.idProduit)">Delete</button>
+           </td>
         </tr>
         </tbody>
       </table>

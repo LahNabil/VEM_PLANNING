@@ -22,6 +22,15 @@ export class ProductsComponent implements OnInit{
       this.products = data;
     })
   }
+  productDetail(idProduit:number|undefined){
+    if(idProduit !== undefined){
+      this.router.navigate(['products_details', idProduit])
+    }else{
+      console.error("Id incorrect")
+    }
+
+
+  }
 
 
 

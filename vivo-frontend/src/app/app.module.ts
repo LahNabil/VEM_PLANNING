@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProductsComponent } from './ui/products/products.component';
 import {HeaderComponent} from "./ui/header/header.component";
+import { ProductDetailsComponent } from './ui/product-details/product-details.component';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import {HeaderComponent} from "./ui/header/header.component";
     AppComponent,
     HeaderComponent,
     ProductsComponent,
+    ProductDetailsComponent,
 
 
   ],

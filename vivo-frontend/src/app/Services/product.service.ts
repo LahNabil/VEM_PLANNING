@@ -16,7 +16,7 @@ export class ProductService {
     return this._http.get(`${this.baseUrl}`)
   }
 
-  getProductById(id: number | undefined):Observable<Product>{
-    return this._http.get<Product>(`${this.baseUrl}/${id}`)
+  getProductById(idProduit: number | undefined):Observable<Product>{
+    return this._http.get<Product>(`${this.baseUrl}${idProduit}`)
   }
 }

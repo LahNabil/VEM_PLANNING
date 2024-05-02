@@ -9,8 +9,8 @@ import {HttpClient} from "@angular/common/http";
 export class RegimeService {
 
   constructor(private _http: HttpClient) { }
-  // private baseUrl = environment.apiProduct;
-  // getProducts():Observable<any>{
-  //   return this._http.get(`${this.baseUrl}`)
-  // }
+  private apiReg = environment.apiRegime;
+  getRegimes():Observable<any>{
+    return this._http.get(`${this.apiReg}`)
+  }
 }

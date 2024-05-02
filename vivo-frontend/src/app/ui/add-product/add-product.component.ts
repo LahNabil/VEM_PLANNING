@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {ProductService} from "../../Services/product.service";
 import {RegimeService} from "../../Services/regime.service";
 import {Router} from "@angular/router";
@@ -6,6 +6,7 @@ import {Regime} from "../../models/Regime";
 import {Product} from "../../models/Product";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {DialogRef} from "@angular/cdk/dialog";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-add-product',
@@ -19,7 +20,7 @@ export class AddProductComponent implements OnInit{
   product: Product = new Product();
   productForm: FormGroup;
 
-  constructor(private diologRef: DialogRef<AddProductComponent>,private formBuilder : FormBuilder,private productService : ProductService, private regimeService: RegimeService, private router : Router) {
+  constructor(private diologRef: DialogRef<AddProductComponent>,private formBuilder : FormBuilder,private productService : ProductService, private regimeService: RegimeService, private router : Router, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.productForm = this.formBuilder.group({
       name: '',
       status: '',
@@ -42,21 +43,36 @@ export class AddProductComponent implements OnInit{
 
   ngOnInit() {
     this.getRegimes();
+    this.productForm.patchValue(this.data);
 
   }
 
   onFormSubmit() {
-    if(this.productForm.valid){
-      this.productService.addProduct(this.productForm.value).subscribe({
-        next: (val:any)=>{
-          alert('Produit ajouté avec succes');
-          this.diologRef.close();
-        },
-        error: (err:any) =>{
-          console.log(err);
-          console.log(this.productForm.value);
-        }
-      })
+    if(this.data){
+      if(this.productForm.valid){
+        this.productService.editProduct(this.data.id,this.productForm.value).subscribe({
+          next: (val:any)=>{
+            alert('Produit Modifié avec succes');
+            this.diologRef.close();
+          },
+          error: (err:any) =>{
+            console.log(err);
+          }
+        })
+      }
+    } else {
+      if(this.productForm.valid){
+        this.productService.addProduct(this.productForm.value).subscribe({
+          next: (val:any)=>{
+            alert('Produit ajouté avec succes');
+            this.diologRef.close();
+          },
+          error: (err:any) =>{
+            console.log(err);
+          }
+        })
+      }
     }
+
   }
 }

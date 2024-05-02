@@ -36,6 +36,11 @@ public class ProduitController {
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
 
     }
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductDto>updateProduct(@PathVariable Long id,@RequestBody ProductDto dto) throws EntityNotFoundException{
+        ProductDto updatedProduct = produitService.updateProduct(id,dto);
+        return ResponseEntity.ok(updatedProduct);
+    }
 
 
 //@PostMapping(value = "/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

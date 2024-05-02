@@ -19,6 +19,10 @@ export class ProductService {
   getProductById(idProduit: number | undefined):Observable<Product>{
     return this._http.get<Product>(`${this.baseUrl}${idProduit}`)
   }
+  editProduct(idProduit:number | undefined, product: Product):Observable<Object>{
+    return this._http.put(`${this.baseUrl}${idProduit}`, product);
+  }
+
   addProduct(product: Product| undefined):Observable<Object>{
     return this._http.post(`${this.baseUrl}`, product);
   }

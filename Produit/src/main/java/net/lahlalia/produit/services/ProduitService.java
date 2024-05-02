@@ -63,6 +63,31 @@ public class ProduitService {
 //
 //    }
 
+    public ProductDto updateProduct(Long id, ProductDto productDto) throws EntityNotFoundException{
+        Produit existingProduit = produitRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product with ID " + id + " not found"));
+
+        existingProduit.setName(productDto.getName());
+        existingProduit.setType(productDto.getType());
+        existingProduit.setStatus(productDto.getStatus());
+
+        if(productDto.getRegime() != null) {
+            // Convert RegimeDto to Regime entity
+            Regime regimeEntity = regimeMapper.toEntity(productDto.getRegime());
+            // Check if Regime entity already exists in the database
+            existingProduit.setRegime(regimeEntity);
+        } else {
+            existingProduit.setRegime(null); // Clear existing Regime if null is provided
+        }
+
+
+        Produit updatedProduit = produitRepository.save(existingProduit);
+
+        return productMapper.toModel(updatedProduit);
+
+
+    }
+
 
     public ProductDto saveProduct(ProductDto dto)throws EntityNotFoundException {
         if(dto == null){

@@ -3,6 +3,7 @@ package net.lahlalia.stock.web;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.lahlalia.stock.dtos.BacDto;
+import net.lahlalia.stock.entities.EntreSortie;
 import net.lahlalia.stock.services.BacService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,5 +34,18 @@ public class BacController {
         BacDto savedBac = bacService.saveBac(dto);
         return new ResponseEntity<>(savedBac, HttpStatus.CREATED);
 
+    }
+    @PostMapping("/entrer/{idBac}")
+    public ResponseEntity<BacDto> EntrerProduit(@RequestBody EntreSortie es, @PathVariable String idBac){
+        try{
+            BacDto savedBacDto = bacService.entrerProduit(es,idBac);
+            if (savedBacDto != null) {
+                return ResponseEntity.ok(savedBacDto);
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        }catch (EntityNotFoundException ex){
+            return ResponseEntity.notFound().build();
+        }
     }
 }

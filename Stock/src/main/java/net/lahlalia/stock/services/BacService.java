@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.stock.dtos.BacDto;
 import net.lahlalia.stock.dtos.Product;
 import net.lahlalia.stock.entities.Bac;
+import net.lahlalia.stock.entities.EntreSortie;
 import net.lahlalia.stock.mappers.BacMapper;
 import net.lahlalia.stock.repositories.BacRepository;
+import net.lahlalia.stock.repositories.EntreSortieRepository;
 import net.lahlalia.stock.restClients.ProductRestClient;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ public class BacService {
     private final BacRepository bacRepository;
     private final BacMapper bacMapper;
     private final ProductRestClient productRestClient;
+    private final EntreSortieRepository entreSortieRepository;
 
     public BacDto getBacById(String idBac ) throws EntityNotFoundException {
         if(idBac == null){
@@ -62,6 +65,26 @@ public class BacService {
 
         Bac savedBac = bacRepository.save(bac);
         return bacMapper.toModel(savedBac);
+
+
+    }
+    public BacDto entrerProduit(EntreSortie es,String idBac)throws EntityNotFoundException{
+        if(es == null || idBac == null ){
+            log.error("value is null");
+            return null;
+        }
+        entreSortieRepository.save(es);
+        Bac bac = bacRepository.findById(idBac).get();
+        if(es.getTypeES()){
+            double quantity = bac.getCapacityUsed() + es.getQuantite();
+            bac.setCapacityUsed(quantity);
+            Bac savedBac = bacRepository.save(bac);
+            return bacMapper.toModel(savedBac);
+        }else{
+            log.error("invalid type of EntreeSortie");
+            return null;
+        }
+
 
 
     }

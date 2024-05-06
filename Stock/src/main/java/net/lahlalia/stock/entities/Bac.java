@@ -5,6 +5,7 @@ import lombok.*;
 import net.lahlalia.stock.dtos.Product;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,5 +23,8 @@ public class Bac {
     private Date dateOuverture;
     private double capacityUsed;
     private Long idProduct;
+
+    @OneToMany
+    private List<EntreSortie> entre_sortie;
 
 }

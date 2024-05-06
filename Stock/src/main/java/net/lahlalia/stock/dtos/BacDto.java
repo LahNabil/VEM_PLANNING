@@ -17,5 +17,5 @@ public class BacDto {
     private boolean status;
     private Date dateOuverture;
     private double capacityUsed;
-    private Product product;
+    private Long idProduct;
 }

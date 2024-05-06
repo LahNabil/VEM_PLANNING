@@ -28,10 +28,10 @@ public class BacController {
         BacDto dto = bacService.getBacById(idBac);
         return ResponseEntity.ok(dto);
     }
-//    @PostMapping(value = "/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<BacDto> saveProduct(@RequestBody BacDto dto){
-//        BacDto savedBac = bacService.saveBac(dto);
-//        return new ResponseEntity<>(savedBac, HttpStatus.CREATED);
-//
-//    }
+    @PostMapping(value = "/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BacDto> saveProduct(@RequestBody BacDto dto){
+        BacDto savedBac = bacService.saveBac(dto);
+        return new ResponseEntity<>(savedBac, HttpStatus.CREATED);
+
+    }
 }

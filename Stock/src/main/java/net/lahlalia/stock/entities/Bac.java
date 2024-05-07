@@ -24,7 +24,7 @@ public class Bac {
     private double capacityUsed;
     private Long idProduct;
 
-    @OneToMany
+    @OneToMany(mappedBy = "bac")
     private List<EntreSortie> entre_sortie;
 
 }

@@ -24,6 +24,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import { BacComponent } from './ui/bac/bac.component';
 
 
 
@@ -34,6 +35,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     ProductsComponent,
     ProductDetailsComponent,
     AddProductComponent,
+    BacComponent,
 
 
   ],

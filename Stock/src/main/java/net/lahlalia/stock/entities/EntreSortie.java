@@ -18,5 +18,8 @@ public class EntreSortie {
     private double quantite;
     private Date date;
     private Boolean typeES;
+    @ManyToOne
+    private Bac bac;
+
 
 }

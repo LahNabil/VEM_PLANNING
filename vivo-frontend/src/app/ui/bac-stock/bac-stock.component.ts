@@ -25,7 +25,7 @@ export class BacStockComponent implements OnInit{
     this.bacForm = formBuilder.group({
       quantite: '',
       date: '',
-      type: '',
+      typeES: '',
       bac: this.formBuilder.group({
         idBac: ["12345"] // Set initial value to null
       })
@@ -34,6 +34,7 @@ export class BacStockComponent implements OnInit{
   }
   ngOnInit() {
     this.getBacs();
+    this.bacForm.patchValue(this.data);
   }
 
   getBacs(){
@@ -43,6 +44,20 @@ export class BacStockComponent implements OnInit{
 
   }
   onFormSubmit() {
+    if(this.bacForm.valid){
+      this.bacService.stockProduit(this.bacForm.value, this.data.idBac).subscribe({
+        next: (val:any)=>{
+          alert('Quantité Modifié avec succes');
+          this.diologRef.close();
+          console.log(val);
+        },
+        error: (err:any) =>{
+          console.log(err);
+          console.log(this.bacForm.value);
+        }
+      })
+    }
+
   }
 
 

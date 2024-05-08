@@ -66,11 +66,6 @@ export class BacComponent implements OnInit{
       this.dataSource.paginator.firstPage();
     }
   }
-  entrerProduit(es: EntreSortie,idBac:String){
-    this.bacService.entrerProduit(es,idBac).subscribe({
-
-    })
-  }
 
 
   openStockForm(data:any) {

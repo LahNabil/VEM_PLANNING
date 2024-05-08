@@ -16,10 +16,8 @@ export class BacService {
   getBac():Observable<any>{
     return this._http.get(`${this.baseUrl}`)
   }
-  entrerProduit(es:EntreSortie,idBac: String):Observable<Object>{
-    return this._http.post(`${this.baseUrl}entrer/${idBac}`,es);
+  stockProduit(es:EntreSortie,idBac: String):Observable<Object>{
+    return this._http.post(`${this.baseUrl}stock/${idBac}`,es);
   }
-  soustraireProduit(es:EntreSortie,idBac: String):Observable<Object>{
-    return this._http.post(`${this.baseUrl}soustraire/${idBac}`,es);
-  }
+
 }

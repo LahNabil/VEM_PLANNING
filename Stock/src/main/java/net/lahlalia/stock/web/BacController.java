@@ -35,10 +35,10 @@ public class BacController {
         return new ResponseEntity<>(savedBac, HttpStatus.CREATED);
 
     }
-    @PostMapping("/entrer/{idBac}")
-    public ResponseEntity<BacDto> EntrerProduit(@RequestBody EntreSortie es, @PathVariable String idBac){
+    @PostMapping("/stock/{idBac}")
+    public ResponseEntity<BacDto> ESrProduit(@RequestBody EntreSortie es, @PathVariable String idBac){
         try{
-            BacDto savedBacDto = bacService.entrerProduit(es,idBac);
+            BacDto savedBacDto = bacService.ESrProduit(es,idBac);
             if (savedBacDto != null) {
                 return ResponseEntity.ok(savedBacDto);
             } else {
@@ -48,17 +48,17 @@ public class BacController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("/soustraire/{idBac}")
-    public ResponseEntity<BacDto> SoustraireProduit(@RequestBody EntreSortie es,@PathVariable String idBac){
-        try{
-            BacDto savedBacDto = bacService.soustraireProduit(es,idBac);
-            if(savedBacDto != null){
-                return ResponseEntity.ok(savedBacDto);
-            }else {
-                return ResponseEntity.badRequest().build();
-            }
-        }catch(EntityNotFoundException ex){
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @PostMapping("/soustraire/{idBac}")
+//    public ResponseEntity<BacDto> SoustraireProduit(@RequestBody EntreSortie es,@PathVariable String idBac){
+//        try{
+//            BacDto savedBacDto = bacService.soustraireProduit(es,idBac);
+//            if(savedBacDto != null){
+//                return ResponseEntity.ok(savedBacDto);
+//            }else {
+//                return ResponseEntity.badRequest().build();
+//            }
+//        }catch(EntityNotFoundException ex){
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 }

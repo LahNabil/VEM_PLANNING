@@ -1,40 +1,34 @@
 <div mat-dialog-title>
   <h1>Bac Form</h1>
 </div>
-<!--<form [formGroup]="productForm" (ngSubmit)="onFormSubmit()">-->
-<form>
+<form [formGroup]="bacForm" (ngSubmit)="onFormSubmit()">
   <div mat-dialog-content class="content">
     <div class="row">
       <mat-form-field appearance="outline">
         <mat-label>quantité</mat-label>
-        <input matInput type="text" placeholder="Ex. Gasoil SH" formControlName="quantite">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Select me</mat-label>
-        <mat-select formControlName="regime">
-          <mat-option *ngFor="let bac of bacs" [value]="bac.idBac">{{bac.idBac}}-{{bac.capacityUsed}}</mat-option>
-        </mat-select>
-        <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+        <input matInput type="text" placeholder="1200" formControlName="quantite">
       </mat-form-field>
     </div>
     <div class="row">
-      <mat-radio-group aria-label="Select an option" formControlName="type">
-        <mat-label><b>Grade</b></mat-label>
+      <mat-radio-group aria-label="Select an option" formControlName="typeES">
+        <mat-label><b>Vous voulez entrer un produit ou sortir</b></mat-label>
         <mat-radio-button value="true">Entrer</mat-radio-button>
         <mat-radio-button value="false">Sortir</mat-radio-button>
       </mat-radio-group>
     </div>
     <div class="row">
-      <mat-radio-group aria-label="Select an option" formControlName="status">
-        <mat-label><b>Date</b></mat-label>
-        <mat-radio-button value="Actif">Actif</mat-radio-button>
-        <mat-radio-button value="Inactif">Inactif</mat-radio-button>
-      </mat-radio-group>
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
     </div>
 
   </div>
   <div mat-dialog-actions class="action">
     <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button color="primary" type="submit">{{data ? 'Update' : 'Save'}}</button>
+    <button mat-raised-button color="primary" type="submit">Save</button>
   </div>
 </form>

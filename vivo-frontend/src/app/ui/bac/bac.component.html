@@ -19,12 +19,12 @@
 
         <ng-container matColumnDef="capacity">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Capacité </th>
-          <td mat-cell *matCellDef="let row"> {{row.capacity}}</td>
+          <td mat-cell *matCellDef="let row"> {{row.capacity}} m3</td>
         </ng-container>
 
         <ng-container matColumnDef="totalImpom">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> totalImpom </th>
-          <td mat-cell *matCellDef="let row"> {{row.totalImpom}}</td>
+          <td mat-cell *matCellDef="let row"> {{row.totalImpom}} m3</td>
         </ng-container>
 
         <ng-container matColumnDef="status">
@@ -37,11 +37,11 @@
 
         <ng-container matColumnDef="dateOuverture">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> dateOuverture </th>
-          <td mat-cell *matCellDef="let row"> {{row.dateOuverture}}</td>
+          <td mat-cell *matCellDef="let row"> {{row.dateOuverture | date:'yyyy/MM/dd'}}</td>
         </ng-container>
         <ng-container matColumnDef="capacityUsed">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> capacityUsed </th>
-          <td mat-cell *matCellDef="let row"> {{row.capacityUsed}}</td>
+          <td mat-cell *matCellDef="let row"> {{row.capacityUsed}} m3</td>
         </ng-container>
         <ng-container matColumnDef="idProduct">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> idProduct </th>

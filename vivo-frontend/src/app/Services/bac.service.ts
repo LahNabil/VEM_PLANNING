@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment.development";
 import {Observable} from "rxjs";
 import {EntreSortie} from "../models/EntreSortie";
 import {Bac} from "../models/Bac";
+import {Product} from "../models/Product";
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,9 @@ export class BacService {
   stockProduit(es:EntreSortie,idBac: String):Observable<Object>{
     return this._http.post(`${this.baseUrl}stock/${idBac}`,es);
   }
+  getBacById(idBac:number| undefined):Observable<Bac>{
+    return this._http.get<Bac>(`${this.baseUrl}${idBac}`)
+  }
+
 
 }

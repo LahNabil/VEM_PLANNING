@@ -5,8 +5,7 @@ export class EntreSortie{
   quantite: number|undefined;
   date: Date|undefined;
   typeES: boolean|undefined;
-  bac: Bac|undefined;
-
-
+  idBac: number|undefined;
+  bac?: Bac;
 
 }

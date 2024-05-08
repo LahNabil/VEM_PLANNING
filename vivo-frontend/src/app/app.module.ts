@@ -25,6 +25,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import { BacComponent } from './ui/bac/bac.component';
+import { BacStockComponent } from './ui/bac-stock/bac-stock.component';
 
 
 
@@ -36,6 +37,7 @@ import { BacComponent } from './ui/bac/bac.component';
     ProductDetailsComponent,
     AddProductComponent,
     BacComponent,
+    BacStockComponent,
 
 
   ],

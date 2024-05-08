@@ -19,4 +19,7 @@ export class BacService {
   entrerProduit(es:EntreSortie,idBac: String):Observable<Object>{
     return this._http.post(`${this.baseUrl}entrer/${idBac}`,es);
   }
+  soustraireProduit(es:EntreSortie,idBac: String):Observable<Object>{
+    return this._http.post(`${this.baseUrl}soustraire/${idBac}`,es);
+  }
 }

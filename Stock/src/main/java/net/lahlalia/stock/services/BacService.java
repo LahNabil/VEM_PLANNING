@@ -69,24 +69,25 @@ public class BacService {
 
     }
     public BacDto entrerProduit(EntreSortie es,String idBac)throws EntityNotFoundException{
-        if(es == null || idBac == null ){
+        if(es == null || idBac == null || es.getBac().getIdBac()== null  ){
             log.error("value is null");
             return null;
         }
-        entreSortieRepository.save(es);
+
         Bac bac = bacRepository.findById(idBac).get();
         if(es.getTypeES()){
             double quantity = bac.getCapacityUsed() + es.getQuantite();
             bac.setCapacityUsed(quantity);
             Bac savedBac = bacRepository.save(bac);
+            entreSortieRepository.save(es);
             return bacMapper.toModel(savedBac);
         }else{
-            log.error("invalid type of EntreeSortie");
+            log.error("invalid type of EntreeSortie" + es.getTypeES());
             return null;
         }
     }
     public BacDto soustraireProduit(EntreSortie es,String idBac)throws EntityNotFoundException{
-        if(es == null || idBac == null || es.getBac().getIdBac() == null ){
+        if(es == null || idBac == null || es.getBac().getIdBac()== null ){
             log.error("value is null");
             return null;
         }

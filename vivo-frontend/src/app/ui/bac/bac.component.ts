@@ -8,6 +8,8 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {BacService} from "../../Services/bac.service";
 import {EntreSortie} from "../../models/EntreSortie";
+import {AddProductComponent} from "../add-product/add-product.component";
+import {BacStockComponent} from "../bac-stock/bac-stock.component";
 
 @Component({
   selector: 'app-bac',
@@ -71,11 +73,17 @@ export class BacComponent implements OnInit{
   }
 
 
-  openEditForm() {
-
+  openStockForm(data:any) {
+    this._dialog.open(BacStockComponent,{
+      data,
+    });
   }
 
   deleteProduct(idProduit: any) {
+
+  }
+
+  openEditForm() {
 
   }
 }

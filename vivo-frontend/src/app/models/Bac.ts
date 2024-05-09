@@ -10,6 +10,7 @@ export class Bac{
   capacityUsed: number|undefined;
   idProduct: number|undefined;
   product?: Product;
+  creux: number|undefined;
 
 
 }

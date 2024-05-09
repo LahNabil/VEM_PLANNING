@@ -28,8 +28,7 @@ export class EntreSortieComponent implements OnInit{
     'quantite',
     'date',
     'typeES',
-    'idBac',
-    'actions'
+    'idBac'
   ];
   ngOnInit() {
     this.getes();

@@ -35,6 +35,24 @@ public class BacController {
         return new ResponseEntity<>(savedBac, HttpStatus.CREATED);
 
     }
+    @DeleteMapping("/{idBac}")
+    public ResponseEntity<Void> deleteBacById(@PathVariable String idBac){
+        Boolean deletedBac = bacService.deleteBacById(idBac);
+        return deletedBac ? ResponseEntity.noContent().build() :ResponseEntity.notFound().build();
+
+    }
+    @GetMapping(value = "/creux/{idBac}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Double> calculerCreux(@PathVariable String idBac){
+        try {
+            double creux = bacService.calculerCreux(idBac);
+            return ResponseEntity.ok(creux);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+    }
+
+
     @PostMapping("/stock/{idBac}")
     public ResponseEntity<BacDto> ESrProduit(@RequestBody EntreSortie es, @PathVariable String idBac){
         try{

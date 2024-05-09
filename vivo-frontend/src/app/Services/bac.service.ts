@@ -17,6 +17,9 @@ export class BacService {
   getBac():Observable<any>{
     return this._http.get(`${this.baseUrl}`)
   }
+  calculerCreux(idBac: String|undefined):Observable<any>{
+    return this._http.get(`${this.baseUrl}creux/${idBac}`)
+  }
   stockProduit(es:EntreSortie,idBac: String):Observable<Object>{
     return this._http.post(`${this.baseUrl}stock/${idBac}`,es);
   }

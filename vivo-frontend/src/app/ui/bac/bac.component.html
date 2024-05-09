@@ -23,7 +23,7 @@
         </ng-container>
 
         <ng-container matColumnDef="totalImpom">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> totalImpom </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> total Impompable </th>
           <td mat-cell *matCellDef="let row"> {{row.totalImpom}} m3</td>
         </ng-container>
 
@@ -36,11 +36,11 @@
         </ng-container>
 
         <ng-container matColumnDef="dateOuverture">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> dateOuverture </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date d'ouverture </th>
           <td mat-cell *matCellDef="let row"> {{row.dateOuverture | date:'yyyy/MM/dd'}}</td>
         </ng-container>
         <ng-container matColumnDef="capacityUsed">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> capacityUsed </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> capacité utilisé </th>
           <td mat-cell *matCellDef="let row"> {{row.capacityUsed}} m3</td>
         </ng-container>
         <ng-container matColumnDef="idProduct">
@@ -50,6 +50,10 @@
         <ng-container matColumnDef="productName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
           <td mat-cell *matCellDef="let row"> {{row.product.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="creux">
+          <th mat-header-cell *matHeaderCellDef> Creux </th>
+          <td mat-cell *matCellDef="let row"> {{row.creux}} m3 </td>
         </ng-container>
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>

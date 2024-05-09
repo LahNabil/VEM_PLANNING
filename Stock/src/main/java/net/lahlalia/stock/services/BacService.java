@@ -52,6 +52,22 @@ public class BacService {
         }
         return bacsDto;
     }
+    public double calculerCreux(String idBac)throws EntityNotFoundException{
+        Bac bac = bacRepository.findById(idBac).get();
+        BacDto dto = bacMapper.toModel(bac);
+        double creux = dto.getCapacity() - dto.getCapacityUsed();
+        return creux;
+    }
+    public boolean deleteBacById(String idBac)throws EntityNotFoundException{
+        BacDto dto = getBacById(idBac);
+        if( dto != null){
+            bacRepository.deleteById(idBac);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
     public BacDto saveBac(BacDto dto)throws EntityNotFoundException {
         if(dto == null){

@@ -20,6 +20,7 @@ export class BacComponent implements OnInit{
 
   bacs: Bac = new Bac();
   bac: Bac[] = [];
+  creux!: number;
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -32,6 +33,7 @@ export class BacComponent implements OnInit{
     'capacityUsed',
     'idProduct',
     'productName',
+    'creux',
     'actions'
 
 
@@ -42,6 +44,7 @@ export class BacComponent implements OnInit{
   ngOnInit() {
     this.getBacs();
   }
+
   getBacs(){
     this.bacService.getBac().subscribe({
       next: (bacs)=>{
@@ -50,6 +53,15 @@ export class BacComponent implements OnInit{
             next: (product)=>{
               bac.product = product;
             }
+          });
+          this.bacService.calculerCreux(bac.idBac).subscribe({
+            next: (creux) =>{
+              bac.creux = creux;
+            },
+            error: (error) => {
+              console.log("Error calculating creux: ", error);
+            }
+
           });
         });
         this.dataSource = new MatTableDataSource(bacs);

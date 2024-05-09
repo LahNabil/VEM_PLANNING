@@ -14,6 +14,7 @@ import net.lahlalia.stock.restClients.ProductRestClient;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -66,6 +67,21 @@ public class BacService {
         } else {
             return false;
         }
+
+    }
+    public BacDto updateBac(String idBac, BacDto bacDto) throws EntityNotFoundException{
+        Bac existingBac = bacRepository.findById(idBac)
+                .orElseThrow(() -> new EntityNotFoundException("Bac with ID " + idBac + " not found"));
+
+        existingBac.setCapacity(bacDto.getCapacity());
+        existingBac.setTotalImpom(bacDto.getTotalImpom());
+        existingBac.setDateOuverture(bacDto.getDateOuverture());
+        existingBac.setCapacityUsed(bacDto.getCapacityUsed());
+
+        Bac updatedBac = bacRepository.save(existingBac);
+
+        return bacMapper.toModel(updatedBac);
+
 
     }
 

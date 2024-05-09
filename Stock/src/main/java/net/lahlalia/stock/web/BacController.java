@@ -41,6 +41,11 @@ public class BacController {
         return deletedBac ? ResponseEntity.noContent().build() :ResponseEntity.notFound().build();
 
     }
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BacDto>updateProduct(@PathVariable String idBac,@RequestBody BacDto dto) throws EntityNotFoundException{
+        BacDto updatedBac = bacService.updateBac(idBac,dto);
+        return ResponseEntity.ok(updatedBac);
+    }
     @GetMapping(value = "/creux/{idBac}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Double> calculerCreux(@PathVariable String idBac){
         try {

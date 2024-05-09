@@ -17,6 +17,10 @@ export class BacService {
   getBac():Observable<any>{
     return this._http.get(`${this.baseUrl}`)
   }
+  deleteBac(idBac: String|undefined):Observable<Object>{
+    return this._http.delete(`${this.baseUrl}${idBac}`)
+  }
+
   calculerCreux(idBac: String|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}creux/${idBac}`)
   }

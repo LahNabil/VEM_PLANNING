@@ -78,6 +78,14 @@ export class BacComponent implements OnInit{
       this.dataSource.paginator.firstPage();
     }
   }
+  deleteBac(idBac: String|undefined){
+    const isConfirmed = window.confirm("Êtes-vous sûr de vouloir supprimer ce Bac ?");
+    if (isConfirmed) {
+      this.bacService.deleteBac(idBac).subscribe(data => {
+        window.location.reload();
+      });
+    }
+  }
 
 
   openStockForm(data:any) {

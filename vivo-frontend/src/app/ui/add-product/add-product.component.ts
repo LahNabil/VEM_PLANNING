@@ -26,7 +26,7 @@ export class AddProductComponent implements OnInit{
       status: '',
       type: '',
       regime: this.formBuilder.group({
-        idRegime: [1] // Set initial value to null
+        idRegime: [this.data.idBac] // Set initial value to null
       })
     });
   }

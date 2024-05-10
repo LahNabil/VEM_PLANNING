@@ -27,7 +27,7 @@ export class BacStockComponent implements OnInit{
       date: '',
       typeES: '',
       bac: this.formBuilder.group({
-        idBac: ["12345"] // Set initial value to null
+        idBac: [this.data.idBac] // Set initial value to null
       })
 
       })

@@ -21,5 +21,5 @@ public class DepotDTO {
     private String nameDepot;
     private String zone;
     private Area area;
-    private List<Bac> bacs;
+    private List<String> idBacs;
 }

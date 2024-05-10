@@ -18,4 +18,5 @@ public class BacDto {
     private Date dateOuverture;
     private double capacityUsed;
     private Long idProduct;
+    private String idDepot;
 }

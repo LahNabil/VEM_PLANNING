@@ -16,6 +16,10 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
           <td mat-cell *matCellDef="let row"> {{row.idBac}} </td>
         </ng-container>
+        <ng-container matColumnDef="idDepot">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID Depot </th>
+          <td mat-cell *matCellDef="let row"> {{row.idDepot}} </td>
+        </ng-container>
 
         <ng-container matColumnDef="capacity">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Capacité </th>

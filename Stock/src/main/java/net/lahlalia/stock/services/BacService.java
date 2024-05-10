@@ -6,9 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.stock.dtos.BacDto;
 import net.lahlalia.stock.dtos.Product;
 import net.lahlalia.stock.entities.Bac;
+import net.lahlalia.stock.entities.Depot;
 import net.lahlalia.stock.entities.EntreSortie;
 import net.lahlalia.stock.mappers.BacMapper;
 import net.lahlalia.stock.repositories.BacRepository;
+import net.lahlalia.stock.repositories.DepotRepository;
 import net.lahlalia.stock.repositories.EntreSortieRepository;
 import net.lahlalia.stock.restClients.ProductRestClient;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class BacService {
     private final BacMapper bacMapper;
     private final ProductRestClient productRestClient;
     private final EntreSortieRepository entreSortieRepository;
+    private final DepotRepository depotRepository;
 
     public BacDto getBacById(String idBac ) throws EntityNotFoundException {
         if(idBac == null){
@@ -34,6 +37,7 @@ public class BacService {
         Bac bac = bacRepository.findById(idBac).get();
         BacDto bacDto =  bacMapper.toModel(bac);
         bacDto.setIdProduct(bac.getIdProduct());
+        bacDto.setIdDepot(bac.getDepot().getIdDepot());
         return bacDto;
     }
     public List<BacDto> getAllBacs(){
@@ -44,6 +48,7 @@ public class BacService {
             BacDto bacDto = bacMapper.toModel(bac);
             try {
                 bacDto.setIdProduct(bac.getIdProduct());
+                bacDto.setIdDepot(bac.getDepot().getIdDepot());
             } catch (EntityNotFoundException e) {
                 // Gérer l'exception si le produit n'est pas trouvé
                 // Vous pouvez choisir de ne pas ajouter le produit au BacDto dans ce cas
@@ -91,8 +96,10 @@ public class BacService {
             return null;
         }
         Bac bac = bacMapper.toEntity(dto);
-        if(dto.getIdProduct() != null){
+        if(dto.getIdProduct() != null || dto.getIdDepot() != null){
             bac.setIdProduct(dto.getIdProduct());
+            Depot depot = depotRepository.findById(dto.getIdDepot()).get();
+            bac.setDepot(depot);
         }
 
         Bac savedBac = bacRepository.save(bac);

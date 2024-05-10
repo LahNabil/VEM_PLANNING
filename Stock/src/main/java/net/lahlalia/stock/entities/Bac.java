@@ -29,4 +29,7 @@ public class Bac {
     @OneToMany(mappedBy = "bac")
     private List<EntreSortie> entre_sortie;
 
+    @ManyToOne
+    private Depot depot;
+
 }

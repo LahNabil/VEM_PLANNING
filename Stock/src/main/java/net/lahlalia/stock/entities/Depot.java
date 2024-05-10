@@ -1,8 +1,10 @@
 package net.lahlalia.stock.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+import net.lahlalia.stock.enums.Area;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,8 +18,13 @@ public class Depot {
     private String idDepot;
     private String nameDepot;
     private String zone;
-    private String area;
-    private double capaciteDepot;
+    @Enumerated(EnumType.STRING)
+    private Area area;
+
+    @OneToMany(mappedBy = "depot")
+    private List<Bac> bacs;
+
+
 
 
 

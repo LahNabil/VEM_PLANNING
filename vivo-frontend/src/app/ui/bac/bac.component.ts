@@ -26,6 +26,7 @@ export class BacComponent implements OnInit{
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = [
     'idBac',
+    'idDepot',
     'capacity',
     'totalImpom',
     'status',

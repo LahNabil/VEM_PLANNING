@@ -5,8 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.stock.dtos.BacDto;
 import net.lahlalia.stock.dtos.DepotDTO;
+import net.lahlalia.stock.dtos.ESDto;
 import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.Depot;
+import net.lahlalia.stock.entities.EntreSortie;
+import net.lahlalia.stock.mappers.BacMapper;
 import net.lahlalia.stock.mappers.DepotMapper;
 import net.lahlalia.stock.repositories.BacRepository;
 import net.lahlalia.stock.repositories.DepotRepository;
@@ -24,6 +27,7 @@ public class DepotService {
     private final DepotMapper depotMapper;
     private final BacRepository bacRepository;
     private final BacService bacService;
+    private final BacMapper bacMapper;
 
     public DepotDTO saveDepot(DepotDTO dto){
         return depotMapper.toModel(
@@ -33,44 +37,25 @@ public class DepotService {
         );
 
     }
-
-//    public DepotDTO saveDepot(DepotDTO depotDto)throws EntityNotFoundException{
-//        if(depotDto == null){
-//            log.error("Depot is null");
-//            return null;
-//        }
-//        Depot depot = depotMapper.toEntity(depotDto);
-//
-//
-//        List<Bac> bacs = new ArrayList<>();
-//        for(Bac bac : depotDto.getBacs()){
-//            bacs.add(bac);
-//
-//        }
-//        depot.setBacs(bacs);
-//        depot = depotRepository.save(depot);
-//        return depotMapper.toModel(depot);
-//
-//    }
-    public List<DepotDTO> getDepots(){
-//        return depotRepository.findAll().stream().map(depotMapper::toModel).toList();
-
+    public List<DepotDTO> geAllDepots(){
         List<Depot> depots = depotRepository.findAll();
         List<DepotDTO> depotDTOS = new ArrayList<>();
+//        List<BacDto> bacDtos = new ArrayList<>();
+
         for(Depot depot : depots){
-//            DepotDTO depotDTO = new DepotDTO();
-//            depotDTO.setIdDepot(depot.getIdDepot());
-//            depotDTO.setNameDepot(depot.getNameDepot());
-//            depotDTO.setZone(depot.getZone());
-//            depotDTO.setArea(depot.getArea());
-
+            List<BacDto> bacDtos = bacService.getAllBacsForDepot(depot.getIdDepot());
             DepotDTO depotDTO = depotMapper.toModel(depot);
-            List<String> idBacs = depot.getBacs().stream().map(Bac::getIdBac).toList();
-            depotDTO.setIdBacs(idBacs);
+            depotDTO.setBacDtos(bacDtos);
             depotDTOS.add(depotDTO);
-
         }
         return depotDTOS;
+
     }
+
+
+
+
+
+
 
 }

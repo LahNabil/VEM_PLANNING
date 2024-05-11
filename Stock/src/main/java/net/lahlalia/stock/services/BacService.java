@@ -107,6 +107,11 @@ public class BacService {
 
 
     }
+    public List<BacDto> getAllBacsForDepot(String idDepot){
+        List<Bac> bacs = bacRepository.findAllByDepotId(idDepot);
+        List<BacDto> bacDtos = bacs.stream().map(bacMapper::toModel).toList();
+        return bacDtos;
+    }
     public BacDto ESrProduit(EntreSortie es,String idBac)throws EntityNotFoundException{
         if(es == null || idBac == null || es.getBac().getIdBac()== null  ){
             log.error("value is null");

@@ -28,7 +28,7 @@ public class DepotController {
 
     @GetMapping(value = "/",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<DepotDTO>> getAllDepot(){
-        List<DepotDTO> depots = depotService.getDepots();
+        List<DepotDTO> depots = depotService.geAllDepots();
         return ResponseEntity.ok(depots);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import java.util.List;
 
 @RestController
@@ -23,6 +24,17 @@ public class BacController {
     public ResponseEntity<List<BacDto>> getAllBac(){
         List<BacDto> bacs = bacService.getAllBacs();
         return ResponseEntity.ok(bacs);
+    }
+    @GetMapping(value = "/bydepotid/{depotId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BacDto>> getBacByDepotId(@PathVariable String depotId){
+        List<BacDto> bacs = bacService.getAllBacsForDepot(depotId);
+        if (bacs.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(bacs, HttpStatus.OK);
+        }
+
+
     }
     @GetMapping(value = "/{idBac}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BacDto> getProductById(@PathVariable String idBac)throws EntityNotFoundException {

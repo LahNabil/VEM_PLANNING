@@ -27,6 +27,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import { BacComponent } from './ui/bac/bac.component';
 import { BacStockComponent } from './ui/bac-stock/bac-stock.component';
 import { EntreSortieComponent } from './ui/entre-sortie/entre-sortie.component';
+import { DepotComponent } from './ui/depot/depot.component';
 
 
 
@@ -40,6 +41,7 @@ import { EntreSortieComponent } from './ui/entre-sortie/entre-sortie.component';
     BacComponent,
     BacStockComponent,
     EntreSortieComponent,
+    DepotComponent,
 
 
   ],

@@ -37,6 +37,27 @@ public class DepotService {
         );
 
     }
+
+    public double CalculerStock(String idDepot){
+        List<BacDto> bacDtos = bacService.getAllBacsForDepot(idDepot);
+        double stock = bacDtos.stream().mapToDouble(BacDto::getCapacityUsed).sum();
+        return stock;
+
+    }
+    public DepotDTO getDepotById(String idDepot )throws EntityNotFoundException{
+        if(idDepot == null){
+            log.error("id Depot is null");
+            return null;
+        }
+        Depot depot = depotRepository.findById(idDepot).get();
+        DepotDTO depotDTO = depotMapper.toModel(depot);
+        List<BacDto> bacDtos = bacService.getAllBacsForDepot(idDepot);
+        depotDTO.setBacDtos(bacDtos);
+        return depotDTO;
+
+
+    }
+
     public List<DepotDTO> geAllDepots(){
         List<Depot> depots = depotRepository.findAll();
         List<DepotDTO> depotDTOS = new ArrayList<>();

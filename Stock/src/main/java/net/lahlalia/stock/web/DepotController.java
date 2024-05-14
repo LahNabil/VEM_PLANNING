@@ -1,5 +1,6 @@
 package net.lahlalia.stock.web;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.lahlalia.stock.dtos.DepotDTO;
 import net.lahlalia.stock.services.DepotService;
@@ -30,5 +31,19 @@ public class DepotController {
     public ResponseEntity<List<DepotDTO>> getAllDepot(){
         List<DepotDTO> depots = depotService.geAllDepots();
         return ResponseEntity.ok(depots);
+    }
+    @GetMapping(value = "/{idDepot}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DepotDTO> getDepotById(@PathVariable String idDepot){
+        DepotDTO depotDTO = depotService.getDepotById(idDepot);
+        return ResponseEntity.ok(depotDTO);
+    }
+    @GetMapping("/calculerStock/{idDepot}")
+    public ResponseEntity<Double> calculerStock(@PathVariable String idDepot){
+        try{
+            double stock = depotService.CalculerStock(idDepot);
+            return ResponseEntity.ok(stock);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

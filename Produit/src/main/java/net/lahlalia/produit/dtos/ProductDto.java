@@ -14,7 +14,7 @@ private Long idProduit;
 private String name;
 private String status;
 private TypeProduit type;
-private Long regimeId;
+private RegimeDto regime;
 
 
 }

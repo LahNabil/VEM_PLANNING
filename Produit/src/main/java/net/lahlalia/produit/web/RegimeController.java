@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/regimes")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class RegimeController {
 

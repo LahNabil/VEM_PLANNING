@@ -33,10 +33,16 @@ public class ProduitService {
             log.error("idProduit is null");
             return null;
         }
-        return produitRepository.findById(idProduit).map(productMapper::toModel)
+        ProductDto productDto =  produitRepository.findById(idProduit).map(productMapper::toModel)
                 .orElseThrow(
                         ()-> new EntityNotFoundException("product not found with specific id : " + idProduit)
                 );
+        Regime regime = produitRepository.findById(idProduit).get().getRegime();
+        RegimeDto regimeDto = regimeMapper.toModel(regime);
+        productDto.setRegime(regimeDto);
+        return productDto;
+
+
 
     }
 
@@ -57,12 +63,45 @@ public class ProduitService {
 //
 //    }
 
+    public ProductDto updateProduct(Long id, ProductDto productDto) throws EntityNotFoundException{
+        Produit existingProduit = produitRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product with ID " + id + " not found"));
+
+        existingProduit.setName(productDto.getName());
+        existingProduit.setType(productDto.getType());
+        existingProduit.setStatus(productDto.getStatus());
+
+        if(productDto.getRegime() != null) {
+            // Convert RegimeDto to Regime entity
+            Regime regimeEntity = regimeMapper.toEntity(productDto.getRegime());
+            // Check if Regime entity already exists in the database
+            existingProduit.setRegime(regimeEntity);
+        } else {
+            existingProduit.setRegime(null); // Clear existing Regime if null is provided
+        }
+
+
+        Produit updatedProduit = produitRepository.save(existingProduit);
+
+        return productMapper.toModel(updatedProduit);
+
+
+    }
+
 
     public ProductDto saveProduct(ProductDto dto)throws EntityNotFoundException {
-        RegimeDto regimeDto = regimeService.getRegimeById(dto.getRegimeId());
-        Regime regime = regimeMapper.toEntity(regimeDto);
+        if(dto == null){
+            log.error("product is null");
+            return null;
+        }
+
         Produit produit = productMapper.toEntity(dto);
-        produit.setRegime(regime);
+        if(dto.getRegime() != null){
+            Regime regime = regimeRepository.findById(dto.getRegime().getIdRegime())
+                    .orElseThrow(()-> new EntityNotFoundException("Regime Not found"));
+            produit.setRegime(regime);
+        }
+
         Produit savedProduct = produitRepository.save(produit);
         return productMapper.toModel(savedProduct);
 

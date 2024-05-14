@@ -5,13 +5,15 @@ import {ProductDetailsComponent} from "./ui/product-details/product-details.comp
 import {BacComponent} from "./ui/bac/bac.component";
 import {EntreSortieComponent} from "./ui/entre-sortie/entre-sortie.component";
 import {DepotComponent} from "./ui/depot/depot.component";
+import {DepotDetailsComponent} from "./ui/depot-details/depot-details.component";
 
 const routes: Routes = [
   {path: "products",component: ProductsComponent},
   {path: "products_details/:idProduit", component: ProductDetailsComponent},
   {path: "bac", component: BacComponent},
   {path: "ess",component: EntreSortieComponent },
-  {path: "depots", component: DepotComponent}
+  {path: "depots", component: DepotComponent},
+  {path: "depot-detail", component: DepotDetailsComponent}
 ];
 
 @NgModule({

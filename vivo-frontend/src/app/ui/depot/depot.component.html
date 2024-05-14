@@ -74,8 +74,11 @@
             <button mat-icon-button color="primary" (click)="openEditForm(row)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="deleteProduct(row.idProduit)">
+            <button mat-icon-button color="warn" (click)="deleteDepot(row.idDepot)">
               <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="DepotDetail(row.idDepot)">
+              <mat-icon>info</mat-icon>
             </button>
           </td>
         </ng-container>

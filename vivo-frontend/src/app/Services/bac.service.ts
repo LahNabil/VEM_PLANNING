@@ -17,6 +17,9 @@ export class BacService {
   getBac():Observable<any>{
     return this._http.get(`${this.baseUrl}`)
   }
+  addBac(bac: Bac| undefined):Observable<Object>{
+    return this._http.post(`${this.baseUrl}`, bac);
+  }
   deleteBac(idBac: String|undefined):Observable<Object>{
     return this._http.delete(`${this.baseUrl}${idBac}`)
   }

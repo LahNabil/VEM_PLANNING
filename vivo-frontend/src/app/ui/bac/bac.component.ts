@@ -10,6 +10,7 @@ import {BacService} from "../../Services/bac.service";
 import {EntreSortie} from "../../models/EntreSortie";
 import {AddProductComponent} from "../add-product/add-product.component";
 import {BacStockComponent} from "../bac-stock/bac-stock.component";
+import {AddBacComponent} from "../add-bac/add-bac.component";
 
 @Component({
   selector: 'app-bac',
@@ -101,5 +102,9 @@ export class BacComponent implements OnInit{
 
   openEditForm() {
 
+  }
+
+  openAddForm() {
+    this._dialog.open(AddBacComponent);
   }
 }

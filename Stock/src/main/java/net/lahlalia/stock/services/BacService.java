@@ -61,7 +61,7 @@ public class BacService {
     public double calculerCreux(String idBac)throws EntityNotFoundException{
         Bac bac = bacRepository.findById(idBac).get();
         BacDto dto = bacMapper.toModel(bac);
-        double creux = dto.getCapacity() - dto.getCapacityUsed();
+        double creux = dto.getCapacity() - dto.getCapacityUsed() - dto.getTotalImpom();
         return creux;
     }
     public boolean deleteBacById(String idBac)throws EntityNotFoundException{
@@ -74,20 +74,29 @@ public class BacService {
         }
 
     }
-    public BacDto updateBac(String idBac, BacDto bacDto) throws EntityNotFoundException{
-        Bac existingBac = bacRepository.findById(idBac)
-                .orElseThrow(() -> new EntityNotFoundException("Bac with ID " + idBac + " not found"));
+    public BacDto updateBac(String idBac, BacDto bacDto) throws EntityNotFoundException {
+        try {
+            Bac existingBac = bacRepository.findById(idBac)
+                    .orElseThrow(() -> new EntityNotFoundException("Bac with ID " + idBac + " not found"));
 
-        existingBac.setCapacity(bacDto.getCapacity());
-        existingBac.setTotalImpom(bacDto.getTotalImpom());
-        existingBac.setDateOuverture(bacDto.getDateOuverture());
-        existingBac.setCapacityUsed(bacDto.getCapacityUsed());
+            existingBac.setCapacity(bacDto.getCapacity());
+            existingBac.setTotalImpom(bacDto.getTotalImpom());
+            existingBac.setStatus(bacDto.isStatus());
+            existingBac.setDateOuverture(bacDto.getDateOuverture());
+            existingBac.setCapacityUsed(bacDto.getCapacityUsed());
 
-        Bac updatedBac = bacRepository.save(existingBac);
+            Bac updatedBac = bacRepository.save(existingBac);
 
-        return bacMapper.toModel(updatedBac);
-
-
+            return bacMapper.toModel(updatedBac);
+        } catch (EntityNotFoundException ex) {
+            // Log the error or handle it appropriately
+            ex.printStackTrace(); // Print the stack trace to console for debugging
+            throw ex; // Re-throw the exception to be handled at a higher level
+        } catch (Exception ex) {
+            // Log the error or handle it appropriately
+            ex.printStackTrace(); // Print the stack trace to console for debugging
+            throw new RuntimeException("Error updating Bac: " + ex.getMessage()); // Wrap and throw a new exception
+        }
     }
 
     public BacDto saveBac(BacDto dto)throws EntityNotFoundException {

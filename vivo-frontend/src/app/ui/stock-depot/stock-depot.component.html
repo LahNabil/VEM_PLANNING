@@ -1,0 +1,15 @@
+<div class="card-container">
+  <div *ngFor="let depot of depots" class="card">
+    <h1 class="card-title">{{ depot.nameDepot }}</h1>
+    <h3>{{depot.idDepot}}</h3>
+    <img src="https://elenaco-ma.com/wp-content/uploads/2021/04/AUTOMATIC-TANK-GAUGING-IN-VIVOENERGY-TANTAN-DEPOT-600x455.jpg"
+         alt="depot Agadir" class="card-image">
+    <h3 class="card-text">Ville: {{ depot.zone }}</h3>
+    <div *ngIf="stocks[depot.idDepot]">
+      <h4>Stocks:</h4>
+      <div *ngFor="let stock of stocks[depot.idDepot]">
+        <p>{{ stock.nameProduit }} : {{ stock.quantite }}</p>
+      </div>
+    </div>
+  </div>
+</div>

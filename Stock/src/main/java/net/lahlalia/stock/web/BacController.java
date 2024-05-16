@@ -68,6 +68,12 @@ public class BacController {
         }
 
     }
+    @GetMapping(value = "/name/{idProduit}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getProductNameById(@PathVariable Long idProduit){
+        String name = bacService.getProductNameById(idProduit);
+        return ResponseEntity.ok(name);
+
+    }
 
 
     @PostMapping("/stock/{idBac}")

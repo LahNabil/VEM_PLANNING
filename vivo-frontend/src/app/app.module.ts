@@ -30,6 +30,7 @@ import { EntreSortieComponent } from './ui/entre-sortie/entre-sortie.component';
 import { DepotComponent } from './ui/depot/depot.component';
 import { DepotDetailsComponent } from './ui/depot-details/depot-details.component';
 import { AddBacComponent } from './ui/add-bac/add-bac.component';
+import { StockDepotComponent } from './ui/stock-depot/stock-depot.component';
 
 
 
@@ -46,6 +47,7 @@ import { AddBacComponent } from './ui/add-bac/add-bac.component';
     DepotComponent,
     DepotDetailsComponent,
     AddBacComponent,
+    StockDepotComponent,
 
 
   ],

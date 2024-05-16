@@ -40,6 +40,11 @@ public class BacService {
         bacDto.setIdDepot(bac.getDepot().getIdDepot());
         return bacDto;
     }
+    public String getProductNameById(Long idProduit){
+        Product product = productRestClient.getProductById(idProduit);
+        return product.getName();
+
+    }
     public List<BacDto> getAllBacs(){
 //        return bacRepository.findAll().stream().map(bacMapper::toModel).toList();
         List<Bac> bacList = bacRepository.findAll();

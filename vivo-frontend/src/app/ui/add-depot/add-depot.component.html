@@ -1,0 +1,39 @@
+<div mat-dialog-title>
+  <h1>Product Form</h1>
+</div>
+<form [formGroup]="depotForm" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content class="content">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Id Depot</mat-label>
+        <input matInput type="text" placeholder="Ex. MJ71" formControlName="idDepot">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nom du Depot</mat-label>
+        <input matInput type="text" placeholder="Ex. Depot AGADIR" formControlName="nameDepot">
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Selectionnez une ville</mat-label>
+      <mat-select formControlName="zone">
+        <mat-option *ngFor="let ville of villes" [value]="ville">
+          {{ ville }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="row">
+      <mat-radio-group aria-label="Select an option" formControlName="area">
+        <mat-label><b>Area</b></mat-label>
+        <mat-radio-button value="SOUTH">South</mat-radio-button>
+        <mat-radio-button value="CENTER">Center</mat-radio-button>
+        <mat-radio-button value="NORTH">North</mat-radio-button>
+        <mat-radio-button value="WEST">West</mat-radio-button>
+        <mat-radio-button value="EAST">East</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="primary" type="submit">{{data ? 'Update' : 'Save'}}</button>
+  </div>
+</form>

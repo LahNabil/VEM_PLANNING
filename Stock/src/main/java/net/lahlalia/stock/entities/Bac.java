@@ -32,4 +32,6 @@ public class Bac {
     @ManyToOne
     private Depot depot;
 
+
+
 }

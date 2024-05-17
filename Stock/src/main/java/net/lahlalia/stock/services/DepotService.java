@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.stock.dtos.BacDto;
 import net.lahlalia.stock.dtos.DepotDTO;
 import net.lahlalia.stock.dtos.ESDto;
+import net.lahlalia.stock.dtos.StockProduitDto;
 import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.Depot;
 import net.lahlalia.stock.entities.EntreSortie;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +37,18 @@ public class DepotService {
                         depotMapper.toEntity(dto)
                 )
         );
+
+    }
+    public DepotDTO editDepot(String idDepot, DepotDTO depotDTO)throws EntityNotFoundException{
+        Depot existingdepot = depotRepository.findById(idDepot)
+                .orElseThrow(() -> new EntityNotFoundException("Depot with ID " + idDepot + " not found"));
+        existingdepot.setNameDepot(depotDTO.getNameDepot());
+        existingdepot.setZone(depotDTO.getZone());
+        existingdepot.setArea(depotDTO.getArea());
+
+        Depot updatedDepot = depotRepository.save(existingdepot);
+
+        return depotMapper.toModel(updatedDepot);
 
     }
 
@@ -57,6 +71,27 @@ public class DepotService {
 
 
     }
+    public List<StockProduitDto> calculerStocksProduitsDansDepot(DepotDTO depotDTO) {
+        List<BacDto> bacDtos = depotDTO.getBacDtos();
+
+        // Collecter les ID de produits distincts présents dans les Bacs
+        Set<String> distinctProductNames = bacDtos.stream()
+                .map(bac -> bacService.getProductNameById(bac.getIdProduct()))
+                .collect(Collectors.toSet());
+
+        // Pour chaque produit distinct, calculer le stock
+        List<StockProduitDto> stocksProduits = new ArrayList<>();
+        for (String productName : distinctProductNames) {
+            double stockProduit = bacDtos.stream()
+                    .filter(bac -> bacService.getProductNameById(bac.getIdProduct()).equals(productName))
+                    .mapToDouble(BacDto::getCapacityUsed)
+                    .sum();
+            stocksProduits.add(new StockProduitDto(productName, stockProduit));
+        }
+
+        return stocksProduits;
+    }
+
 
     public List<DepotDTO> geAllDepots(){
         List<Depot> depots = depotRepository.findAll();

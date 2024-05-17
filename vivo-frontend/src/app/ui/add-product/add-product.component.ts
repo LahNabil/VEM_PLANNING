@@ -21,23 +21,26 @@ export class AddProductComponent implements OnInit{
   productForm: FormGroup;
 
   constructor(private diologRef: DialogRef<AddProductComponent>,private formBuilder : FormBuilder,private productService : ProductService, private regimeService: RegimeService, private router : Router, @Inject(MAT_DIALOG_DATA) public data: any) {
+    console.log(data);
     this.productForm = this.formBuilder.group({
       name: '',
       status: '',
       type: '',
-      regime: this.formBuilder.group({
-        idRegime: [this.data.idBac] // Set initial value to null
-      })
+      regime: ''
+      // regime: this.formBuilder.group({
+      //  idRegime: // Set initial value to null
+      //   })
     });
   }
   getRegimes(){
-    this.regimeService.getRegimes().subscribe(data=>{
-      this.regimes = data;
+    this.regimeService.getRegimes().subscribe(dataRegime=>{
+      this.regimes = dataRegime;
     })
   }
   getProducts(){
     this.productService.getProducts().subscribe(data=>{
       this.products = data;
+      console.log(data);
     })
   }
 

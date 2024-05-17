@@ -9,6 +9,7 @@ import {Depot} from "../../models/Depot";
 import {AddProductComponent} from "../add-product/add-product.component";
 import {ProductService} from "../../Services/product.service";
 import {DepotDetailsComponent} from "../depot-details/depot-details.component";
+import {AddDepotComponent} from "../add-depot/add-depot.component";
 
 @Component({
   selector: 'app-depot',
@@ -78,11 +79,6 @@ export class DepotComponent implements OnInit {
     }
   }
 
-  openEditForm(data: any) {
-    this._dialog.open(AddProductComponent, {
-      data,
-    });
-  }
 
   // openDetailForm(data: any){
   //   this._dialog.open(DepotDetailsComponent,{
@@ -101,8 +97,14 @@ export class DepotComponent implements OnInit {
   deleteDepot(idDepot: any) {
 
   }
+  openEditForm(data: any){
+    this._dialog.open(AddDepotComponent,{
+      data,
+    });
+  }
 
   openAddForm() {
+    this._dialog.open(AddDepotComponent);
 
   }
 }

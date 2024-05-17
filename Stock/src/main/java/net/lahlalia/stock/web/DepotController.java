@@ -2,7 +2,10 @@ package net.lahlalia.stock.web;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import net.lahlalia.stock.dtos.BacDto;
 import net.lahlalia.stock.dtos.DepotDTO;
+import net.lahlalia.stock.dtos.StockProduitDto;
+import net.lahlalia.stock.entities.Depot;
 import net.lahlalia.stock.services.DepotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,6 +40,22 @@ public class DepotController {
         DepotDTO depotDTO = depotService.getDepotById(idDepot);
         return ResponseEntity.ok(depotDTO);
     }
+    @PutMapping(value = "/{idDepot}",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DepotDTO>updateDepot(@PathVariable String idDepot, @RequestBody DepotDTO dto) throws EntityNotFoundException{
+        DepotDTO updatedDepot = depotService.editDepot(idDepot,dto);
+        return ResponseEntity.ok(updatedDepot);
+    }
+    @GetMapping("/calculerStocksProduits/{idDepot}")
+    public ResponseEntity<List<StockProduitDto>> calculerStocksProduits(@PathVariable String idDepot) {
+        try {
+            DepotDTO depotDTO = depotService.getDepotById(idDepot);
+            List<StockProduitDto> stocksProduits = depotService.calculerStocksProduitsDansDepot(depotDTO);
+            return ResponseEntity.ok(stocksProduits);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @GetMapping("/calculerStock/{idDepot}")
     public ResponseEntity<Double> calculerStock(@PathVariable String idDepot){
         try{

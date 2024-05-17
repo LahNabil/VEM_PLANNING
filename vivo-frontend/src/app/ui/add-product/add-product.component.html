@@ -11,7 +11,7 @@
       <mat-form-field>
         <mat-label>Select me</mat-label>
         <mat-select formControlName="regime">
-          <mat-option *ngFor="let regime of regimes" [value]="regime.idRegime">{{regime.regime}}-{{regime.idRegime}}</mat-option>
+          <mat-option *ngFor="let regime of regimes" [value]="regime">{{regime.regime}}-{{regime.idRegime}}</mat-option>
         </mat-select>
         <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
       </mat-form-field>

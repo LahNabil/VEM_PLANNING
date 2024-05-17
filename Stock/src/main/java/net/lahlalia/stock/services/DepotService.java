@@ -39,6 +39,18 @@ public class DepotService {
         );
 
     }
+    public DepotDTO editDepot(String idDepot, DepotDTO depotDTO)throws EntityNotFoundException{
+        Depot existingdepot = depotRepository.findById(idDepot)
+                .orElseThrow(() -> new EntityNotFoundException("Depot with ID " + idDepot + " not found"));
+        existingdepot.setNameDepot(depotDTO.getNameDepot());
+        existingdepot.setZone(depotDTO.getZone());
+        existingdepot.setArea(depotDTO.getArea());
+
+        Depot updatedDepot = depotRepository.save(existingdepot);
+
+        return depotMapper.toModel(updatedDepot);
+
+    }
 
     public double CalculerStock(String idDepot){
         List<BacDto> bacDtos = bacService.getAllBacsForDepot(idDepot);

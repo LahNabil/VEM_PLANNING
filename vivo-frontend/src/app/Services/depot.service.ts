@@ -22,6 +22,10 @@ export class DepotService {
   addDepot(depot: Depot| undefined):Observable<Object>{
     return this._http.post(`${this.baseUrl}`, depot);
   }
+  editDepot(idDepot:number|undefined,depot: Depot):Observable<Object>{
+    return this._http.put(`${this.baseUrl}${idDepot}`, depot)
+  }
+
   calculerStock(idDepot: String|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}calculerStock/${idDepot}`)
   }

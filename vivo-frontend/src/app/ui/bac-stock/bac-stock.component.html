@@ -1,0 +1,34 @@
+<div mat-dialog-title class="title">
+  <h1>Quantity Form</h1>
+</div>
+<form [formGroup]="bacForm" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content class="content">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>quantité</mat-label>
+        <input matInput type="text" placeholder="1200" formControlName="quantite">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-radio-group aria-label="Select an option" formControlName="typeES">
+        <mat-label><b>Vous voulez entrer un produit ou sortir</b></mat-label>
+        <mat-radio-button value="true" ><b style="color: #2FBDEA"> Entrer</b></mat-radio-button>
+        <mat-radio-button value="false"><b  style="color: red">Sortir</b ></mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker" style="color: #44FD26"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-raised-button type="button" class="cancel-button" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button class="save-button-update" type="submit">Save</button>
+  </div>
+</form>

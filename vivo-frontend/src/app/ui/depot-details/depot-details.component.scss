@@ -1,0 +1,42 @@
+.depot-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.depot-card .card-header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.depot-card .card-body {
+  padding: 1rem;
+}
+
+.depot-info {
+  margin-bottom: 1rem;
+}
+
+.bac-list {
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+
+.section-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.bac-info {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+}
+
+.bac-info:last-child {
+  border-bottom: none;
+}
+
+.alert {
+  border-radius: 8px;
+}

@@ -19,6 +19,10 @@ export class DepotService {
   getDepotById(idDepot: String | undefined):Observable<Depot>{
     return this._http.get<Depot>(`${this.baseUrl}${idDepot}`)
   }
+  deleteDepotById(idDepot: String | undefined):Observable<Object>{
+    return this._http.delete(`${this.baseUrl}${idDepot}`)
+  }
+
   addDepot(depot: Depot| undefined):Observable<Object>{
     return this._http.post(`${this.baseUrl}`, depot);
   }

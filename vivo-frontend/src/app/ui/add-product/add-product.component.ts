@@ -53,7 +53,7 @@ export class AddProductComponent implements OnInit{
   onFormSubmit() {
     if(this.data){
       if(this.productForm.valid){
-        this.productService.editProduct(this.data.id,this.productForm.value).subscribe({
+        this.productService.editProduct(this.data.idProduit,this.productForm.value).subscribe({
           next: (val:any)=>{
             alert('Produit Modifié avec succes');
             this.diologRef.close();

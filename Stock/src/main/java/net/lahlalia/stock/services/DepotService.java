@@ -87,21 +87,27 @@ public class DepotService {
 
     }
      // Exécuter à minuit tous les jours
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 86400000)
     public void saveDailyStock() {
+//        List<Depot> depots = depotRepository.findAll();
+//        for(Depot depot : depots){
+//            List<StockProduitDto> stockProduitDtos = calculerStocksProduitsDansDepot(depot);
+//
+//        }
         List<DepotDTO> depotDTOS = geAllDepots();
         for (DepotDTO depotDTO : depotDTOS) {
             List<StockProduitDto> stockProduitDtos = calculerStocksProduitsDansDepot(depotDTO);
-            if (stockProduitDtos != null) { // Check for null before iterating
+            if (stockProduitDtos != null) {
                 for (StockProduitDto stockProduitDto : stockProduitDtos) {
-                    HistoryDto historyDto = new HistoryDto().builder()
+                    HistoryStock historyStock = new HistoryStock().builder()
                             .dateJour(new Date())
                             .stock(stockProduitDto.getQuantite())
-                            .depotDTO(depotDTO)
+                            .depot(depotMapper.toEntity(depotDTO))
                             .nameProduct(stockProduitDto.getNameProduit())
                             .build();
-                    HistoryStock historyStock = historyStockMapper.toEntity(historyDto);
                     historyStockRepository.save(historyStock);
+                    HistoryDto historyDto = historyStockMapper.toModel(historyStock);
+
                 }
             } else {
                 log.error("stockProduitDtos is null for depot: {}", depotDTO.getIdDepot());

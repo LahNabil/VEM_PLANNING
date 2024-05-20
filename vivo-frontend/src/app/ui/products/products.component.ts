@@ -28,7 +28,6 @@ export class ProductsComponent implements OnInit{
     'actions'
   ];
   dataSource!: MatTableDataSource<any>;
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   ngOnInit(){

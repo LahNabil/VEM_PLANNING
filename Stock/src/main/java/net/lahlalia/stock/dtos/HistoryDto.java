@@ -18,11 +18,9 @@ import java.util.Date;
 public class HistoryDto {
 
     private Long idHistory;
-
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dateJour;
     private String nameProduct;
     private double stock;
-    @ManyToOne
-    private DepotDTO depotDTO;
     private String idDepot;
 }

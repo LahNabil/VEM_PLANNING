@@ -24,6 +24,9 @@ public class Depot {
     @OneToMany(mappedBy = "depot")
     private List<Bac> bacs;
 
+    @OneToMany(mappedBy = "depot")
+    private List<HistoryStock> historyStocks;
+
 
 
 

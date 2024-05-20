@@ -1,5 +1,6 @@
 package net.lahlalia.stock.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.stock.dtos.BacDto;
@@ -26,13 +27,26 @@ public class HistoryStockService {
 
     public List<HistoryDto> getAllHistoryDto() {
         List<HistoryStock> histories = historyStockRepository.findAll();
-        return histories.stream()
-                .map(history -> {
-                    HistoryDto historyDto = historyStockMapper.toModel(history);
-                    historyDto.setDepotDTO(depotMapper.toModel(history.getDepot()));
-                    historyDto.setIdDepot(history.getDepot().getIdDepot());// Assuming History entity has a 'depot' field
-                    return historyDto;
-                })
-                .collect(Collectors.toList());
+        List<HistoryDto> historyDtos = new ArrayList<>();
+        for(HistoryStock historyStock : histories){
+            HistoryDto historyDto = historyStockMapper.toModel(historyStock);
+            try {
+                historyDto.setIdDepot(historyStock.getDepot().getIdDepot());
+            } catch (EntityNotFoundException e) {
+                log.error("Depot not found for HistoryStock "+ historyStock.getIdHistory());
+            }
+            historyDtos.add(historyDto);
+        }
+        return historyDtos;
+
+
+        ///
+//        return histories.stream()
+//                .map(history -> {
+//                    HistoryDto historyDto = historyStockMapper.toModel(history);
+//                    historyDto.setIdDepot(history.getDepot().getIdDepot());// Assuming History entity has a 'depot' field
+//                    return historyDto;
+//                })
+//                .collect(Collectors.toList());
     }
 }

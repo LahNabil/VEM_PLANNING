@@ -115,6 +115,16 @@ public class DepotService {
             }
         }
     }
+    public double calculerStockSecurite(double quantite){
+        return quantite * 0.1;
+    }
+//    public List<StockProduitDto> calculerStockSecuritePourListe(List<StockProduitDto> stockProduits) {
+//        for (StockProduitDto stockProduitDto : stockProduits) {
+//            double stockSecurite = calculerStockSecurite(stockProduitDto.getQuantite());
+//            stockProduitDto.setStockSecurite(stockSecurite);
+//        }
+//        return stockProduits;
+//    }
 
     public List<StockProduitDto> calculerStocksProduitsDansDepot(DepotDTO depotDTO) {
         List<BacDto> bacDtos = depotDTO.getBacDtos();
@@ -135,7 +145,7 @@ public class DepotService {
                     .filter(bac -> bacService.getProductNameById(bac.getIdProduct()).equals(productName))
                     .mapToDouble(BacDto::getCapacityUsed)
                     .sum();
-            stocksProduits.add(new StockProduitDto(productName, stockProduit));
+            stocksProduits.add(new StockProduitDto(productName, stockProduit,calculerStockSecurite(stockProduit)));
         }
 
         return stocksProduits;

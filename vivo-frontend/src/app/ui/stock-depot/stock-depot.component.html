@@ -61,7 +61,8 @@
     <div *ngIf="stocks[depot.idDepot]">
       <h4>Stocks:</h4>
       <div *ngFor="let stock of stocks[depot.idDepot]">
-        <p>{{ stock.nameProduit }} : {{ stock.quantite }} m3</p>
+        <p>Nom du Produit :{{ stock.nameProduit }} : {{ stock.quantite }} m3</p>
+        <p> Stock de securité : {{stock.stockSecurite}} m3</p>
       </div>
     </div>
   </div>

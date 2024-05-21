@@ -95,7 +95,12 @@ export class DepotComponent implements OnInit {
   }
 
   deleteDepot(idDepot: any) {
-
+    const isConfirmed = window.confirm("Êtes-vous sûr de vouloir supprimer ce Depot ?");
+    if (isConfirmed) {
+      this.depotService.deleteDepotById(idDepot).subscribe(data => {
+        window.location.reload();
+      });
+    }
   }
   openEditForm(data: any){
     this._dialog.open(AddDepotComponent,{

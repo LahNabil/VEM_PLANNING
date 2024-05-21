@@ -1,8 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {DepotService} from "../../Services/depot.service";
-import {Route, Router} from "@angular/router";
 import {Depot} from "../../models/Depot";
 import {StockProduitDto} from "../../models/StockProduitDto";
+import {HistoryService} from "../../Services/history.service";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatDialog} from "@angular/material/dialog";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-stock-depot',
@@ -13,11 +18,44 @@ export class StockDepotComponent implements OnInit{
   depots : Depot[] = [];
   depot : Depot = new Depot();
   stocks: { [key: string]: StockProduitDto[] } = {};
+  histories: History[] = [];
+  dataSource!: MatTableDataSource<any>;
 
-  constructor(private depotService:DepotService, private router: Router) {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  displayedColumns: string[] = [
+    'idHistory',
+    'dateJour',
+    'nameProduct',
+    'stock',
+    'idDepot'
+
+
+  ];
+
+  constructor(private historyService: HistoryService,private depotService:DepotService, private router: Router,private _dialog: MatDialog) {
   }
   ngOnInit() {
     this.getDepots();
+    this.getHistories();
+  }
+  getHistories() {
+    this.historyService.getHistories().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      }
+    })
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
   getDepots(): void {
     this.depotService.getDepots().subscribe(

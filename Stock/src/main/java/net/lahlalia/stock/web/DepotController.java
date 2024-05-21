@@ -55,6 +55,12 @@ public class DepotController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+    @DeleteMapping("/{idDepot}")
+    public ResponseEntity<Void>deleteDepotById(@PathVariable String idDepot){
+        Boolean deletedDepot = depotService.deleteDepotById(idDepot);
+        return deletedDepot ? ResponseEntity.noContent().build() :ResponseEntity.notFound().build();
+
+    }
 
     @GetMapping("/calculerStock/{idDepot}")
     public ResponseEntity<Double> calculerStock(@PathVariable String idDepot){

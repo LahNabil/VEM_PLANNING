@@ -21,6 +21,7 @@ public class HistoryStock {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dateJour;
     private double stock;
+    private String nameProduct;
     @ManyToOne
     private Depot depot;
 

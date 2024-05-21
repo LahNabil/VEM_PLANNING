@@ -3,22 +3,22 @@ package net.lahlalia.stock.services;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.lahlalia.stock.dtos.BacDto;
-import net.lahlalia.stock.dtos.DepotDTO;
-import net.lahlalia.stock.dtos.ESDto;
-import net.lahlalia.stock.dtos.StockProduitDto;
+import net.lahlalia.stock.dtos.*;
 import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.Depot;
 import net.lahlalia.stock.entities.EntreSortie;
+import net.lahlalia.stock.entities.HistoryStock;
 import net.lahlalia.stock.mappers.BacMapper;
 import net.lahlalia.stock.mappers.DepotMapper;
+import net.lahlalia.stock.mappers.HistoryStockMapper;
 import net.lahlalia.stock.repositories.BacRepository;
 import net.lahlalia.stock.repositories.DepotRepository;
+import net.lahlalia.stock.repositories.HistoryStockRepository;
+import net.lahlalia.stock.restClients.ProductRestClient;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +30,9 @@ public class DepotService {
     private final BacRepository bacRepository;
     private final BacService bacService;
     private final BacMapper bacMapper;
+    private final ProductRestClient productRestClient;
+    private final HistoryStockRepository historyStockRepository;
+    private final HistoryStockMapper historyStockMapper;
 
     public DepotDTO saveDepot(DepotDTO dto){
         return depotMapper.toModel(
@@ -39,6 +42,7 @@ public class DepotService {
         );
 
     }
+
     public DepotDTO editDepot(String idDepot, DepotDTO depotDTO)throws EntityNotFoundException{
         Depot existingdepot = depotRepository.findById(idDepot)
                 .orElseThrow(() -> new EntityNotFoundException("Depot with ID " + idDepot + " not found"));
@@ -58,6 +62,17 @@ public class DepotService {
         return stock;
 
     }
+
+    public boolean deleteDepotById(String idDepot)throws EntityNotFoundException{
+        DepotDTO dto = getDepotById(idDepot);
+        if( dto != null){
+            depotRepository.deleteById(idDepot);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
     public DepotDTO getDepotById(String idDepot )throws EntityNotFoundException{
         if(idDepot == null){
             log.error("id Depot is null");
@@ -71,8 +86,52 @@ public class DepotService {
 
 
     }
+     // Exécuter à minuit tous les jours
+    @Scheduled(fixedRate = 86400000)
+    public void saveDailyStock() {
+//        List<Depot> depots = depotRepository.findAll();
+//        for(Depot depot : depots){
+//            List<StockProduitDto> stockProduitDtos = calculerStocksProduitsDansDepot(depot);
+//
+//        }
+        List<DepotDTO> depotDTOS = geAllDepots();
+        for (DepotDTO depotDTO : depotDTOS) {
+            List<StockProduitDto> stockProduitDtos = calculerStocksProduitsDansDepot(depotDTO);
+            if (stockProduitDtos != null) {
+                for (StockProduitDto stockProduitDto : stockProduitDtos) {
+                    HistoryStock historyStock = new HistoryStock().builder()
+                            .dateJour(new Date())
+                            .stock(stockProduitDto.getQuantite())
+                            .depot(depotMapper.toEntity(depotDTO))
+                            .nameProduct(stockProduitDto.getNameProduit())
+                            .build();
+                    historyStockRepository.save(historyStock);
+                    HistoryDto historyDto = historyStockMapper.toModel(historyStock);
+
+                }
+            } else {
+                log.error("stockProduitDtos is null for depot: {}", depotDTO.getIdDepot());
+                // Handle the null case accordingly
+            }
+        }
+    }
+    public double calculerStockSecurite(double quantite){
+        return quantite * 0.1;
+    }
+//    public List<StockProduitDto> calculerStockSecuritePourListe(List<StockProduitDto> stockProduits) {
+//        for (StockProduitDto stockProduitDto : stockProduits) {
+//            double stockSecurite = calculerStockSecurite(stockProduitDto.getQuantite());
+//            stockProduitDto.setStockSecurite(stockSecurite);
+//        }
+//        return stockProduits;
+//    }
+
     public List<StockProduitDto> calculerStocksProduitsDansDepot(DepotDTO depotDTO) {
         List<BacDto> bacDtos = depotDTO.getBacDtos();
+        if (bacDtos == null) {
+            log.error("BacDtos is null for depot: {}", depotDTO.getIdDepot());
+            return Collections.emptyList();// Return an empty list or handle it according to your use case
+        }
 
         // Collecter les ID de produits distincts présents dans les Bacs
         Set<String> distinctProductNames = bacDtos.stream()
@@ -86,7 +145,7 @@ public class DepotService {
                     .filter(bac -> bacService.getProductNameById(bac.getIdProduct()).equals(productName))
                     .mapToDouble(BacDto::getCapacityUsed)
                     .sum();
-            stocksProduits.add(new StockProduitDto(productName, stockProduit));
+            stocksProduits.add(new StockProduitDto(productName, stockProduit,calculerStockSecurite(stockProduit)));
         }
 
         return stocksProduits;

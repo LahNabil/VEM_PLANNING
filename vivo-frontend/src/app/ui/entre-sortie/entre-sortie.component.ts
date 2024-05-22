@@ -18,6 +18,9 @@ import {MatSort} from "@angular/material/sort";
 export class EntreSortieComponent implements OnInit{
   es: EntreSortie = new EntreSortie();
   ess: EntreSortie[] = [];
+  bac: Bac = new Bac();
+  bacs: Bac[]= [];
+  productName!: string;
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -28,10 +31,20 @@ export class EntreSortieComponent implements OnInit{
     'quantite',
     'date',
     'typeES',
-    'idBac'
+    'idBac',
+    'productName'
   ];
   ngOnInit() {
     this.getes();
+    this.getBacs();
+
+  }
+
+
+  getBacs(){
+    this.bacService.getBac().subscribe(data=>{
+      this.bacs = data;
+    })
   }
 
   getes(){
@@ -41,6 +54,12 @@ export class EntreSortieComponent implements OnInit{
           this.bacService.getBacById(es.idBac).subscribe({
             next: (bac) => {
               es.bac = bac;
+              console.log(bac);
+              this.bacService.getProductById(bac.idProduct).subscribe({
+                next: (productName)=>{
+                  es.productName = productName;
+                }
+              })
             }
           });
         });

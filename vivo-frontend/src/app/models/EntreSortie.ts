@@ -7,5 +7,6 @@ export class EntreSortie{
   typeES: boolean|undefined;
   idBac: number|undefined;
   bac?: Bac;
+  productName: String| undefined;
 
 }

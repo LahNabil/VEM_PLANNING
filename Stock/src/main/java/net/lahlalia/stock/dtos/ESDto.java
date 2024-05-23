@@ -22,4 +22,5 @@ public class ESDto {
     private Boolean typeES;
 
     private String  idBac;
+    private String nameProduct;
 }

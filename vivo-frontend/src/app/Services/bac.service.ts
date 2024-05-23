@@ -33,7 +33,7 @@ export class BacService {
   getBacById(idBac:number| undefined):Observable<Bac>{
     return this._http.get<Bac>(`${this.baseUrl}${idBac}`)
   }
-  getProductById(idProduct: number|undefined):Observable<any>{
+  getProductNameById(idProduct: number|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}name/${idProduct}`)
   }
 

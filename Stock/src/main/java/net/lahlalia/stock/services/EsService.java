@@ -20,6 +20,7 @@ import java.util.List;
 public class EsService {
     private final EntreSortieRepository entreSortieRepository;
     private final ESMapper esMapper;
+    private final BacService bacService;
 
     public List<ESDto> getAllES(){
         List<EntreSortie> ESList = entreSortieRepository.findAll();
@@ -28,6 +29,9 @@ public class EsService {
             ESDto esDto = esMapper.toModel(es);
             try{
                 esDto.setIdBac(es.getBac().getIdBac());
+                BacDto bacDto = bacService.getBacById(esDto.getIdBac());
+                esDto.setNameProduct(bacService.getProductNameById(bacDto.getIdProduct()));
+
             }catch (EntityNotFoundException e) {
 
                 log.error("Bac not found for Bac ID: " + es.getId());

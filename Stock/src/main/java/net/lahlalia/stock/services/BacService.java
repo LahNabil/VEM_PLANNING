@@ -42,7 +42,8 @@ public class BacService {
     }
     public String getProductNameById(Long idProduit){
         Product product = productRestClient.getProductById(idProduit);
-        return product.getName();
+        String productName = product.getName();
+        return productName;
 
     }
     public List<BacDto> getAllBacs(){

@@ -33,15 +33,14 @@
             <ng-template #sortie>Sorties</ng-template>
           </td>
         </ng-container>
-
         <ng-container matColumnDef="idBac">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Bac </th>
           <td mat-cell *matCellDef="let row"> {{row.idBac}}</td>
         </ng-container>
-        <ng-container matColumnDef="product">
+        <ng-container matColumnDef="nameProduct">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom du Produit </th>
           <td mat-cell *matCellDef="let row">
-              <div>{{row.productName}} </div>
+              <div>{{row.nameProduct}} </div>
           </td>
         </ng-container>
 

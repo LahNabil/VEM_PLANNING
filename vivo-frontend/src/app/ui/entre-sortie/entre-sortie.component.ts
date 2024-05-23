@@ -20,11 +20,10 @@ export class EntreSortieComponent implements OnInit{
   ess: EntreSortie[] = [];
   bac: Bac = new Bac();
   bacs: Bac[]= [];
-  productName!: string;
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  constructor(private esService: ESService, private bacService : BacService, private router: Router, private _dialog: MatDialog) {
+  constructor(private productService : ProductService,private esService: ESService, private bacService : BacService, private router: Router, private _dialog: MatDialog) {
   }
   displayedColumns: string[] = [
     'id',
@@ -32,7 +31,7 @@ export class EntreSortieComponent implements OnInit{
     'date',
     'typeES',
     'idBac',
-    'productName'
+    'nameProduct'
   ];
   ngOnInit() {
     this.getes();
@@ -47,6 +46,7 @@ export class EntreSortieComponent implements OnInit{
     })
   }
 
+
   getes(){
     this.esService.getEs().subscribe({
       next: (ess)=> {
@@ -54,12 +54,7 @@ export class EntreSortieComponent implements OnInit{
           this.bacService.getBacById(es.idBac).subscribe({
             next: (bac) => {
               es.bac = bac;
-              console.log(bac);
-              this.bacService.getProductById(bac.idProduct).subscribe({
-                next: (productName)=>{
-                  es.productName = productName;
-                }
-              })
+              console.log(es);
             }
           });
         });

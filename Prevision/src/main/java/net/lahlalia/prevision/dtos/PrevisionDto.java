@@ -1,23 +1,14 @@
-package net.lahlalia.prevision.entities;
+package net.lahlalia.prevision.dtos;
 
-
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+import net.lahlalia.prevision.entities.BacItem;
 import net.lahlalia.prevision.enums.Business;
 
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@ToString
-public class Prevision {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PrevisionDto {
     private Long idPrevision;
     private double foreCaste;
     private double vReel;
@@ -27,8 +18,4 @@ public class Prevision {
     private Business business;
     @OneToMany
     private List<BacItem> bacItems;
-
-
-
-
 }

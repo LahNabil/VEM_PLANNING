@@ -25,7 +25,7 @@ public class Prevision {
     private int annee;
     @Enumerated(EnumType.STRING)
     private Business business;
-    @OneToMany
+    @OneToMany(mappedBy = "prevision")
     private List<BacItem> bacItems;
 
 

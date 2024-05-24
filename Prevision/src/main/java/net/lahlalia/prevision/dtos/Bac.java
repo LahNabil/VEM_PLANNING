@@ -1,16 +1,16 @@
-package net.lahlalia.stock.dtos;
+package net.lahlalia.prevision.dtos;
 
 import lombok.*;
 
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@Builder // for building objects using .build
-@AllArgsConstructor
-@NoArgsConstructor
-public class BacDto {
-
+@Builder
+@ToString
+public class Bac {
     private String idBac;
     private double capacity;
     private double totalImpom;
@@ -19,6 +19,4 @@ public class BacDto {
     private double capacityUsed;
     private Long idProduct;
     private String idDepot;
-
-
 }

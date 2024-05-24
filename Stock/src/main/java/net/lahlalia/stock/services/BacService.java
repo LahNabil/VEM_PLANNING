@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -103,6 +104,22 @@ public class BacService {
             ex.printStackTrace(); // Print the stack trace to console for debugging
             throw new RuntimeException("Error updating Bac: " + ex.getMessage()); // Wrap and throw a new exception
         }
+    }
+    public List<BacDto> getBacsByNameProduct(String nameProduct){
+        List<Bac> bacList = bacRepository.findAll();
+        List<Bac> filteredBacList = bacList.stream()
+                .filter(bac->{
+                    String productName = getProductNameById(bac.getIdProduct());
+                    return productName != null && productName.equals(nameProduct);
+                })
+                .collect(Collectors.toList());
+        List<BacDto> filteredBacDtoList = filteredBacList.stream()
+                .map(bacMapper::toModel)
+                .collect(Collectors.toList());
+
+        return filteredBacDtoList;
+
+
     }
 
     public BacDto saveBac(BacDto dto)throws EntityNotFoundException {

@@ -11,10 +11,10 @@ import java.util.List;
 public interface StockRestClient {
 
     @GetMapping("/api/bac/")
-    public List<Bac> getAllProducts();
+    public List<Bac> getAllBacs();
 
     @GetMapping("/api/bac/{idBac}")
-    public Bac getProductById(@PathVariable Long idBac);
+    public Bac getBacById(@PathVariable Long idBac);
 
 
 }

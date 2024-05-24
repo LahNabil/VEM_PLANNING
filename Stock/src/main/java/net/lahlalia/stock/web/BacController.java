@@ -3,6 +3,7 @@ package net.lahlalia.stock.web;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.lahlalia.stock.dtos.BacDto;
+import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.EntreSortie;
 import net.lahlalia.stock.services.BacService;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,11 @@ public class BacController {
         }
 
 
+    }
+    @GetMapping(value = "/product/{nameProduct}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BacDto>> getBacsByProductName(@PathVariable String nameProduct){
+        List<BacDto> bacDtos = bacService.getBacsByNameProduct(nameProduct);
+        return ResponseEntity.ok(bacDtos);
     }
     @GetMapping(value = "/{idBac}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BacDto> getProductById(@PathVariable String idBac)throws EntityNotFoundException {

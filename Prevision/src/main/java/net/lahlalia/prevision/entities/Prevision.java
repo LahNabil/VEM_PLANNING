@@ -4,7 +4,9 @@ package net.lahlalia.prevision.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import net.lahlalia.prevision.enums.Business;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,10 +23,11 @@ public class Prevision {
     private Long idPrevision;
     private double foreCaste;
     private double vReel;
-    private int mois;
-    private int annee;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date date;
     @Enumerated(EnumType.STRING)
     private Business business;
+    private String nameProduct;
     @OneToMany(mappedBy = "prevision")
     private List<BacItem> bacItems;
 

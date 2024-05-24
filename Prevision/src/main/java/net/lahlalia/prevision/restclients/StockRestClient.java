@@ -16,5 +16,11 @@ public interface StockRestClient {
     @GetMapping("/api/bac/{idBac}")
     public Bac getBacById(@PathVariable Long idBac);
 
+    @GetMapping("/api/bac/product/{nameProduct}")
+    public List<Bac> getBacsByProductName(@PathVariable String nameProduct);
+
+    @GetMapping("/api/bac/name/{idProduit}")
+    public String getProductNameById(Long idProduit);
+
 
 }

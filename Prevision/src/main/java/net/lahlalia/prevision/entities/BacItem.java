@@ -21,6 +21,7 @@ public class BacItem {
     private String idBac;
     private Long idProduct;
     private String idDepot;
+    private String nameProduct;
     @ManyToOne
     private Prevision prevision;
 

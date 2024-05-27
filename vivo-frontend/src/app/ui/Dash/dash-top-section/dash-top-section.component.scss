@@ -1,6 +1,6 @@
 .widget-container{
   display: flex;
-  justify-content: space-between;
+
   align-items: center;
   .widget{
     width: 250px;
@@ -8,8 +8,8 @@
     background-color: #fff;
     border-radius: 5px;
     color:white;
-    margin: 10px;
-
+    margin-bottom: 20px;
+    margin-right: 63px;
     box-shadow: 5px 5px 5px #939393;
     display: flex;
     align-items: center;
@@ -25,6 +25,7 @@
     }
     &.blue {
       background-color: #2FBDEA;
+      margin-left: 15px;
     }
     .icon {
       width: 100px;

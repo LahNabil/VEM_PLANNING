@@ -11,6 +11,7 @@ import {EntreSortie} from "../../models/EntreSortie";
 import {AddProductComponent} from "../add-product/add-product.component";
 import {BacStockComponent} from "../bac-stock/bac-stock.component";
 import {AddBacComponent} from "../add-bac/add-bac.component";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: 'app-bac',
@@ -106,5 +107,46 @@ export class BacComponent implements OnInit{
 
   openAddForm() {
     this._dialog.open(AddBacComponent);
+  }
+  fileName = "BacExcelSheet.xlsx";
+  exportExcel(){
+    let data = document.getElementById("table-data");
+    if (data) {
+      // Clone the table
+      const clonedTable = data.cloneNode(true) as HTMLElement;
+      const columnIdToRemove = "table-action";
+
+      // Remove the "Action" column from the cloned table
+      this.removeColumnById(clonedTable, columnIdToRemove);
+
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      XLSX.writeFile(wb, this.fileName);
+    }
+
+  }
+  /** This method removes the column with the specified ID from the cloned table. **/
+  removeColumnById(table: HTMLElement, columnId: string): void {
+    const columnIndex = this.getColumnIndexById(table, columnId);
+    if (columnIndex !== -1) {
+      const rows = table.querySelectorAll('tr');
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('th, td');
+        if (cells[columnIndex]) {
+          cells[columnIndex].remove();
+        }
+      });
+    }
+  }
+  /** This method returns the index of the column with the specified ID. This index is used to identify which column to remove.**/
+  getColumnIndexById(table: HTMLElement, columnId: string): number {
+    const thElements = table.querySelectorAll('thead th');
+    for (let i = 0; i < thElements.length; i++) {
+      if (thElements[i].id === columnId) {
+        return i;
+      }
+    }
+    return -1;
   }
 }

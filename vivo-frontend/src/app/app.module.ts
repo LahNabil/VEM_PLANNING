@@ -46,7 +46,8 @@ import { DashWeeklySalesComponent } from './ui/Dash/dash-weekly-sales/dash-weekl
 import { PlanningComponent } from './ui/planning/planning.component';
 import { SearchPipe } from './search.pipe';
 import {ChartModule} from "angular-highcharts";
-import { UserDialogComponent } from './ui/user-dialog/user-dialog.component';
+
+
 
 
 
@@ -77,7 +78,7 @@ import { UserDialogComponent } from './ui/user-dialog/user-dialog.component';
     DashWeeklySalesComponent,
     PlanningComponent,
     SearchPipe,
-    UserDialogComponent,
+
 
 
   ],

@@ -14,6 +14,7 @@ import net.lahlalia.previsions.mappers.BacMapper;
 import net.lahlalia.previsions.mappers.MapperBac;
 import net.lahlalia.previsions.mappers.MapperPrevision;
 import net.lahlalia.previsions.mappers.PrevisionMapper;
+import net.lahlalia.previsions.repositories.BacItemRepository;
 import net.lahlalia.previsions.repositories.PrevisionRepository;
 import net.lahlalia.previsions.restclients.StockRestClient;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class PrevisionService {
     private final StockRestClient stockRestClient;
     private final MapperPrevision mapperPrevision;
     private final MapperBac mapperBac;
+    private final BacItemRepository bacItemRepository;
 
 
 
@@ -44,17 +46,19 @@ public class PrevisionService {
 
 //        List<BacItem> bacs = stockRestClient.getBacsByProductAndZone(previsionDto.getNameProduct(),previsionDto.getSupplyEnveloppe()).stream().map(mapperBac::convertToModel).toList();
         List<Bac> bacs = stockRestClient.getBacsByProductAndZone(previsionDto.getNameProduct(),previsionDto.getSupplyEnveloppe());
+        Prevision savedPrevision = previsionRepository.save(prevision);
         List<BacItem> bacItems = new ArrayList<>();
         bacs.forEach(b->{
             BacItem bacItem = BacItem.builder()
                     .idBac(b.getIdBac())
                     .idDepot(b.getIdDepot())
                     .idProduct(b.getIdProduct())
+                    .prevision(prevision)
                     .build();
+            bacItemRepository.save(bacItem);
             bacItems.add(bacItem);
         });
-        prevision.setBacItems(bacItems);
-        Prevision savedPrevision = previsionRepository.save(prevision);
+        savedPrevision.setBacItems(bacItems);
         return mapperPrevision.convertToDto(savedPrevision);
 
 
@@ -99,7 +103,7 @@ public class PrevisionService {
         });
         return bacItems;
     }
-    
+
 
 
 

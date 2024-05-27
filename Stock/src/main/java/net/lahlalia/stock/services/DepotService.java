@@ -53,14 +53,17 @@ public class DepotService {
 
         // Filter Bacs by product name within the filtered depots
         for (DepotDTO depot : filteredDepots) {
+            String depotId = depot.getIdDepot(); // Get the ID of the current depot
             List<BacDto> filteredBacs = depot.getBacDtos().stream()
                     .filter(bac -> {
                         String productName = bacService.getProductNameById(bac.getIdProduct());
                         return productName != null && productName.equalsIgnoreCase(nameProduct);
                     })
+                    .peek(bac -> bac.setIdDepot(depotId)) // Set the idDepot field of each BacDto
                     .collect(Collectors.toList());
             result.addAll(filteredBacs);
         }
+
 
         return result;
     }

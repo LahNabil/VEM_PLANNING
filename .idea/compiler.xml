@@ -10,7 +10,19 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Register" />
       </profile>
-      <profile name="Annotation profile for Prevision" enabled="true">
+      <profile name="Annotation profile for Stock" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.0.Beta1/mapstruct-processor-1.6.0.Beta1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.0.Beta1/mapstruct-1.6.0.Beta1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.10/lombok-1.18.10.jar" />
+        </processorPath>
+        <module name="Stock" />
+        <module name="Produit" />
+      </profile>
+      <profile name="Annotation profile for Previsions" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -19,15 +31,17 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.0.Beta1/mapstruct-1.6.0.Beta1.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
         </processorPath>
-        <module name="Prevision" />
-        <module name="Stock" />
-        <module name="Produit" />
+        <module name="Previsions" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Prevision" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Prevision" options="-parameters" />
+      <module name="Previsions" options="-parameters" />
       <module name="Produit" options="-parameters" />
       <module name="Register" options="-parameters" />
       <module name="Stock" options="-parameters" />

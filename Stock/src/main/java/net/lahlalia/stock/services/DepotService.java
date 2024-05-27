@@ -42,6 +42,28 @@ public class DepotService {
         );
 
     }
+    public List<BacDto> findBacsByProductAndZone(String nameProduct, String zoneDepot) {
+        List<DepotDTO> allDepots = geAllDepots();
+        List<BacDto> result = new ArrayList<>();
+
+        // Filter depots by zone
+        List<DepotDTO> filteredDepots = allDepots.stream()
+                .filter(depot -> depot.getZone().equalsIgnoreCase(zoneDepot))
+                .collect(Collectors.toList());
+
+        // Filter Bacs by product name within the filtered depots
+        for (DepotDTO depot : filteredDepots) {
+            List<BacDto> filteredBacs = depot.getBacDtos().stream()
+                    .filter(bac -> {
+                        String productName = bacService.getProductNameById(bac.getIdProduct());
+                        return productName != null && productName.equalsIgnoreCase(nameProduct);
+                    })
+                    .collect(Collectors.toList());
+            result.addAll(filteredBacs);
+        }
+
+        return result;
+    }
 
     public DepotDTO editDepot(String idDepot, DepotDTO depotDTO)throws EntityNotFoundException{
         Depot existingdepot = depotRepository.findById(idDepot)

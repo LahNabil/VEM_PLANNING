@@ -2,6 +2,7 @@ package net.lahlalia.stock.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.lahlalia.stock.enums.Business;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -21,6 +22,8 @@ public class EntreSortie {
     @Column(name = "date")
     private Date date;
     private Boolean typeES;
+    @Enumerated(EnumType.STRING)
+    private Business business;
     @ManyToOne
     private Bac bac;
 

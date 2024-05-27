@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 import net.lahlalia.stock.entities.Bac;
+import net.lahlalia.stock.enums.Business;
 
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class ESDto {
     private double quantite;
     private Date date;
     private Boolean typeES;
-
+    private Business business;
     private String  idBac;
     private String nameProduct;
 }

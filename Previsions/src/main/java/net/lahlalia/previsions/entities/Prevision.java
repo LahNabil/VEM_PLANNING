@@ -26,8 +26,8 @@ public class Prevision {
     private Business business;
     private String nameProduct;
     private String supplyEnveloppe;
-//    @OneToMany(mappedBy = "prevision")
-//    private List<BacItem> bacItems;
+    @OneToMany(mappedBy = "prevision")
+    private List<BacItem> bacItems;
 
 
 

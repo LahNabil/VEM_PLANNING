@@ -11,12 +11,14 @@ import net.lahlalia.previsions.dtos.PrevisionDto;
 import net.lahlalia.previsions.entities.BacItem;
 import net.lahlalia.previsions.entities.Prevision;
 import net.lahlalia.previsions.mappers.BacMapper;
+import net.lahlalia.previsions.mappers.MapperBac;
 import net.lahlalia.previsions.mappers.MapperPrevision;
 import net.lahlalia.previsions.mappers.PrevisionMapper;
 import net.lahlalia.previsions.repositories.PrevisionRepository;
 import net.lahlalia.previsions.restclients.StockRestClient;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,30 +29,36 @@ public class PrevisionService {
     private final PrevisionRepository previsionRepository;
     private final StockRestClient stockRestClient;
     private final MapperPrevision mapperPrevision;
+    private final MapperBac mapperBac;
 
 
-    public PrevisionDto savePrevision(PrevisionDto dto){
-        return mapperPrevision.convertToDto(
-                previsionRepository.save(
-                        mapperPrevision.convertToModel(dto)
-                )
-        );
+
+
+    public PrevisionDto savePrevision(PrevisionDto previsionDto)throws EntityNotFoundException{
+        if(previsionDto == null){
+            log.error(" value is null");
+            return null;
+        }
+
+        Prevision prevision = mapperPrevision.convertToModel(previsionDto);
+
+//        List<BacItem> bacs = stockRestClient.getBacsByProductAndZone(previsionDto.getNameProduct(),previsionDto.getSupplyEnveloppe()).stream().map(mapperBac::convertToModel).toList();
+        List<Bac> bacs = stockRestClient.getBacsByProductAndZone(previsionDto.getNameProduct(),previsionDto.getSupplyEnveloppe());
+        List<BacItem> bacItems = new ArrayList<>();
+        bacs.forEach(b->{
+            BacItem bacItem = BacItem.builder()
+                    .idBac(b.getIdBac())
+                    .idDepot(b.getIdDepot())
+                    .idProduct(b.getIdProduct())
+                    .build();
+            bacItems.add(bacItem);
+        });
+        prevision.setBacItems(bacItems);
+        Prevision savedPrevision = previsionRepository.save(prevision);
+        return mapperPrevision.convertToDto(savedPrevision);
+
 
     }
-//    public PrevisionDto savePrevision(PrevisionDto previsionDto)throws EntityNotFoundException{
-////        if(previsionDto == null){
-////            log.error(" value is null");
-////            return null;
-////        }
-////
-////        Prevision prevision = previsionMapper.toEntity(previsionDto);
-//////        List<BacItem> bacs = stockRestClient.getBacsByProductAndZone(previsionDto.getNameProduct(),previsionDto.getSupplyEnveloppe()).stream().map(bacMapper::toEntity).toList();
-//////        prevision.setBacItems(bacs);
-////        Prevision savedPrevision = previsionRepository.save(prevision);
-////        return previsionMapper.toModel(savedPrevision);
-//
-//
-//    }
     public List<PrevisionDto>getAllPrevision(){
         return previsionRepository.findAll().stream().map(mapperPrevision::convertToDto).toList();
     }
@@ -65,7 +73,7 @@ public class PrevisionService {
         PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
         return previsionDto;
     }
-    public List<Bac> getBacsByProdZonePrevision(Long idPrevision) {
+    public List<BacItem> getBacsByProdZonePrevision(Long idPrevision) {
         Prevision prevision = previsionRepository.findById(idPrevision)
                 .orElseThrow(() -> new EntityNotFoundException("Prevision Not found"));
         PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
@@ -77,33 +85,21 @@ public class PrevisionService {
 
         String nameProduct = previsionDto.getNameProduct();
         String zoneDepot = previsionDto.getSupplyEnveloppe();
+        List<BacItem> bacItems = new ArrayList<>();
 
         // Call Feign client to get Bacs
         List<Bac> bacs = stockRestClient.getBacsByProductAndZone(nameProduct, zoneDepot);
-        return bacs;
+        bacs.forEach(b->{
+            BacItem bacItem = BacItem.builder()
+                    .idBac(b.getIdBac())
+                    .idDepot(b.getIdDepot())
+                    .idProduct(b.getIdProduct())
+                    .build();
+            bacItems.add(bacItem);
+        });
+        return bacItems;
     }
-
-
-//    public BacDto getBacById(String idBac ) throws EntityNotFoundException {
-//        if(idBac == null){
-//            log.error("id Bac is null");
-//            return null;
-//        }
-//        Bac bac = bacRepository.findById(idBac).get();
-//        BacDto bacDto =  bacMapper.toModel(bac);
-//        bacDto.setIdProduct(bac.getIdProduct());
-//        bacDto.setIdDepot(bac.getDepot().getIdDepot());
-//        return bacDto;
-//    }
-//    public PrevisionDto getPrevisionById(Long idPrevision) throws EntityNotFoundException{
-//        if(idPrevision == null){
-//            log.error("id Prevision is null");
-//            return null;
-//        }
-//        Prevision prevision = previsionRepository.findById(idPrevision).get();
-//        PrevisionDto previsionDto = previsionMapper.toModel(prevision);
-//
-//    }
+    
 
 
 

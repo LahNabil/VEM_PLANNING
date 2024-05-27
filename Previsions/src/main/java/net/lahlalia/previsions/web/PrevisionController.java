@@ -35,12 +35,12 @@ public class PrevisionController {
         String nameProduct = bacItemService.getProductNameByIDBac(idBac);
         return ResponseEntity.ok(nameProduct);
     }
-    @GetMapping("/bac/{idPrevision}")
-    public ResponseEntity<List<Bac>> getBacsByIdPrevision(@PathVariable Long idPrevision){
-        List<Bac> bacs = previsionService.getBacsByProdZonePrevision(idPrevision);
-        return ResponseEntity.ok(bacs);
-
-    }
+//    @GetMapping("/bac/{idPrevision}")
+//    public ResponseEntity<List<Bac>> getBacsByIdPrevision(@PathVariable Long idPrevision){
+//        List<Bac> bacs = previsionService.getBacsByProdZonePrevision(idPrevision);
+//        return ResponseEntity.ok(bacs);
+//
+//    }
     @GetMapping("/{idPrevision}")
     public ResponseEntity<PrevisionDto> getPrevisionById(@PathVariable Long idPrevision){
 //        PrevisionDto previsionDto = previsionService.getPrevisionById(idPrevision);

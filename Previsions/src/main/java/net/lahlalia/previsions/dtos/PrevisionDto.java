@@ -23,7 +23,7 @@ public class PrevisionDto {
     private Business business;
     private String nameProduct;
     private String supplyEnveloppe;
-//    private List<BacItem> bacItems;
+    private List<BacItem> bacItems;
 
 
 

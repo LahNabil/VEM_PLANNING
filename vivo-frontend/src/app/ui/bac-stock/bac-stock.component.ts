@@ -18,6 +18,7 @@ import {BacService} from "../../Services/bac.service";
 export class BacStockComponent implements OnInit{
   bacs : Bac[] = [];
   bac: Bac = new Bac();
+  showBusinessOptions: boolean = false;
 
   bacForm: FormGroup;
 
@@ -26,6 +27,7 @@ export class BacStockComponent implements OnInit{
       quantite: '',
       date: '',
       typeES: '',
+      business: '',
       bac: this.formBuilder.group({
         idBac: [this.data.idBac] // Set initial value to null
       })
@@ -42,6 +44,13 @@ export class BacStockComponent implements OnInit{
       this.bacs = data;
     })
 
+  }
+  onTypeESChange(): void {
+    const typeESControl = this.bacForm.get('typeES');
+    if (typeESControl) {
+      const typeESValue = typeESControl.value;
+      this.showBusinessOptions = typeESValue === 'false';
+    }
   }
   onFormSubmit() {
     if(this.bacForm.valid){

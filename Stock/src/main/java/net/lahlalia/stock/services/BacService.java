@@ -149,6 +149,13 @@ public class BacService {
             log.error("value is null");
             return null;
         }
+//        EntreSortie ens = EntreSortie.builder()
+//                .quantite(es.getQuantite())
+//                .date(es.getDate())
+//                .typeES(es.getTypeES())
+//                .business(es.getBusiness())
+//                .bac(es.getBac())
+//                .build();
 
         Bac bac = bacRepository.findById(idBac).get();
         if(es.getTypeES()){
@@ -161,6 +168,9 @@ public class BacService {
             double quantity = bac.getCapacityUsed() - es.getQuantite();
             bac.setCapacityUsed(quantity);
             Bac savedBac = bacRepository.save(bac);
+            if(es.getBusiness() == null ){
+                return null;
+            }
             entreSortieRepository.save(es);
             return bacMapper.toModel(savedBac);
         }else{

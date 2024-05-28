@@ -8,6 +8,7 @@ import net.lahlalia.stock.dtos.ESDto;
 import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.EntreSortie;
 import net.lahlalia.stock.mappers.ESMapper;
+import net.lahlalia.stock.mappers.MapperEs;
 import net.lahlalia.stock.repositories.EntreSortieRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EsService {
     private final EntreSortieRepository entreSortieRepository;
-    private final ESMapper esMapper;
+    private final MapperEs esMapper;
     private final BacService bacService;
 
     public List<ESDto> getAllES(){

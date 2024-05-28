@@ -30,6 +30,7 @@ export class EntreSortieComponent implements OnInit{
     'quantite',
     'date',
     'typeES',
+    'business',
     'idBac',
     'nameProduct'
   ];

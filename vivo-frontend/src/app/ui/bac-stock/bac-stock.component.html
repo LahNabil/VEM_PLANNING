@@ -10,10 +10,20 @@
       </mat-form-field>
     </div>
     <div class="row">
-      <mat-radio-group aria-label="Select an option" formControlName="typeES">
-        <mat-label><b>Vous voulez entrer un produit ou sortir</b></mat-label>
+      <mat-radio-group aria-label="Select an option" formControlName="typeES" (change)="onTypeESChange()">
+      <mat-label><b>Vous voulez entrer un produit ou sortir</b></mat-label>
         <mat-radio-button value="true">Entrer</mat-radio-button>
         <mat-radio-button value="false">Sortir</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="row" *ngIf="showBusinessOptions">
+      <mat-radio-group aria-label="Select a business" formControlName="business">
+        <mat-label><b>Selectionez business</b></mat-label>
+        <mat-radio-button value="FUELS">Fuels</mat-radio-button>
+        <mat-radio-button value="RETAIL">Retail</mat-radio-button>
+        <mat-radio-button value="AVIATION">Aviation</mat-radio-button>
+        <mat-radio-button value="MARINE">Marine</mat-radio-button>
+        <mat-radio-button value="SUPPLY">Supply</mat-radio-button>
       </mat-radio-group>
     </div>
     <div class="row">

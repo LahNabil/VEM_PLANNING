@@ -29,6 +29,12 @@ public class DepotController {
         return new ResponseEntity<>(savedDepot, HttpStatus.CREATED);
 
     }
+    @GetMapping(value = "/bacs/{nameProduct}/{zoneDepot}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BacDto>> getBacsByProductAndZone(@PathVariable String nameProduct, @PathVariable String zoneDepot) {
+        List<BacDto> bacs = depotService.findBacsByProductAndZone(nameProduct, zoneDepot);
+        return ResponseEntity.ok(bacs);
+    }
+
 
     @GetMapping(value = "/",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<DepotDTO>> getAllDepot(){

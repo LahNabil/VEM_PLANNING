@@ -1,11 +1,11 @@
-package net.lahlalia.stock.entities;
-
+package net.lahlalia.previsions.entities;
 import jakarta.persistence.*;
 import lombok.*;
-import net.lahlalia.stock.enums.Business;
+import net.lahlalia.previsions.enums.Business;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,19 +13,24 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EntreSortie {
+@ToString
+public class Prevision {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private double quantite;
+    private Long idPrevision;
+    private double foreCaste;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @Column(name = "date")
     private Date date;
-    private Boolean typeES;
     @Enumerated(EnumType.STRING)
     private Business business;
-    @ManyToOne
-    private Bac bac;
+    private String nameProduct;
+    private String supplyEnveloppe;
+    @OneToMany(mappedBy = "prevision")
+    private List<BacItem> bacItems;
+
+
 
 
 }
+

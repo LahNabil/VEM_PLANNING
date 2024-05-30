@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -42,7 +43,8 @@ public class BacService {
     }
     public String getProductNameById(Long idProduit){
         Product product = productRestClient.getProductById(idProduit);
-        return product.getName();
+        String productName = product.getName();
+        return productName;
 
     }
     public List<BacDto> getAllBacs(){
@@ -103,6 +105,22 @@ public class BacService {
             throw new RuntimeException("Error updating Bac: " + ex.getMessage()); // Wrap and throw a new exception
         }
     }
+    public List<BacDto> getBacsByNameProduct(String nameProduct){
+        List<Bac> bacList = bacRepository.findAll();
+        List<Bac> filteredBacList = bacList.stream()
+                .filter(bac->{
+                    String productName = getProductNameById(bac.getIdProduct());
+                    return productName != null && productName.equals(nameProduct);
+                })
+                .collect(Collectors.toList());
+        List<BacDto> filteredBacDtoList = filteredBacList.stream()
+                .map(bacMapper::toModel)
+                .collect(Collectors.toList());
+
+        return filteredBacDtoList;
+
+
+    }
 
     public BacDto saveBac(BacDto dto)throws EntityNotFoundException {
         if(dto == null){
@@ -131,18 +149,29 @@ public class BacService {
             log.error("value is null");
             return null;
         }
+//        EntreSortie ens = EntreSortie.builder()
+//                .quantite(es.getQuantite())
+//                .date(es.getDate())
+//                .typeES(es.getTypeES())
+//                .business(es.getBusiness())
+//                .bac(es.getBac())
+//                .build();
 
         Bac bac = bacRepository.findById(idBac).get();
         if(es.getTypeES()){
             double quantity = bac.getCapacityUsed() + es.getQuantite();
             bac.setCapacityUsed(quantity);
             Bac savedBac = bacRepository.save(bac);
+            es.setBusiness(null);
             entreSortieRepository.save(es);
             return bacMapper.toModel(savedBac);
         }else if (!es.getTypeES()){
             double quantity = bac.getCapacityUsed() - es.getQuantite();
             bac.setCapacityUsed(quantity);
             Bac savedBac = bacRepository.save(bac);
+            if(es.getBusiness() == null ){
+                return null;
+            }
             entreSortieRepository.save(es);
             return bacMapper.toModel(savedBac);
         }else{

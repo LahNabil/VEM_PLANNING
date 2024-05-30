@@ -162,6 +162,7 @@ public class BacService {
             double quantity = bac.getCapacityUsed() + es.getQuantite();
             bac.setCapacityUsed(quantity);
             Bac savedBac = bacRepository.save(bac);
+            es.setBusiness(null);
             entreSortieRepository.save(es);
             return bacMapper.toModel(savedBac);
         }else if (!es.getTypeES()){

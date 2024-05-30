@@ -2,6 +2,7 @@ package net.lahlalia.previsions.restclients;
 
 
 import net.lahlalia.previsions.dtos.Bac;
+import net.lahlalia.previsions.dtos.EsDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,9 @@ public interface StockRestClient {
 
     @GetMapping("/api/bac/")
     public List<Bac> getAllBacs();
+
+    @GetMapping("/api/es/")
+    public List<EsDto> getEs();
 
     @GetMapping("/api/bac/{idBac}")
     public Bac getBacById(@PathVariable Long idBac);

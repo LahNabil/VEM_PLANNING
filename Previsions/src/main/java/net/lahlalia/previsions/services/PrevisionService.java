@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.previsions.dtos.Bac;
+import net.lahlalia.previsions.dtos.EsDto;
 import net.lahlalia.previsions.dtos.PrevisionDto;
 import net.lahlalia.previsions.entities.BacItem;
 import net.lahlalia.previsions.entities.Prevision;
@@ -20,6 +21,8 @@ import net.lahlalia.previsions.restclients.StockRestClient;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -102,6 +105,35 @@ public class PrevisionService {
             bacItems.add(bacItem);
         });
         return bacItems;
+    }
+
+
+    public boolean sameMonthAndYear(Date date1, Date date2) {
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(date1);
+        cal2.setTime(date2);
+        return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+    }
+    public List<EsDto> getEsDtos(){
+        List<EsDto> esDtoList = stockRestClient.getEs();
+        return esDtoList;
+    }
+    public double calculerVreel(Long idPrevisionDto)throws EntityNotFoundException{
+        if(idPrevisionDto == null){
+            log.error("value is null");
+            return 0;
+        }
+        Prevision prevision = previsionRepository.findById(idPrevisionDto).get();
+        PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
+        List<EsDto> esDtoList = getEsDtos();
+        double sumOfSorties = esDtoList.stream()
+                .filter(es -> previsionDto.getBusiness().equals(es.getBusiness())
+                        && sameMonthAndYear(es.getDate(), previsionDto.getDate())
+                        && previsionDto.getBacItems().stream().anyMatch(bacItem -> bacItem.getIdBac().equals(es.getIdBac())))
+                .mapToDouble(EsDto::getQuantite)
+                .sum();
+        return sumOfSorties;
     }
 
 

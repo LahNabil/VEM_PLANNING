@@ -54,6 +54,13 @@ export class BacStockComponent implements OnInit{
   }
   onFormSubmit() {
     if(this.bacForm.valid){
+      const businessControl = this.bacForm.get('business');
+
+      // Check if the business control exists and its value is empty
+      if (businessControl?.value === '') {
+        // Set the value of the business control to null
+        businessControl?.setValue(null);
+      }
       this.bacService.stockProduit(this.bacForm.value, this.data.idBac).subscribe({
         next: (val:any)=>{
           alert('Quantité Modifié avec succes');

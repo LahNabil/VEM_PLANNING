@@ -3,6 +3,7 @@ package net.lahlalia.previsions.web;
 
 import lombok.RequiredArgsConstructor;
 import net.lahlalia.previsions.dtos.Bac;
+import net.lahlalia.previsions.dtos.EsDto;
 import net.lahlalia.previsions.dtos.PrevisionDto;
 import net.lahlalia.previsions.entities.BacItem;
 import net.lahlalia.previsions.entities.Prevision;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -57,6 +59,21 @@ public class PrevisionController {
     public ResponseEntity<List<PrevisionDto>>getPrevisions(){
         List<PrevisionDto> previsionDtos = previsionService.getAllPrevision();
         return ResponseEntity.ok(previsionDtos);
+    }
+    @GetMapping("/vreel/{idPrevisionDto}")
+    public ResponseEntity<Double>getVreel(@PathVariable Long idPrevisionDto){
+        double quantite = previsionService.calculerVreel(idPrevisionDto);
+        return ResponseEntity.ok(quantite);
+    }
+    @GetMapping("/es")
+    public ResponseEntity<List<EsDto>> getEs(){
+        List<EsDto> esDtoList = previsionService.getEsDtos();
+        return ResponseEntity.ok(esDtoList);
+    }
+    @GetMapping("/cdate/{date1}/{date2}")
+    public ResponseEntity<Boolean> checkSameMonthAndYear(@PathVariable Date date1, @PathVariable Date date2) {
+        boolean result = previsionService.sameMonthAndYear(date1, date2);
+        return ResponseEntity.ok(result);
     }
 
 

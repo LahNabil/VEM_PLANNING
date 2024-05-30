@@ -70,9 +70,14 @@ public class PrevisionController {
         List<EsDto> esDtoList = previsionService.getEsDtos();
         return ResponseEntity.ok(esDtoList);
     }
-    @GetMapping("/cdate/{date1}/{date2}")
-    public ResponseEntity<Boolean> checkSameMonthAndYear(@PathVariable Date date1, @PathVariable Date date2) {
-        boolean result = previsionService.sameMonthAndYear(date1, date2);
+//    @GetMapping("/cdate/{date1}/{date2}")
+//    public ResponseEntity<Boolean> checkSameMonthAndYear(@PathVariable Date date1, @PathVariable Date date2) {
+//        boolean result = previsionService.compareDatesByYearAndMonth(date1, date2);
+//        return ResponseEntity.ok(result);
+//    }
+    @GetMapping("/cdate/{date1}")
+    public ResponseEntity<Integer> checkSameMonthAndYear(@PathVariable Date date1) {
+        Integer result = previsionService.getYearFromDate(date1);
         return ResponseEntity.ok(result);
     }
 

@@ -20,6 +20,7 @@ import net.lahlalia.previsions.repositories.PrevisionRepository;
 import net.lahlalia.previsions.restclients.StockRestClient;
 import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -108,12 +109,27 @@ public class PrevisionService {
     }
 
 
-    public boolean sameMonthAndYear(Date date1, Date date2) {
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal1.setTime(date1);
-        cal2.setTime(date2);
-        return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+    public boolean compareDatesByYearAndMonth(Date date1, Date date2) {
+        int year1 = getYearFromDate(date1);
+        int year2 = getYearFromDate(date2);
+        int month1 = getMonthFromDate(date1);
+        int month2 = getMonthFromDate(date2);
+        if(year1 == year2 && month1 == month2){
+            return true;
+        }
+        return false;
+    }
+    public static int getMonthFromDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.MONTH) + 1; // Months are 0-based in Calendar, so add 1
+    }
+    public static int getYearFromDate(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        System.out.println(calendar.get(Calendar.YEAR));
+        return calendar.get(Calendar.YEAR);
+
     }
     public List<EsDto> getEsDtos(){
         List<EsDto> esDtoList = stockRestClient.getEs();
@@ -129,7 +145,7 @@ public class PrevisionService {
         List<EsDto> esDtoList = getEsDtos();
         double sumOfSorties = esDtoList.stream()
                 .filter(es -> previsionDto.getBusiness().equals(es.getBusiness())
-                        && sameMonthAndYear(es.getDate(), previsionDto.getDate())
+                        && compareDatesByYearAndMonth(es.getDate(), previsionDto.getDate())
                         && previsionDto.getBacItems().stream().anyMatch(bacItem -> bacItem.getIdBac().equals(es.getIdBac())))
                 .mapToDouble(EsDto::getQuantite)
                 .sum();

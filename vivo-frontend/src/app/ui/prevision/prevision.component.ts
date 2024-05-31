@@ -10,6 +10,7 @@ import {AddProductComponent} from "../add-product/add-product.component";
 import {Prevision} from "../../models/Prevision";
 import {PrevisionService} from "../../Services/prevision.service";
 import {BacItem} from "../../models/BacItem";
+import {AddPrevisionComponent} from "../add-prevision/add-prevision.component";
 
 @Component({
   selector: 'app-prevision',
@@ -38,7 +39,7 @@ export class PrevisionComponent implements OnInit{
     this.getPrevisions();
   }
   openAddForm(){
-    this._dialog.open(AddProductComponent);
+    this._dialog.open(AddPrevisionComponent);
   }
   openEditForm(data: any){
     this._dialog.open(AddProductComponent,{

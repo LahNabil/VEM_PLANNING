@@ -142,13 +142,33 @@ public class PrevisionService {
         }
         Prevision prevision = previsionRepository.findById(idPrevisionDto).get();
         PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
+
         List<EsDto> esDtoList = getEsDtos();
-        double sumOfSorties = esDtoList.stream()
-                .filter(es -> previsionDto.getBusiness().equals(es.getBusiness())
-                        && compareDatesByYearAndMonth(es.getDate(), previsionDto.getDate())
-                        && previsionDto.getBacItems().stream().anyMatch(bacItem -> bacItem.getIdBac().equals(es.getIdBac())))
-                .mapToDouble(EsDto::getQuantite)
-                .sum();
+        log.info("EsDto List: {}", esDtoList);
+
+        double sumOfSorties = 0.0;
+        for (EsDto es : esDtoList) {
+            boolean businessMatches = previsionDto.getBusiness().equals(es.getBusiness());
+            boolean dateMatches = compareDatesByYearAndMonth(es.getDate(), previsionDto.getDate());
+            boolean bacMatches = false;
+
+            for (BacItem bacItem : previsionDto.getBacItems()) {
+                if (bacItem.getIdBac().equals(es.getIdBac())) {
+                    bacMatches = true;
+                    break;
+                }
+            }
+
+            log.info("EsDto ID: {}, Business Matches: {}, Date Matches: {}, Bac Matches: {}",
+                    es.getId(), businessMatches, dateMatches, bacMatches);
+
+            if (businessMatches && dateMatches && bacMatches) {
+                sumOfSorties += es.getQuantite();
+            }
+        }
+
+        log.info("Sum of Sorties: {}", sumOfSorties);
+
         return sumOfSorties;
     }
 

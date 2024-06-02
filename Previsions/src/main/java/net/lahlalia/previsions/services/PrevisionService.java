@@ -135,6 +135,16 @@ public class PrevisionService {
         List<EsDto> esDtoList = stockRestClient.getEs();
         return esDtoList;
     }
+    public double calculerABS(Long idPrevision){
+        Prevision prevision = previsionRepository.findById(idPrevision).get();
+        PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
+
+        double forecaste = previsionDto.getForeCaste();
+        double vReel = calculerVreel(previsionDto.getIdPrevision());
+        double ABS = Math.abs(forecaste - vReel);
+
+        return ABS;
+    }
     public double calculerVreel(Long idPrevisionDto)throws EntityNotFoundException{
         if(idPrevisionDto == null){
             log.error("value is null");

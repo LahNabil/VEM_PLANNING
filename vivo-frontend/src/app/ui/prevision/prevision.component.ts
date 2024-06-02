@@ -24,12 +24,13 @@ export class PrevisionComponent implements OnInit{
   }
   displayedColumns: string[] = [
     'idPrevision',
+    'business',
+    'supplyEnveloppe',
+    'nameProduct',
+    'date',
     'foreCaste',
     'vReel',
-    'business',
-    'date',
-    'nameProduct',
-    'supplyEnveloppe',
+    'ABS',
     'actions'
   ];
   dataSource!: MatTableDataSource<any>;
@@ -50,19 +51,30 @@ export class PrevisionComponent implements OnInit{
   getPrevisions() {
     this.previsionService.getPrevision().subscribe({
       next: (previsions) => {
+        // Mise à jour des prévisions avec vReel
         previsions.forEach((prevision: Prevision) => {
           this.previsionService.calculerVreel(prevision.idPrevision).subscribe({
             next: (vReel) => {
               prevision.vReel = vReel;
+
+              // Après avoir mis à jour vReel, mise à jour de ABS
+              this.previsionService.calculerABS(prevision.idPrevision).subscribe({
+                next: (ABS) => {
+                  prevision.ABS = ABS;
+
+                  // Mise à jour du dataSource uniquement après avoir mis à jour vReel et ABS
+                  this.dataSource = new MatTableDataSource(previsions);
+                  this.dataSource.sort = this.sort;
+                  this.dataSource.paginator = this.paginator;
+                }
+              });
             }
           });
         });
-        this.dataSource = new MatTableDataSource(previsions);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
       }
     });
   }
+
   // deleteProduct(idProduit: number|undefined){
   //   const isConfirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette assurance ?");
   //   if (isConfirmed) {

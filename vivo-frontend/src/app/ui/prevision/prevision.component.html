@@ -20,29 +20,33 @@
           <td mat-cell *matCellDef="let row"> {{row.idPrevision}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="foreCaste">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Prevision-Forecaste </th>
-          <td mat-cell *matCellDef="let row"> {{row.foreCaste}}</td>
-        </ng-container>
-        <ng-container matColumnDef="vReel">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Vente Réel</th>
-          <td mat-cell *matCellDef="let row"> {{row.vReel}}</td>
-        </ng-container>
         <ng-container matColumnDef="business">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Business</th>
           <td mat-cell *matCellDef="let row"> {{row.business}}</td>
+        </ng-container>
+        <ng-container matColumnDef="supplyEnveloppe">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> supply Enveloppe</th>
+          <td mat-cell *matCellDef="let row"> {{row.supplyEnveloppe}}</td>
+        </ng-container>
+        <ng-container matColumnDef="nameProduct">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom du Produit</th>
+          <td mat-cell *matCellDef="let row"> {{row.nameProduct}}</td>
         </ng-container>
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
           <td mat-cell *matCellDef="let row"> {{row.date | date:'yyyy/MM/dd'}}</td>
         </ng-container>
-        <ng-container matColumnDef="nameProduct">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom du Produit </th>
-          <td mat-cell *matCellDef="let row"> {{row.nameProduct}}</td>
+        <ng-container matColumnDef="foreCaste">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Prevision -ForeCaste </th>
+          <td mat-cell *matCellDef="let row"> {{row.foreCaste}}</td>
         </ng-container>
-        <ng-container matColumnDef="supplyEnveloppe">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> supply Enveloppe </th>
-          <td mat-cell *matCellDef="let row"> {{row.supplyEnveloppe}}</td>
+        <ng-container matColumnDef="vReel">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ventre Réel </th>
+          <td mat-cell *matCellDef="let row"> {{row.vReel}}</td>
+        </ng-container>
+        <ng-container matColumnDef="ABS">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ABS </th>
+          <td mat-cell *matCellDef="let row"> {{row.ABS}}</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">

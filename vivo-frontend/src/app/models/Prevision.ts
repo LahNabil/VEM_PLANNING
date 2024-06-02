@@ -10,5 +10,6 @@ export class Prevision{
   nameProduct: string|undefined;
   supplyEnveloppe: string|undefined;
   vReel:number|undefined;
+  ABS: number|undefined;
 
 }

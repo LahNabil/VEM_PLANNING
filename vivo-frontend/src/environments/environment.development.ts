@@ -6,4 +6,5 @@ export const environment = {
   apiES: "http://localhost:8082/api/es/",
   apiDepot: "http://localhost:8082/api/depot/",
   apiHistory: "http://localhost:8082/api/history/",
+  apiPrevision: "http://localhost:8083/api/prevision/"
 };

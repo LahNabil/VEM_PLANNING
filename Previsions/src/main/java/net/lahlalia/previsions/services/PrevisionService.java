@@ -135,6 +135,44 @@ public class PrevisionService {
         List<EsDto> esDtoList = stockRestClient.getEs();
         return esDtoList;
     }
+    public double calculerABS(Long idPrevision){
+        Prevision prevision = previsionRepository.findById(idPrevision).get();
+        PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
+
+        double forecaste = previsionDto.getForeCaste();
+        double vReel = calculerVreel(previsionDto.getIdPrevision());
+        double ABS = Math.abs(forecaste - vReel);
+
+        return ABS;
+    }
+    public double calculerAccuracy(Long idPrevision)throws EntityNotFoundException{
+        if(idPrevision == null){
+            log.error("value is null");
+            return 0;
+        }
+        Prevision prevision = previsionRepository.findById(idPrevision).get();
+        PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
+        double ABS = calculerABS(previsionDto.getIdPrevision());
+        double vreel = calculerVreel(previsionDto.getIdPrevision());
+        double accuracy;
+        if(vreel == 0){
+            accuracy = 0;
+        }else {
+            // ERREUR ABSOLUE RELATIVE
+            double RAE = (ABS / vreel) * 100;
+            accuracy = 100 - RAE;
+            // Limiter les valeurs d'accuracy entre 0 et 100
+            if (accuracy < 0) {
+                accuracy = 0;
+            } else if (accuracy > 100) {
+                accuracy = 100;
+            }
+            // Limiter les nombres après la virgule à 2 chiffres
+            accuracy = Math.round(accuracy * 100.0) / 100.0;
+        }
+        return accuracy;
+
+    }
     public double calculerVreel(Long idPrevisionDto)throws EntityNotFoundException{
         if(idPrevisionDto == null){
             log.error("value is null");
@@ -142,13 +180,33 @@ public class PrevisionService {
         }
         Prevision prevision = previsionRepository.findById(idPrevisionDto).get();
         PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
+
         List<EsDto> esDtoList = getEsDtos();
-        double sumOfSorties = esDtoList.stream()
-                .filter(es -> previsionDto.getBusiness().equals(es.getBusiness())
-                        && compareDatesByYearAndMonth(es.getDate(), previsionDto.getDate())
-                        && previsionDto.getBacItems().stream().anyMatch(bacItem -> bacItem.getIdBac().equals(es.getIdBac())))
-                .mapToDouble(EsDto::getQuantite)
-                .sum();
+        log.info("EsDto List: {}", esDtoList);
+
+        double sumOfSorties = 0.0;
+        for (EsDto es : esDtoList) {
+            boolean businessMatches = previsionDto.getBusiness().equals(es.getBusiness());
+            boolean dateMatches = compareDatesByYearAndMonth(es.getDate(), previsionDto.getDate());
+            boolean bacMatches = false;
+
+            for (BacItem bacItem : previsionDto.getBacItems()) {
+                if (bacItem.getIdBac().equals(es.getIdBac())) {
+                    bacMatches = true;
+                    break;
+                }
+            }
+
+            log.info("EsDto ID: {}, Business Matches: {}, Date Matches: {}, Bac Matches: {}",
+                    es.getId(), businessMatches, dateMatches, bacMatches);
+
+            if (businessMatches && dateMatches && bacMatches) {
+                sumOfSorties += es.getQuantite();
+            }
+        }
+
+        log.info("Sum of Sorties: {}", sumOfSorties);
+
         return sumOfSorties;
     }
 

@@ -32,6 +32,8 @@ import { DepotDetailsComponent } from './ui/depot-details/depot-details.componen
 import { AddBacComponent } from './ui/add-bac/add-bac.component';
 import { StockDepotComponent } from './ui/stock-depot/stock-depot.component';
 import { AddDepotComponent } from './ui/add-depot/add-depot.component';
+import { PrevisionComponent } from './ui/prevision/prevision.component';
+import { AddPrevisionComponent } from './ui/add-prevision/add-prevision.component';
 
 
 
@@ -50,6 +52,8 @@ import { AddDepotComponent } from './ui/add-depot/add-depot.component';
     AddBacComponent,
     StockDepotComponent,
     AddDepotComponent,
+    PrevisionComponent,
+    AddPrevisionComponent,
 
 
   ],

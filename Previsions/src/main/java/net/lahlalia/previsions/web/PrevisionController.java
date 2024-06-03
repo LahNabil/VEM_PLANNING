@@ -80,6 +80,16 @@ public class PrevisionController {
         Integer result = previsionService.getYearFromDate(date1);
         return ResponseEntity.ok(result);
     }
+    @GetMapping("/ABS/{idPrevision}")
+    public ResponseEntity<Double> calculerABS(@PathVariable Long idPrevision){
+        double ABS = previsionService.calculerABS(idPrevision);
+        return ResponseEntity.ok(ABS);
+    }
+    @GetMapping("/accuracy/{idPrevision}")
+    public ResponseEntity<Double>calculerAccuracy(@PathVariable Long idPrevision){
+        double accuracy = previsionService.calculerAccuracy(idPrevision);
+        return ResponseEntity.ok(accuracy);
+    }
 
 
 

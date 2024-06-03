@@ -1,6 +1,7 @@
 package net.lahlalia.previsions.dtos;
 
 import lombok.*;
+import net.lahlalia.previsions.enums.Business;
 
 import java.util.Date;
 
@@ -14,7 +15,7 @@ public class EsDto {
     private double quantite;
     private Date date;
     private Boolean typeES;
-    private String business;
+    private Business business;
     private String  idBac;
     private String nameProduct;
 }

@@ -11,5 +11,6 @@ export class Prevision{
   supplyEnveloppe: string|undefined;
   vReel:number|undefined;
   ABS: number|undefined;
+  accuracy: number|undefined;
 
 }

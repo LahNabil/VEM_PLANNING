@@ -31,6 +31,7 @@ export class PrevisionComponent implements OnInit{
     'foreCaste',
     'vReel',
     'ABS',
+    'accuracy',
     'actions'
   ];
   dataSource!: MatTableDataSource<any>;
@@ -61,6 +62,13 @@ export class PrevisionComponent implements OnInit{
               this.previsionService.calculerABS(prevision.idPrevision).subscribe({
                 next: (ABS) => {
                   prevision.ABS = ABS;
+
+                  this.previsionService.calculerAccuracy(prevision.idPrevision).subscribe({
+                    next:(accuracy)=>{
+                      prevision.accuracy = accuracy;
+                  }
+                  })
+
 
                   // Mise à jour du dataSource uniquement après avoir mis à jour vReel et ABS
                   this.dataSource = new MatTableDataSource(previsions);

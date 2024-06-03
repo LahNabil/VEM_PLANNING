@@ -145,6 +145,34 @@ public class PrevisionService {
 
         return ABS;
     }
+    public double calculerAccuracy(Long idPrevision)throws EntityNotFoundException{
+        if(idPrevision == null){
+            log.error("value is null");
+            return 0;
+        }
+        Prevision prevision = previsionRepository.findById(idPrevision).get();
+        PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
+        double ABS = calculerABS(previsionDto.getIdPrevision());
+        double vreel = calculerVreel(previsionDto.getIdPrevision());
+        double accuracy;
+        if(vreel == 0){
+            accuracy = 0;
+        }else {
+            // ERREUR ABSOLUE RELATIVE
+            double RAE = (ABS / vreel) * 100;
+            accuracy = 100 - RAE;
+            // Limiter les valeurs d'accuracy entre 0 et 100
+            if (accuracy < 0) {
+                accuracy = 0;
+            } else if (accuracy > 100) {
+                accuracy = 100;
+            }
+            // Limiter les nombres après la virgule à 2 chiffres
+            accuracy = Math.round(accuracy * 100.0) / 100.0;
+        }
+        return accuracy;
+
+    }
     public double calculerVreel(Long idPrevisionDto)throws EntityNotFoundException{
         if(idPrevisionDto == null){
             log.error("value is null");

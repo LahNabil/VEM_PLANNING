@@ -85,6 +85,11 @@ public class PrevisionController {
         double ABS = previsionService.calculerABS(idPrevision);
         return ResponseEntity.ok(ABS);
     }
+    @GetMapping("/accuracy/{idPrevision}")
+    public ResponseEntity<Double>calculerAccuracy(@PathVariable Long idPrevision){
+        double accuracy = previsionService.calculerAccuracy(idPrevision);
+        return ResponseEntity.ok(accuracy);
+    }
 
 
 

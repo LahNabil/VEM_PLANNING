@@ -70,6 +70,22 @@ public class PrevisionService {
     public List<PrevisionDto>getAllPrevision(){
         return previsionRepository.findAll().stream().map(mapperPrevision::convertToDto).toList();
     }
+    public PrevisionDto updatePrevision(Long idPrevision, PrevisionDto previsionDto) throws EntityNotFoundException{
+        Prevision existingPrevision = previsionRepository.findById(idPrevision)
+                .orElseThrow(() -> new EntityNotFoundException("Prevision with ID " + idPrevision + " not found"));
+
+        existingPrevision.setForeCaste(previsionDto.getForeCaste());
+        existingPrevision.setDate(previsionDto.getDate());
+        existingPrevision.setBusiness(previsionDto.getBusiness());
+        existingPrevision.setNameProduct(previsionDto.getNameProduct());
+        existingPrevision.setSupplyEnveloppe(previsionDto.getSupplyEnveloppe());
+
+        Prevision updatedPrevision = previsionRepository.save(existingPrevision);
+
+        return mapperPrevision.convertToDto(updatedPrevision);
+
+
+    }
 
 
     public PrevisionDto getPrevisionById(Long idPrevision) throws EntityNotFoundException{
@@ -208,6 +224,17 @@ public class PrevisionService {
         log.info("Sum of Sorties: {}", sumOfSorties);
 
         return sumOfSorties;
+    }
+
+    public boolean deletePrevisionById(Long idPrevison)throws EntityNotFoundException{
+        PrevisionDto dto = getPrevisionById(idPrevison);
+        if( dto != null){
+            previsionRepository.deleteById(idPrevison);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 

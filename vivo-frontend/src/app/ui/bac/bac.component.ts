@@ -98,10 +98,6 @@ export class BacComponent implements OnInit{
     });
   }
 
-  deleteProduct(idProduit: any) {
-
-  }
-
   openEditForm(data: any){
     this._dialog.open(EditBacComponent,{
       data,

@@ -90,8 +90,6 @@ public class BacService {
             existingBac.setTotalImpom(bacDto.getTotalImpom());
             existingBac.setStatus(bacDto.isStatus());
             existingBac.setDateOuverture(bacDto.getDateOuverture());
-            existingBac.setCapacityUsed(bacDto.getCapacityUsed());
-
             Bac updatedBac = bacRepository.save(existingBac);
 
             return bacMapper.toModel(updatedBac);

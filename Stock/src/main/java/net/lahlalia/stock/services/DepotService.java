@@ -8,9 +8,7 @@ import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.Depot;
 import net.lahlalia.stock.entities.EntreSortie;
 import net.lahlalia.stock.entities.HistoryStock;
-import net.lahlalia.stock.mappers.BacMapper;
-import net.lahlalia.stock.mappers.DepotMapper;
-import net.lahlalia.stock.mappers.HistoryStockMapper;
+import net.lahlalia.stock.mappers.*;
 import net.lahlalia.stock.repositories.BacRepository;
 import net.lahlalia.stock.repositories.DepotRepository;
 import net.lahlalia.stock.repositories.HistoryStockRepository;
@@ -26,13 +24,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DepotService {
     private final DepotRepository depotRepository;
-    private final DepotMapper depotMapper;
+    private final MapperDepot depotMapper;
     private final BacRepository bacRepository;
     private final BacService bacService;
-    private final BacMapper bacMapper;
+    private final MapperBac bacMapper;
     private final ProductRestClient productRestClient;
     private final HistoryStockRepository historyStockRepository;
-    private final HistoryStockMapper historyStockMapper;
+    private final MapperHistoryStock historyStockMapper;
 
     public DepotDTO saveDepot(DepotDTO dto){
         return depotMapper.toModel(

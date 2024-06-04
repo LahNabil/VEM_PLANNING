@@ -9,6 +9,7 @@ import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.Depot;
 import net.lahlalia.stock.entities.EntreSortie;
 import net.lahlalia.stock.mappers.BacMapper;
+import net.lahlalia.stock.mappers.MapperBac;
 import net.lahlalia.stock.repositories.BacRepository;
 import net.lahlalia.stock.repositories.DepotRepository;
 import net.lahlalia.stock.repositories.EntreSortieRepository;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BacService {
     private final BacRepository bacRepository;
-    private final BacMapper bacMapper;
+    private final MapperBac bacMapper;
     private final ProductRestClient productRestClient;
     private final EntreSortieRepository entreSortieRepository;
     private final DepotRepository depotRepository;

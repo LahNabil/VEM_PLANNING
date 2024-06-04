@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.produit.dtos.RegimeDto;
+import net.lahlalia.produit.mappers.MapperRegime;
 import net.lahlalia.produit.mappers.RegimeMapper;
 import net.lahlalia.produit.repositories.RegimeRepository;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RegimeService {
     private final RegimeRepository regimeRepository;
-    private final RegimeMapper regimeMapper;
+    private final MapperRegime regimeMapper;
 
     public RegimeDto getRegimeById(Long idRegime) throws EntityNotFoundException{
         if(idRegime == null){

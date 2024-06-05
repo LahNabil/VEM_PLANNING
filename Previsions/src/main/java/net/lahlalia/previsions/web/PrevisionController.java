@@ -55,6 +55,11 @@ public class PrevisionController {
         PrevisionDto savedPrevision = previsionService.savePrevision(previsionDto);
         return new ResponseEntity<>(savedPrevision, HttpStatus.CREATED);
     }
+    @PutMapping(value = "/{idPrevision}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PrevisionDto>updatePrevision(@PathVariable Long idPrevision, @RequestBody PrevisionDto previsionDto){
+        PrevisionDto updatedPrevision = previsionService.updatePrevision(idPrevision,previsionDto);
+        return ResponseEntity.ok(updatedPrevision);
+    }
     @GetMapping("/")
     public ResponseEntity<List<PrevisionDto>>getPrevisions(){
         List<PrevisionDto> previsionDtos = previsionService.getAllPrevision();
@@ -89,6 +94,12 @@ public class PrevisionController {
     public ResponseEntity<Double>calculerAccuracy(@PathVariable Long idPrevision){
         double accuracy = previsionService.calculerAccuracy(idPrevision);
         return ResponseEntity.ok(accuracy);
+    }
+    @DeleteMapping("/{idPrevision}")
+    public ResponseEntity<Void> deletePrevisionById(@PathVariable Long idPrevision){
+        Boolean deletedPrevision = previsionService.deletePrevisionById(idPrevision);
+        return deletedPrevision ? ResponseEntity.noContent().build() :ResponseEntity.notFound().build();
+
     }
 
 

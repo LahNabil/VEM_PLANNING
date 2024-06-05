@@ -7,6 +7,7 @@ import net.lahlalia.produit.dtos.ProductDto;
 import net.lahlalia.produit.dtos.RegimeDto;
 import net.lahlalia.produit.entities.Produit;
 import net.lahlalia.produit.entities.Regime;
+import net.lahlalia.produit.mappers.MapperProduct;
 import net.lahlalia.produit.mappers.ProductMapper;
 import net.lahlalia.produit.mappers.RegimeMapper;
 import net.lahlalia.produit.repositories.ProduitRepository;
@@ -21,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProduitService {
     private final ProduitRepository produitRepository;
-    private final ProductMapper productMapper;
+    private final MapperProduct productMapper;
     private final RegimeRepository regimeRepository;
     private final RegimeMapper regimeMapper;
     private final RegimeService regimeService;

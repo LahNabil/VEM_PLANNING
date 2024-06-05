@@ -42,10 +42,23 @@ export class AddPrevisionComponent implements OnInit{
     })
   }
   onFormSubmit() {
+    if(this.data){
+      if(this.previsionForm.valid){
+        this.previsionService.editPrevision(this.data.idPrevision,this.previsionForm.value).subscribe({
+          next: (val:any)=>{
+            alert('Prevision Modifiée avec succes');
+            this.diologRef.close();
+          },
+          error: (err:any) =>{
+            console.log(err);
+          }
+        })
+      }
+    } else {
       if(this.previsionForm.valid){
         this.previsionService.addPrevision(this.previsionForm.value).subscribe({
           next: (val:any)=>{
-            alert('Prevision ajouté avec succes');
+            alert('Prevision ajoutée avec succes');
             this.diologRef.close();
           },
           error: (err:any) =>{
@@ -54,4 +67,6 @@ export class AddPrevisionComponent implements OnInit{
         })
       }
     }
+
+  }
 }

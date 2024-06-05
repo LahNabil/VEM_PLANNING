@@ -9,6 +9,8 @@ import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.HistoryStock;
 import net.lahlalia.stock.mappers.DepotMapper;
 import net.lahlalia.stock.mappers.HistoryStockMapper;
+import net.lahlalia.stock.mappers.MapperDepot;
+import net.lahlalia.stock.mappers.MapperHistoryStock;
 import net.lahlalia.stock.repositories.HistoryStockRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +24,8 @@ import java.util.stream.Collectors;
 public class HistoryStockService {
 
     private final HistoryStockRepository historyStockRepository;
-    private final HistoryStockMapper historyStockMapper;
-    private final DepotMapper depotMapper;
+    private final MapperHistoryStock historyStockMapper;
+    private final MapperDepot depotMapper;
 
     public List<HistoryDto> getAllHistoryDto() {
         List<HistoryStock> histories = historyStockRepository.findAll();

@@ -11,6 +11,8 @@ import {EntreSortie} from "../../models/EntreSortie";
 import {AddProductComponent} from "../add-product/add-product.component";
 import {BacStockComponent} from "../bac-stock/bac-stock.component";
 import {AddBacComponent} from "../add-bac/add-bac.component";
+import {EditBacComponent} from "../edit-bac/edit-bac.component";
+import {AddDepotComponent} from "../add-depot/add-depot.component";
 
 @Component({
   selector: 'app-bac',
@@ -96,12 +98,10 @@ export class BacComponent implements OnInit{
     });
   }
 
-  deleteProduct(idProduit: any) {
-
-  }
-
-  openEditForm() {
-
+  openEditForm(data: any){
+    this._dialog.open(EditBacComponent,{
+      data,
+    });
   }
 
   openAddForm() {

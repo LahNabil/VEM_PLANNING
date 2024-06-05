@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {EntreSortie} from "../models/EntreSortie";
 import {Bac} from "../models/Bac";
 import {Product} from "../models/Product";
+import {Depot} from "../models/Depot";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,9 @@ export class BacService {
 
   getBac():Observable<any>{
     return this._http.get(`${this.baseUrl}`)
+  }
+  editBac(idBac:number|undefined,bac: Bac):Observable<Object>{
+    return this._http.put(`${this.baseUrl}${idBac}`, bac)
   }
   addBac(bac: Bac| undefined):Observable<Object>{
     return this._http.post(`${this.baseUrl}`, bac);

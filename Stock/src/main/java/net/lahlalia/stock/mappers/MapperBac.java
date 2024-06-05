@@ -1,27 +1,26 @@
 package net.lahlalia.stock.mappers;
 
 import lombok.RequiredArgsConstructor;
+import net.lahlalia.stock.dtos.BacDto;
 import net.lahlalia.stock.dtos.ESDto;
+import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.EntreSortie;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class MapperEs {
+public class MapperBac {
 
     private final ModelMapper mapper;
 
-    public EntreSortie toEntity(ESDto dto){
-        EntreSortie es = mapper.map(dto, EntreSortie.class);
-        return es;
+    public Bac toEntity(BacDto dto){
+        Bac bac = mapper.map(dto, Bac.class);
+        return bac;
     }
-    public ESDto toModel(EntreSortie es){
-        ESDto esDto = mapper.map(es, ESDto.class);
-        return esDto;
+    public BacDto toModel(Bac bac){
+        BacDto bacDto = mapper.map(bac, BacDto.class);
+        return bacDto;
 
     }
-
-    
-
 }

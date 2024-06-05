@@ -10,6 +10,17 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Register" />
       </profile>
+      <profile name="Annotation profile for Previsions" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.0.Beta1/mapstruct-processor-1.6.0.Beta1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.0.Beta1/mapstruct-1.6.0.Beta1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="Previsions" />
+      </profile>
       <profile name="Annotation profile for Stock" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -21,17 +32,6 @@
         </processorPath>
         <module name="Stock" />
         <module name="Produit" />
-      </profile>
-      <profile name="Annotation profile for Previsions" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.0.Beta1/mapstruct-processor-1.6.0.Beta1.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.0.Beta1/mapstruct-1.6.0.Beta1.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
-        </processorPath>
-        <module name="Previsions" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

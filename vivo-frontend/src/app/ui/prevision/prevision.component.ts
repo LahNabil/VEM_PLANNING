@@ -44,9 +44,17 @@ export class PrevisionComponent implements OnInit{
     this._dialog.open(AddPrevisionComponent);
   }
   openEditForm(data: any){
-    this._dialog.open(AddProductComponent,{
+    this._dialog.open(AddPrevisionComponent,{
       data,
     });
+  }
+  deletePrevision(idPrevision: number|undefined){
+    const isConfirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette prevision ?");
+    if (isConfirmed) {
+      this.previsionService.deletePrevisionById(idPrevision).subscribe(data => {
+        window.location.reload();
+      });
+    }
   }
 
   getPrevisions() {

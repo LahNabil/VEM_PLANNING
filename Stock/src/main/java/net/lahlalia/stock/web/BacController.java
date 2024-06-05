@@ -1,5 +1,6 @@
 package net.lahlalia.stock.web;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.lahlalia.stock.dtos.BacDto;
@@ -43,7 +44,7 @@ public class BacController {
         return ResponseEntity.ok(bacDtos);
     }
     @GetMapping(value = "/{idBac}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BacDto> getProductById(@PathVariable String idBac)throws EntityNotFoundException {
+    public ResponseEntity<BacDto> getBacById(@PathVariable String idBac)throws EntityNotFoundException {
         BacDto dto = bacService.getBacById(idBac);
         return ResponseEntity.ok(dto);
     }
@@ -59,8 +60,8 @@ public class BacController {
         return deletedBac ? ResponseEntity.noContent().build() :ResponseEntity.notFound().build();
 
     }
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BacDto>updateProduct(@PathVariable String idBac,@RequestBody BacDto dto) throws EntityNotFoundException{
+    @PutMapping(value = "/{idBac}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BacDto>updateBac(@PathVariable String idBac,@RequestBody BacDto dto) throws EntityNotFoundException{
         BacDto updatedBac = bacService.updateBac(idBac,dto);
         return ResponseEntity.ok(updatedBac);
     }
@@ -74,11 +75,15 @@ public class BacController {
         }
 
     }
+    @CircuitBreaker(name="getPrductInstance", fallbackMethod = "getDefaultProduct")
     @GetMapping(value = "/name/{idProduit}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getProductNameById(@PathVariable Long idProduit){
         String name = bacService.getProductNameById(idProduit);
         return ResponseEntity.ok(name);
 
+    }
+    public ResponseEntity<String> getDefaultProduct(Long idProduit, Throwable throwable) {
+        return ResponseEntity.ok("Unknown Product");
     }
 
 

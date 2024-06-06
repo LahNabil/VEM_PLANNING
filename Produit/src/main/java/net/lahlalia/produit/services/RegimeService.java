@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.produit.dtos.RegimeDto;
 import net.lahlalia.produit.mappers.MapperRegime;
-import net.lahlalia.produit.mappers.RegimeMapper;
 import net.lahlalia.produit.repositories.RegimeRepository;
 import org.springframework.stereotype.Service;
 

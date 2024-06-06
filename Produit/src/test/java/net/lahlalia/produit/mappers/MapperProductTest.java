@@ -6,13 +6,11 @@ import net.lahlalia.produit.entities.Produit;
 import net.lahlalia.produit.entities.Regime;
 import net.lahlalia.produit.enums.RegimeType;
 import net.lahlalia.produit.enums.TypeProduit;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 
-import static org.assertj.core.api.AssertionsForClassTypes.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class MapperProductTest {
 
@@ -24,9 +22,10 @@ class MapperProductTest {
         ModelMapper modelMapper = new ModelMapper();
         mapperRegime = new MapperRegime(modelMapper);
         mapperProduct = new MapperProduct(modelMapper);
+        assertThat(mapperProduct).isNotNull();
+        assertThat(mapperProduct.toEntity(new ProductDto())).isNotNull();
+        assertThat(mapperProduct.toModel(new Produit())).isNotNull();
     }
-
-
 
     @Test
     public void shouldMapProductToProductDto(){
@@ -51,10 +50,10 @@ class MapperProductTest {
                 .regime(regimeDto)
                 .build();
         ProductDto result = mapperProduct.toModel(givenProduct);
-        assertThat(expectedProduct).isNotNull();
-        assertThat(expectedProduct).usingRecursiveComparison().isEqualTo(result);
-
+        assertThat(result).isNotNull();
+        assertThat(result).usingRecursiveComparison().isEqualTo(expectedProduct);
     }
+
     @Test
     public void shouldMapProductDtoToProduct(){
         Regime regime = Regime.builder()
@@ -62,7 +61,6 @@ class MapperProductTest {
                 .regime(RegimeType.DEDOUANE)
                 .build();
         RegimeDto regimeDto = mapperRegime.toModel(regime);
-
 
         ProductDto givenProductDto = ProductDto.builder()
                 .idProduit(99L)
@@ -81,10 +79,45 @@ class MapperProductTest {
                 .build();
 
         Produit result = mapperProduct.toEntity(givenProductDto);
-
-        assertThat(expectedProduct).isNotNull();
-        assertThat(expectedProduct).usingRecursiveComparison().isEqualTo(result);
-
+        assertThat(result).isNotNull();
+        assertThat(result).usingRecursiveComparison().isEqualTo(expectedProduct);
     }
 
+    @Test
+    public void shouldHandleNullValuesInProductDtoToProduct() {
+        ProductDto givenProductDto = ProductDto.builder()
+                .idProduit(null)
+                .name(null)
+                .status(null)
+                .type(null)
+                .regime(null)
+                .build();
+
+        Produit result = mapperProduct.toEntity(givenProductDto);
+        assertThat(result).isNotNull();
+        assertThat(result.getIdProduit()).isNull();
+        assertThat(result.getName()).isNull();
+        assertThat(result.getStatus()).isNull();
+        assertThat(result.getType()).isNull();
+        assertThat(result.getRegime()).isNull();
+    }
+
+    @Test
+    public void shouldHandleNullValuesInProductToProductDto() {
+        Produit givenProduct = Produit.builder()
+                .idProduit(null)
+                .name(null)
+                .status(null)
+                .type(null)
+                .regime(null)
+                .build();
+
+        ProductDto result = mapperProduct.toModel(givenProduct);
+        assertThat(result).isNotNull();
+        assertThat(result.getIdProduit()).isNull();
+        assertThat(result.getName()).isNull();
+        assertThat(result.getStatus()).isNull();
+        assertThat(result.getType()).isNull();
+        assertThat(result.getRegime()).isNull();
+    }
 }

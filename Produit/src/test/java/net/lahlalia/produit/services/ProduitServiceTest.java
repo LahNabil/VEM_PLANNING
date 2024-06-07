@@ -30,6 +30,7 @@ import org.modelmapper.ModelMapper;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class ProduitServiceTest {
@@ -47,6 +48,7 @@ class ProduitServiceTest {
     private RegimeDto regimeDto;
     private Regime regime;
 
+
     @BeforeEach
     void setUp() {
         ModelMapper modelMapper = new ModelMapper();
@@ -58,6 +60,27 @@ class ProduitServiceTest {
         regimeDto = regimeMapper.toModel(regime);
     }
 
+    @Test
+    void shouldReturnNullWhenGetProductByIdWithNullId() {
+        ProductDto result = underTest.getProductById(null);
+        assertNull(result);
+    }
+    @Test
+    void saveProduct_withNullRegime_shouldReturnExpectedDto() {
+        ProductDto productDto = ProductDto.builder().idProduit(99L).name("Gasoil SH").status("Actif").type(TypeProduit.GASOIL).build();
+        Produit produit = Produit.builder().idProduit(99L).name("Gasoil SH").status("Actif").type(TypeProduit.GASOIL).build();
+        Produit savedProduct = Produit.builder().idProduit(99L).name("Gasoil SH").status("Actif").type(TypeProduit.GASOIL).build();
+        ProductDto expected = ProductDto.builder().idProduit(99L).name("Gasoil SH").status("Actif").type(TypeProduit.GASOIL).build();
+
+        Mockito.when(productMapper.toEntity(productDto)).thenReturn(produit);
+        Mockito.when(produitRepository.save(produit)).thenReturn(savedProduct);
+        Mockito.when(productMapper.toModel(savedProduct)).thenReturn(expected);
+
+        ProductDto result = underTest.saveProduct(productDto);
+
+        AssertionsForClassTypes.assertThat(result).isNotNull();
+        AssertionsForClassTypes.assertThat(expected).usingRecursiveComparison().isEqualTo(result);
+    }
 
     @Test
     void shouldFindProductById() {
@@ -149,19 +172,13 @@ class ProduitServiceTest {
 
     @Test
     void shouldDeleteProduct() {
-        // Given
-//        Long productId = 25L;
-//        String errorMessage = "Product not found with ID: " + productId;
-//
-//        // Stubbing getProductById to throw ProductNotFoundException with the error message
-//        Mockito.when(underTest.getProductById(productId)).thenThrow(new ProductNotFoundException(errorMessage));
-//
-//        // When
-//        boolean result = underTest.deleteProductById(productId);
-//
-//        // Then
-//        assertFalse(result); // Assert that the result is false since the product does not exist
-//        Mockito.verify(produitRepository).deleteById(productId);
+        Long productId =7L;
+        Produit produit= Produit.builder()
+                .idProduit(99L).name("Gasoil SH").status("Actif").type(TypeProduit.GASOIL).regime(regime)
+                .build();
+        Mockito.when(produitRepository.findById(productId)).thenReturn(Optional.of(produit));
+        underTest.deleteProductById(productId);
+        Mockito.verify(produitRepository).deleteById(productId);
     }
     @Test
     void shouldNotDeleteProductIfNotExist() {

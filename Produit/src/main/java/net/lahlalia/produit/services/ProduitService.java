@@ -15,6 +15,7 @@ import net.lahlalia.produit.repositories.RegimeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -117,14 +118,12 @@ public class ProduitService {
 //        ));
 
 
-    public boolean deleteProductById(Long id){
-            ProductDto dto = getProductById(id);
-            if( dto != null){
-                produitRepository.deleteById(id);
-                return true;
-            } else {
-                return false;
-            }
+    public void deleteProductById(Long idProduct)throws ProductNotFoundException{
+//            ProductDto productDto = getProductById(id);
+        Optional<Produit> produit = produitRepository.findById(idProduct);
+        if(produit.isEmpty()) throw new ProductNotFoundException("product not found with specific id : " + idProduct);
+        produitRepository.deleteById(idProduct);
+
 
     }
 

@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.lahlalia.produit.dtos.ProductDto;
 import net.lahlalia.produit.entities.Produit;
+import net.lahlalia.produit.exceptions.ProductNotFoundException;
 import net.lahlalia.produit.services.ProduitService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,12 +50,15 @@ public class ProduitController {
 //    return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
 //
 //}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProductById(@PathVariable Long id){
-        Boolean deletedProduct = produitService.deleteProductById(id);
-        return deletedProduct ? ResponseEntity.noContent().build() :ResponseEntity.notFound().build();
-
+@DeleteMapping("/{id}")
+public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
+    try {
+        produitService.deleteProductById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } catch (ProductNotFoundException e) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+}
 
 
 

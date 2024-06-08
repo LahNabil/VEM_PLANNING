@@ -71,7 +71,7 @@
             <button mat-icon-button color="warn" (click)="deleteBac(row.idBac)">
               <mat-icon>delete</mat-icon>
             </button>
-            <button mat-icon-button color="green" (click)="openStockForm(row)">
+            <button mat-icon-button color="green" (click)="openStockForm(row)" [disabled]="!row.status">
               <mat-icon>inventory_2</mat-icon>
             </button>
           </td>

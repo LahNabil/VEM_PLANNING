@@ -23,6 +23,7 @@ public class BacItem {
     private String idBac;
     private Long idProduct;
     private String idDepot;
+    private double capacityUsed;
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Prevision prevision;

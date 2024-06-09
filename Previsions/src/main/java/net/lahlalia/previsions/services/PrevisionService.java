@@ -57,6 +57,7 @@ public class PrevisionService {
                     .idBac(b.getIdBac())
                     .idDepot(b.getIdDepot())
                     .idProduct(b.getIdProduct())
+                    .capacityUsed(b.getCapacityUsed())
                     .prevision(prevision)
                     .build();
             bacItemRepository.save(bacItem);
@@ -235,6 +236,19 @@ public class PrevisionService {
             return false;
         }
 
+    }
+    public double calculerQuantiteStockProduitVille(Long idPrevision)throws EntityNotFoundException{
+        if(idPrevision == null){
+            log.error("null values");
+        }
+        Prevision prevision = previsionRepository.findById(idPrevision).get();
+        PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
+
+        List<BacItem> bacItemList =  previsionDto.getBacItems();
+        double totalCapacityUsed = bacItemList.stream()
+                .mapToDouble(BacItem::getCapacityUsed)
+                .sum();
+        return totalCapacityUsed;
     }
 
 

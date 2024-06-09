@@ -138,8 +138,14 @@ public class DepotService {
             }
         }
     }
+
+    //stockSecurité = consomations journaliére x 3jrs
+    //consomation journalière = myenne de vente de l'année precedente
     public double calculerStockSecurite(double quantite){
-        return quantite * 0.1;
+
+        //quantite * 0.1;
+        double value = 1130;
+        return value;
     }
 //    public List<StockProduitDto> calculerStockSecuritePourListe(List<StockProduitDto> stockProduits) {
 //        for (StockProduitDto stockProduitDto : stockProduits) {

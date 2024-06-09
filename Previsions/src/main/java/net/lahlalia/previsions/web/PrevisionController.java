@@ -101,6 +101,12 @@ public class PrevisionController {
         return deletedPrevision ? ResponseEntity.noContent().build() :ResponseEntity.notFound().build();
 
     }
+    @GetMapping("/sommestockvilleproduit/{idPrevision}")
+    public ResponseEntity<Double>calculerQuantiteStockProduitVille(@PathVariable Long idPrevision){
+        double somme = previsionService.calculerQuantiteStockProduitVille(idPrevision);
+        return ResponseEntity.ok(somme);
+
+    }
 
 
 

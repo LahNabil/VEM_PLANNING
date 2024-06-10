@@ -1,0 +1,21 @@
+<mat-form-field appearance="fill">
+  <mat-label>Sélectionnez un dépôt</mat-label>
+  <mat-select [(ngModel)]="selectedDepot">
+    <mat-option *ngFor="let depot of depots" [value]="depot.idDepot">
+      {{ depot.nameDepot }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Sélectionnez un produit</mat-label>
+  <mat-select [(ngModel)]="selectedProduct">
+    <mat-option *ngFor="let product of products" [value]="product.name">
+      {{ product.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<div class="lineChart" [chart]="lineChart"></div>
+
+<button (click)="getSortieParDepotProduct()">Générer le graphique</button>
+<div id="lineChartContainer"[chart]="" style="width: 100%; height: 400px;"></div>

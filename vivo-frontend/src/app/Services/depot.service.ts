@@ -36,5 +36,8 @@ export class DepotService {
   calculerStocksProduits(idDepot:String|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}calculerStocksProduits/${idDepot}`)
   }
+  calculerStockDepotProduit(idDepot:String|undefined, nameProduct:String|undefined):Observable<any>{
+    return this._http.get(`${this.baseUrl}calculerStockProduit/${idDepot}/${nameProduct}`)
+  }
 
 }

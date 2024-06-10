@@ -77,4 +77,10 @@ public class DepotController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/calculerStockProduit/{idDepot}/{nameProduct}")
+    public ResponseEntity<Double>CalculerStockProduitDepot(@PathVariable String idDepot,@PathVariable String nameProduct){
+        double stock = depotService.CalculerStockProduitDepot(idDepot,nameProduct);
+        return ResponseEntity.ok(stock);
+    }
 }

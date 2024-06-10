@@ -42,19 +42,45 @@ public class EsService {
                 })
                 .collect(Collectors.toList());
         List<EntreSortie> ESList = entreSortieRepository.findAll();
+
         ESList = ESList.stream()
                 .filter(es->bacListFilteredByProductName.stream()
                         .anyMatch(bac->bac.getIdBac().equals(es.getBac().getIdBac())))
                 .collect(Collectors.toList());
-        return ESList.stream()
-                .map(esMapper::toModel)
+        List<ESDto> esDtoList = ESList.stream()
+                .map(es -> {
+                    ESDto esDto = esMapper.toModel(es);
+                    if (es.getQuantite() != 0) {
+                        if (Boolean.FALSE.equals(es.getTypeES())) {
+                            esDto.setQuantite(-es.getQuantite());
+                        } else {
+                            esDto.setQuantite(es.getQuantite());
+                        }
+                    }
+                    try {
+                        esDto.setIdBac(es.getBac().getIdBac());
+                        BacDto bacDto = bacService.getBacById(esDto.getIdBac());
+                        esDto.setNameProduct(bacService.getProductNameById(bacDto.getIdProduct()));
+                    } catch (EntityNotFoundException e) {
+                        log.error("Bac not found for Bac ID: " + es.getId());
+                    }
+                    return esDto;
+                })
                 .collect(Collectors.toList());
+        return esDtoList;
     }
     public List<ESDto> getAllES(){
         List<EntreSortie> ESList = entreSortieRepository.findAll();
         List<ESDto> esDtoList = new ArrayList<>();
         for(EntreSortie es : ESList){
             ESDto esDto = esMapper.toModel(es);
+            if (es.getQuantite() != 0) {
+                if (Boolean.FALSE.equals(es.getTypeES())) {
+                    esDto.setQuantite(-es.getQuantite());
+                } else {
+                    esDto.setQuantite(es.getQuantite());
+                }
+            }
             try{
                 esDto.setIdBac(es.getBac().getIdBac());
                 BacDto bacDto = bacService.getBacById(esDto.getIdBac());

@@ -21,7 +21,8 @@ export class DashboardComponent implements OnInit {
   product: Product = new Product();
   products: Product[] = [];
   depots: Depot[] = [];
-  lineChart!: Chart;
+  lineChart!: Chart
+  initialValue: number|undefined;
   // lineChart!: Chart; // Utilisation de l'opérateur "!" pour indiquer que la propriété sera initialisée
 
   constructor(private produitService: ProductService, private esService: ESService, private router: Router, private depotService: DepotService) {
@@ -48,30 +49,60 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  getSortieParDepotProduct() {
-    this.esService.getSortiesParProduitDepot(this.selectedDepot, this.selectedProduct).subscribe((sorties: any[]) => {
 
-      const dates = sorties.map(sortie => sortie.date)
-      const quantites = sorties.map(sortie=>sortie.quantite)
-      this.lineChart = new Chart({
-        chart: {
-          type: 'line'
-        },
-        title: {
-          text: 'Linechart'
-        },
-        credits: {
-          enabled: false
-        },
-        series: [
-          {
-            type: 'line',
-            name: 'Sorties',
-            data: quantites
+  getSortieParDepotProduct() {
+    this.depotService.calculerStockDepotProduit(this.selectedDepot, this.selectedProduct).subscribe(data => {
+      if (data !== undefined) {
+        this.initialValue = data;
+      } else {
+        this.initialValue = 0; // ou une autre valeur par défaut si nécessaire
+      }
+
+      this.esService.getSortiesParProduitDepot(this.selectedDepot, this.selectedProduct).subscribe((sorties: any[]) => {
+        const dates = sorties.map(sortie => sortie.date);
+        const quantites = sorties.map(sortie => sortie.quantite);
+
+        let cumulativeQuantites = quantites.reduce((acc, qty, index) => {
+          if (index === 0) {
+            acc.push(this.initialValue + qty);
+          } else {
+            acc.push(acc[index - 1] + qty);
           }
-        ]
+          return acc;
+        }, []);
+
+        this.lineChart = new Chart({
+          chart: {
+            type: 'line'
+          },
+          title: {
+            text: 'Linechart'
+          },
+          credits: {
+            enabled: false
+          },
+          xAxis: {
+            categories: dates,
+            title: {
+              text: 'Dates'
+            }
+          },
+          yAxis: {
+            title: {
+              text: 'Quantités'
+            },
+            min: Math.min(1000, ...cumulativeQuantites)
+          },
+          series: [
+            {
+              type: 'line',
+              name: 'ES',
+              data: cumulativeQuantites
+            }
+          ]
+        });
       });
-    })
+    });
   }
 
    // generateLineChart() {

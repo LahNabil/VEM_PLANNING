@@ -11,6 +11,7 @@ import {Prevision} from "../../models/Prevision";
 import {PrevisionService} from "../../Services/prevision.service";
 import {BacItem} from "../../models/BacItem";
 import {AddPrevisionComponent} from "../add-prevision/add-prevision.component";
+import {PrevisionStockFormComponent} from "../prevision-stock-form/prevision-stock-form.component";
 
 @Component({
   selector: 'app-prevision',
@@ -45,6 +46,11 @@ export class PrevisionComponent implements OnInit{
   }
   openEditForm(data: any){
     this._dialog.open(AddPrevisionComponent,{
+      data,
+    });
+  }
+  openStockForm(data: any){
+    this._dialog.open(PrevisionStockFormComponent,{
       data,
     });
   }

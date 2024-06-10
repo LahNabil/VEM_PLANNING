@@ -9,6 +9,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Register" />
+        <module name="Gateway" />
       </profile>
       <profile name="Annotation profile for Previsions" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -21,7 +22,7 @@
         </processorPath>
         <module name="Previsions" />
       </profile>
-      <profile name="Annotation profile for Produit" enabled="true">
+      <profile name="Annotation profile for Stock" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -40,6 +41,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Gateway" options="-parameters" />
       <module name="Prevision" options="-parameters" />
       <module name="Previsions" options="-parameters" />
       <module name="Produit" options="-parameters" />

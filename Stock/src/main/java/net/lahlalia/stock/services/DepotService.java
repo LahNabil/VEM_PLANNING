@@ -8,6 +8,7 @@ import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.Depot;
 import net.lahlalia.stock.entities.EntreSortie;
 import net.lahlalia.stock.entities.HistoryStock;
+import net.lahlalia.stock.exceptions.DepotNotFoundException;
 import net.lahlalia.stock.mappers.*;
 import net.lahlalia.stock.repositories.BacRepository;
 import net.lahlalia.stock.repositories.DepotRepository;
@@ -141,9 +142,16 @@ public class DepotService {
 
     //stockSecurité = consomations journaliére x 3jrs
     //consomation journalière = myenne de vente de l'année precedente
-    public double calculerStockSecurite(double quantite){
-
-        //quantite * 0.1;
+//    public double calculerStockSecurite(String idDepot)throws DepotNotFoundException {
+    public double calculerStockSecurite(double quantity)throws DepotNotFoundException{
+//        if(idDepot == null){
+//            log.error("value is null");
+//            return 0;
+//        }
+//        Depot depot = depotRepository.findById(idDepot)
+//                .orElseThrow(() -> new DepotNotFoundException("Depot with ID " + idDepot + " not found"));
+//        DepotDTO depotDTO = depotMapper.toModel(depot);
+        // logique de calcule de stock de securité
         double value = 1130;
         return value;
     }

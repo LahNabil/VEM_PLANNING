@@ -35,6 +35,7 @@ import { AddDepotComponent } from './ui/add-depot/add-depot.component';
 import { PrevisionComponent } from './ui/prevision/prevision.component';
 import { AddPrevisionComponent } from './ui/add-prevision/add-prevision.component';
 import { EditBacComponent } from './ui/edit-bac/edit-bac.component';
+import { PrevisionStockFormComponent } from './ui/prevision-stock-form/prevision-stock-form.component';
 
 
 
@@ -56,6 +57,7 @@ import { EditBacComponent } from './ui/edit-bac/edit-bac.component';
     PrevisionComponent,
     AddPrevisionComponent,
     EditBacComponent,
+    PrevisionStockFormComponent,
 
 
   ],

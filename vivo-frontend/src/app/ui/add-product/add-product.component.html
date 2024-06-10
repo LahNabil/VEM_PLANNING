@@ -4,9 +4,13 @@
 <form [formGroup]="productForm" (ngSubmit)="onFormSubmit()">
   <div mat-dialog-content class="content">
     <div class="row">
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input matInput type="text" placeholder="Ex. Gasoil SH" formControlName="name">
+      <mat-form-field appearance="fill">
+        <mat-label>Selectionnez un Produit</mat-label>
+        <mat-select formControlName="name">
+          <mat-option *ngFor="let produit of Products" [value]="produit">
+            {{ produit }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Select me</mat-label>

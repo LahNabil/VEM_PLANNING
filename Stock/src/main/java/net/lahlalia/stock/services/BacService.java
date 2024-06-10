@@ -159,20 +159,32 @@ public class BacService {
         Bac bac = bacRepository.findById(idBac).get();
         if(es.getTypeES()){
             double quantity = bac.getCapacityUsed() + es.getQuantite();
-            bac.setCapacityUsed(quantity);
-            Bac savedBac = bacRepository.save(bac);
-            es.setBusiness(null);
-            entreSortieRepository.save(es);
-            return bacMapper.toModel(savedBac);
+            if(quantity > bac.getCapacity()){
+                log.error("vous avez depassé la capicité possible");
+                throw new IllegalArgumentException("Cannot add quantity: exceeding bac capacity");
+            }else{
+                bac.setCapacityUsed(quantity);
+                Bac savedBac = bacRepository.save(bac);
+                es.setBusiness(null);
+                entreSortieRepository.save(es);
+                return bacMapper.toModel(savedBac);
+            }
+
         }else if (!es.getTypeES()){
             double quantity = bac.getCapacityUsed() - es.getQuantite();
+            if(quantity < 0){
+                log.error("Insufficient quantity in bac");
+                throw new IllegalArgumentException("Cannot subtract quantity: insufficient quantity in bac");
+            }
             bac.setCapacityUsed(quantity);
             Bac savedBac = bacRepository.save(bac);
             if(es.getBusiness() == null ){
                 return null;
+            }else{
+                entreSortieRepository.save(es);
+                return bacMapper.toModel(savedBac);
             }
-            entreSortieRepository.save(es);
-            return bacMapper.toModel(savedBac);
+
         }else{
             log.error("invalid type of EntreeSortie" + es.getTypeES());
             return null;

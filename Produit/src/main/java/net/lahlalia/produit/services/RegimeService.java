@@ -4,8 +4,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.lahlalia.produit.dtos.RegimeDto;
+import net.lahlalia.produit.entities.Produit;
+import net.lahlalia.produit.entities.Regime;
+import net.lahlalia.produit.exceptions.RegimeNotFoundException;
 import net.lahlalia.produit.mappers.MapperRegime;
-import net.lahlalia.produit.mappers.RegimeMapper;
 import net.lahlalia.produit.repositories.RegimeRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,7 @@ public class RegimeService {
     private final RegimeRepository regimeRepository;
     private final MapperRegime regimeMapper;
 
-    public RegimeDto getRegimeById(Long idRegime) throws EntityNotFoundException{
+    public RegimeDto getRegimeById(Long idRegime) throws RegimeNotFoundException {
         if(idRegime == null){
             log.error("idRegime is null");
             return null;
@@ -26,7 +28,7 @@ public class RegimeService {
         return regimeRepository.findById(idRegime)
                 .map(regimeMapper::toModel)
                 .orElseThrow(
-                        ()-> new EntityNotFoundException("Rgime not found with id: "+idRegime)
+                        ()-> new RegimeNotFoundException("Regime not found with id: "+idRegime)
                 );
 
     }
@@ -36,11 +38,19 @@ public class RegimeService {
     }
 
     public RegimeDto saveRegime(RegimeDto dto){
-        return regimeMapper.toModel(
-                regimeRepository.save(
-                        regimeMapper.toEntity(dto)
-                )
-        );
+        if(dto == null){
+            log.error("product is null");
+            return null;
+        }
+        Regime regime = regimeMapper.toEntity(dto);
+        Regime savedRegime = regimeRepository.save(regime);
+        return regimeMapper.toModel(savedRegime);
+
+//        return regimeMapper.toModel(
+//                regimeRepository.save(
+//                        regimeMapper.toEntity(dto)
+//                )
+//        );
 
     }
 

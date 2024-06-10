@@ -21,10 +21,10 @@ public class Depot {
     @Enumerated(EnumType.STRING)
     private Area area;
 
-    @OneToMany(mappedBy = "depot")
+    @OneToMany(mappedBy = "depot", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Bac> bacs;
 
-    @OneToMany(mappedBy = "depot")
+    @OneToMany(mappedBy = "depot", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<HistoryStock> historyStocks;
 
 

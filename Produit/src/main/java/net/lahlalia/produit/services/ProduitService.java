@@ -7,9 +7,9 @@ import net.lahlalia.produit.dtos.ProductDto;
 import net.lahlalia.produit.dtos.RegimeDto;
 import net.lahlalia.produit.entities.Produit;
 import net.lahlalia.produit.entities.Regime;
+import net.lahlalia.produit.exceptions.ProductNotFoundException;
 import net.lahlalia.produit.mappers.MapperProduct;
-import net.lahlalia.produit.mappers.ProductMapper;
-import net.lahlalia.produit.mappers.RegimeMapper;
+import net.lahlalia.produit.mappers.MapperRegime;
 import net.lahlalia.produit.repositories.ProduitRepository;
 import net.lahlalia.produit.repositories.RegimeRepository;
 import org.springframework.stereotype.Service;
@@ -24,19 +24,19 @@ public class ProduitService {
     private final ProduitRepository produitRepository;
     private final MapperProduct productMapper;
     private final RegimeRepository regimeRepository;
-    private final RegimeMapper regimeMapper;
+    private final MapperRegime regimeMapper;
     private final RegimeService regimeService;
 
 
 
-    public ProductDto getProductById(Long idProduit) throws EntityNotFoundException {
+    public ProductDto getProductById(Long idProduit) throws ProductNotFoundException{
         if(idProduit == null){
             log.error("idProduit is null");
             return null;
         }
         ProductDto productDto =  produitRepository.findById(idProduit).map(productMapper::toModel)
                 .orElseThrow(
-                        ()-> new EntityNotFoundException("product not found with specific id : " + idProduit)
+                        ()-> new ProductNotFoundException("product not found with specific id : " + idProduit)
                 );
         Regime regime = produitRepository.findById(idProduit).get().getRegime();
         RegimeDto regimeDto = regimeMapper.toModel(regime);
@@ -118,14 +118,12 @@ public class ProduitService {
 //        ));
 
 
-    public boolean deleteProductById(Long id)throws EntityNotFoundException{
-            ProductDto dto = getProductById(id);
-            if( dto != null){
-                produitRepository.deleteById(id);
-                return true;
-            } else {
-                return false;
-            }
+    public void deleteProductById(Long idProduct)throws ProductNotFoundException{
+//            ProductDto productDto = getProductById(id);
+        Optional<Produit> produit = produitRepository.findById(idProduct);
+        if(produit.isEmpty()) throw new ProductNotFoundException("product not found with specific id : " + idProduct);
+        produitRepository.deleteById(idProduct);
+
 
     }
 

@@ -20,6 +20,9 @@ export class AddProductComponent implements OnInit{
   product: Product = new Product();
   productForm: FormGroup;
 
+  Products: string[] = ['Gasoil SH','Gasoil','Gasoil SHL','Gasoil SHL','Gasoil SHD','Gasoil PE','SSP','SSP SH','SSP SD','SSP SHD','SSP DD','Jet A1',]
+
+
   constructor(private diologRef: DialogRef<AddProductComponent>,private formBuilder : FormBuilder,private productService : ProductService, private regimeService: RegimeService, private router : Router, @Inject(MAT_DIALOG_DATA) public data: any) {
     console.log(data);
     this.productForm = this.formBuilder.group({

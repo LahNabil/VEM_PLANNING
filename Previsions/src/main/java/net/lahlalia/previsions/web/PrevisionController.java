@@ -4,6 +4,7 @@ package net.lahlalia.previsions.web;
 import lombok.RequiredArgsConstructor;
 import net.lahlalia.previsions.dtos.Bac;
 import net.lahlalia.previsions.dtos.EsDto;
+import net.lahlalia.previsions.dtos.IsStockDto;
 import net.lahlalia.previsions.dtos.PrevisionDto;
 import net.lahlalia.previsions.entities.BacItem;
 import net.lahlalia.previsions.entities.Prevision;
@@ -101,6 +102,23 @@ public class PrevisionController {
         return deletedPrevision ? ResponseEntity.noContent().build() :ResponseEntity.notFound().build();
 
     }
+    @GetMapping("/sommestockvilleproduit/{idPrevision}")
+    public ResponseEntity<Double>calculerQuantiteStockProduitVille(@PathVariable Long idPrevision){
+        double somme = previsionService.calculerQuantiteStockProduitVille(idPrevision);
+        return ResponseEntity.ok(somme);
+
+    }
+    @GetMapping("/suffisant/{idPrevision}")
+    public ResponseEntity<IsStockDto>isStockSufficientForPrevision(@PathVariable Long idPrevision){
+        IsStockDto isStockDto = previsionService.isStockSufficientForPrevision(idPrevision);
+        return ResponseEntity.ok(isStockDto);
+    }
+//    @GetMapping("/suffisant/{idPrevision}")
+//    public ResponseEntity<Boolean>isStockSufficientForPrevision(@PathVariable Long idPrevision){
+//        Boolean value = previsionService.isStockSufficientForPrevision(idPrevision);
+//        return ResponseEntity.ok(value);
+//    }
+
 
 
 

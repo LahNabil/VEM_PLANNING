@@ -39,4 +39,7 @@ export class PrevisionService {
   calculerAccuracy(idPrevision:number|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}accuracy/${idPrevision}`)
   }
+  isStockSuffisant(idPrevision:number|undefined):Observable<any>{
+    return this._http.get(`${this.baseUrl}suffisant/${idPrevision}`)
+  }
 }

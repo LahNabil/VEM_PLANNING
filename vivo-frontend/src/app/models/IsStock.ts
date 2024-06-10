@@ -5,6 +5,8 @@ export class IsStock{
   stockActuel: number|undefined;
   nameProduct: String|undefined;
   ville: String|undefined;
+  creux: number|undefined;
+  productCapacity: number|undefined;
 
 
 }

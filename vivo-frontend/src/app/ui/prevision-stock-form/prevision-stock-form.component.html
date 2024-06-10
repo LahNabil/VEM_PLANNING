@@ -1,14 +1,66 @@
-<div *ngIf="isStock">
-  <h2>Informations sur le stock</h2>
-  <p><strong>Prévision:</strong> {{ isStock.forecaste }}</p>
-  <p><strong>Stock Actuel:</strong> {{ isStock.stockActuel }}</p>
-  <p><strong>Safety Stock:</strong> {{ isStock.safetyStock }}</p>
-  <p><strong>Nom du produit:</strong> {{ isStock.nameProduct }}</p>
-  <p><strong>Ville:</strong> {{ isStock.ville }}</p>
-</div>
+<mat-dialog-content>
+  <div *ngIf="isStock" class="stock-info-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Informations sur le stock</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="[isStock]" class="mat-elevation-z8">
+          <!-- Prévision Column -->
+          <ng-container matColumnDef="forecaste">
+            <th mat-header-cell *matHeaderCellDef> Prévision </th>
+            <td mat-cell *matCellDef="let element"> {{element.forecaste}} m3 </td>
+          </ng-container>
 
-<div *ngIf="!isStock">
-  <p>Aucune information sur le stock disponible pour cette prévision.</p>
-</div>
+          <!-- Stock Actuel Column -->
+          <ng-container matColumnDef="stockActuel">
+            <th mat-header-cell *matHeaderCellDef> Stock Actuel </th>
+            <td mat-cell *matCellDef="let element"> {{element.stockActuel}} m3 </td>
+          </ng-container>
 
-<button mat-raised-button type="button" [mat-dialog-close]="false">Fermer</button>
+          <!-- Safety Stock Column -->
+          <ng-container matColumnDef="safetyStock">
+            <th mat-header-cell *matHeaderCellDef> Safety Stock </th>
+            <td mat-cell *matCellDef="let element"> {{element.safetyStock}} m3 </td>
+          </ng-container>
+
+          <!-- Nom du produit Column -->
+          <ng-container matColumnDef="nameProduct">
+            <th mat-header-cell *matHeaderCellDef> Nom du produit </th>
+            <td mat-cell *matCellDef="let element"> {{element.nameProduct}} </td>
+          </ng-container>
+
+          <!-- Ville Column -->
+          <ng-container matColumnDef="ville">
+            <th mat-header-cell *matHeaderCellDef> Ville </th>
+            <td mat-cell *matCellDef="let element"> {{element.ville}} </td>
+          </ng-container>
+
+          <!-- Creux Column -->
+          <ng-container matColumnDef="creux">
+            <th mat-header-cell *matHeaderCellDef> Creux </th>
+            <td mat-cell *matCellDef="let element"> {{element.creux}} m3 </td>
+          </ng-container>
+
+          <!-- Capacité du produit Column -->
+          <ng-container matColumnDef="productCapacity">
+            <th mat-header-cell *matHeaderCellDef> Capacité du produit </th>
+            <td mat-cell *matCellDef="let element"> {{element.productCapacity}} m3 </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!isStock" class="no-stock-info">
+    <mat-icon>info</mat-icon>
+    <p>Aucune information sur le stock disponible pour cette prévision.</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button type="button" [mat-dialog-close]="false">Fermer</button>
+</mat-dialog-actions>

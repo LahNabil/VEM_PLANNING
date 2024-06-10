@@ -14,6 +14,7 @@ import {PrevisionService} from "../../Services/prevision.service";
 })
 export class PrevisionStockFormComponent implements OnInit{
   isStock: IsStock = new IsStock();
+  displayedColumns: string[] = ['forecaste', 'stockActuel', 'safetyStock', 'nameProduct', 'ville', 'creux', 'productCapacity'];
 
   constructor(private diologRef: DialogRef<PrevisionStockFormComponent>,private formBuilder : FormBuilder, private previsionService: PrevisionService, private router : Router, @Inject(MAT_DIALOG_DATA) public data: any) {
   }

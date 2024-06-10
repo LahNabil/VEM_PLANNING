@@ -15,5 +15,7 @@ public class IsStockDto {
     private double stockActuel;
     private String nameProduct;
     private String ville;
+    private double creux;
+    private double productCapacity;
 
 }

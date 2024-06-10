@@ -60,6 +60,8 @@ public class PrevisionService {
                     .idDepot(b.getIdDepot())
                     .idProduct(b.getIdProduct())
                     .capacityUsed(b.getCapacityUsed())
+                    .capacity(b.getCapacity())
+                    .totalImpom(b.getTotalImpom())
                     .prevision(prevision)
                     .build();
             bacItemRepository.save(bacItem);
@@ -268,16 +270,28 @@ public IsStockDto isStockSufficientForPrevision(Long idPrevision) throws Previsi
     Prevision prevision = previsionRepository.findById(idPrevision)
             .orElseThrow(() -> new PrevisionNotFoundException("Prevision with ID " + idPrevision + " not found"));
     PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
-    double safetyStock = 1130;
 
+
+
+    double safetyStock = 1130;
     double forecastedQuantity = previsionDto.getForeCaste();
     double currentStock = calculerQuantiteStockProduitVille(idPrevision) - safetyStock;
+    List<BacItem> bacItems = previsionDto.getBacItems();
+    double creuxBacs = bacItems.stream()
+            .mapToDouble(bacItem->bacItem.getCapacity() - bacItem.getCapacityUsed())
+            .sum();
+    double capacityProduit = bacItems.stream()
+            .mapToDouble(BacItem::getCapacity)
+            .sum();
+
     IsStockDto isStockDto = IsStockDto.builder()
             .stockActuel(currentStock)
             .safetyStock(safetyStock)
             .forecaste(forecastedQuantity)
             .nameProduct(previsionDto.getNameProduct())
+            .creux(creuxBacs)
             .ville(previsionDto.getSupplyEnveloppe())
+            .productCapacity(capacityProduit)
             .build();
 
     //Si le stock actuel (currentStock) est supérieur ou égal à la quantité prévue (forecastedQuantity), la méthode retourne true. Cela signifie que le stock est suffisant pour répondre à la prévision.

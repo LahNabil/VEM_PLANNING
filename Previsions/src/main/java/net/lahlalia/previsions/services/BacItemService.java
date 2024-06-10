@@ -52,6 +52,9 @@ public class BacItemService {
                         .idBac(bac.getIdBac())
                         .idDepot(bac.getIdDepot())
                         .idProduct(bac.getIdProduct())
+                        .totalImpom(bac.getTotalImpom())
+                        .capacityUsed(bac.getCapacityUsed())
+                        .capacity(bac.getCapacity())
                         .build();
                 bacItems.add(newBacItem);
                 bacItemRepository.save(newBacItem);
@@ -61,5 +64,6 @@ public class BacItemService {
 
 
     }
+
 }
 

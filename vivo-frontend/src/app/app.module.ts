@@ -36,6 +36,7 @@ import { PrevisionComponent } from './ui/prevision/prevision.component';
 import { AddPrevisionComponent } from './ui/add-prevision/add-prevision.component';
 import { EditBacComponent } from './ui/edit-bac/edit-bac.component';
 import { PrevisionStockFormComponent } from './ui/prevision-stock-form/prevision-stock-form.component';
+import {MatCardModule} from "@angular/material/card";
 
 
 
@@ -80,6 +81,10 @@ import { PrevisionStockFormComponent } from './ui/prevision-stock-form/prevision
     MatPaginatorModule,
     MatSortModule,
     MatSnackBarModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatIconModule,
 
   ],
   providers: [

@@ -102,10 +102,21 @@ public class DepotService {
 
     }
 
-    public double CalculerStock(String idDepot){
+    public double CalculerStockDepotAllProducts(String idDepot){
         List<BacDto> bacDtos = bacService.getAllBacsForDepot(idDepot);
         double stock = bacDtos.stream().mapToDouble(BacDto::getCapacityUsed).sum();
         return stock;
+
+    }
+
+    public double CalculerCapacityDepot(String idDepot){
+        if(idDepot == null){
+            log.error("null values");
+            return 0;
+        }
+        List<BacDto> bacDtos = bacService.getAllBacsForDepot(idDepot);
+        double capacity = bacDtos.stream().mapToDouble(BacDto::getCapacity).sum();
+        return capacity;
 
     }
 

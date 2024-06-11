@@ -161,39 +161,58 @@ public class PrevisionService {
         PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
 
         double forecaste = previsionDto.getForeCaste();
-        double vReel = calculerVreel(previsionDto.getIdPrevision());
+        double vReel = Math.abs(calculerVreel(previsionDto.getIdPrevision()));
         double ABS = Math.abs(forecaste - vReel);
 
         return ABS;
     }
-    public double calculerAccuracy(Long idPrevision)throws EntityNotFoundException{
-        if(idPrevision == null){
+    public double calculerAccuracy(Long idPrevision) throws EntityNotFoundException {
+        if (idPrevision == null) {
             log.error("value is null");
             return 0;
         }
+
         Prevision prevision = previsionRepository.findById(idPrevision).get();
         PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
         double ABS = calculerABS(previsionDto.getIdPrevision());
-        double vreel = calculerVreel(previsionDto.getIdPrevision());
-        double accuracy;
-        if(vreel == 0){
-            accuracy = 0;
-        }else {
-            // ERREUR ABSOLUE RELATIVE
-            double RAE = (ABS / vreel) * 100;
-            accuracy = 100 - RAE;
-            // Limiter les valeurs d'accuracy entre 0 et 100
-            if (accuracy < 0) {
-                accuracy = 0;
-            } else if (accuracy > 100) {
-                accuracy = 100;
-            }
-            // Limiter les nombres après la virgule à 2 chiffres
-            accuracy = Math.round(accuracy * 100.0) / 100.0;
-        }
-        return accuracy;
+        double vreel = Math.abs(calculerVreel(previsionDto.getIdPrevision())); // Use absolute value of vreel
+        double accuracy = 0.0;
+        double forecast = previsionDto.getForeCaste();
+        if (forecast >= vreel) {
+            accuracy = vreel / forecast * 100;
+        } else if (forecast <= vreel) {
+            accuracy = forecast/vreel * 100;
 
+        }
+        accuracy = Math.round(accuracy * 100.0) / 100.0;
+        return accuracy;
     }
+
+//        if (vreel == 0) {
+//            accuracy = 0;
+//        } else {
+//            if(ABS > (vreel/2)){
+//                double RAE = (ABS / vreel) * 100;
+//                accuracy = RAE;
+//            }else {
+//                // ERREUR ABSOLUE RELATIVE
+//                double RAE = (ABS / vreel) * 100;
+//                accuracy = 100 - RAE;
+//            }
+//
+//            // Limiter les valeurs d'accuracy entre 0 et 100
+//            if (accuracy < 0) {
+//                accuracy = 0;
+//            } else if (accuracy > 100) {
+//                accuracy = 100;
+//            }
+//
+//            // Limiter les nombres après la virgule à 2 chiffres
+//            accuracy = Math.round(accuracy * 100.0) / 100.0;
+//        }
+//        return accuracy;
+//    }
+
     public double calculerVreel(Long idPrevisionDto)throws EntityNotFoundException{
         if(idPrevisionDto == null){
             log.error("value is null");

@@ -71,11 +71,16 @@ public class DepotController {
     @GetMapping("/calculerStock/{idDepot}")
     public ResponseEntity<Double> calculerStock(@PathVariable String idDepot){
         try{
-            double stock = depotService.CalculerStock(idDepot);
+            double stock = depotService.CalculerStockDepotAllProducts(idDepot);
             return ResponseEntity.ok(stock);
         }catch (EntityNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+    @GetMapping("/capacitydepot/{idDepot}")
+    public ResponseEntity<Double> calculerCapacityDepot(@PathVariable String idDepot){
+        double capacity = depotService.CalculerCapacityDepot(idDepot);
+        return ResponseEntity.ok(capacity);
     }
 
     @GetMapping("/calculerStockProduit/{idDepot}/{nameProduct}")

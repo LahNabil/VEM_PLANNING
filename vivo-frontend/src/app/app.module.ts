@@ -39,6 +39,9 @@ import { PrevisionStockFormComponent } from './ui/prevision-stock-form/prevision
 import {MatCardModule} from "@angular/material/card";
 import { ChartModule } from 'angular-highcharts';
 import { DashboardComponent } from './ui/dashboard/dashboard.component';
+import { BarchartComponent } from './ui/charts/barchart/barchart.component';
+import { HighchartsChartModule } from 'highcharts-angular';
+
 
 
 
@@ -62,6 +65,7 @@ import { DashboardComponent } from './ui/dashboard/dashboard.component';
     EditBacComponent,
     PrevisionStockFormComponent,
     DashboardComponent,
+    BarchartComponent,
 
 
   ],
@@ -90,6 +94,8 @@ import { DashboardComponent } from './ui/dashboard/dashboard.component';
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
+    HighchartsChartModule,
+
 
   ],
   providers: [

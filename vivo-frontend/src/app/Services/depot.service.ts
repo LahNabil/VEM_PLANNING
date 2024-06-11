@@ -33,8 +33,11 @@ export class DepotService {
   calculerStock(idDepot: String|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}calculerStock/${idDepot}`)
   }
+  calculerCapacity(idDepot:String|undefined):Observable<any>{
+    return this._http.get(`${this.baseUrl}calculerStock/${idDepot}`)
+  }
   calculerStocksProduits(idDepot:String|undefined):Observable<any>{
-    return this._http.get(`${this.baseUrl}calculerStocksProduits/${idDepot}`)
+    return this._http.get(`${this.baseUrl}capacitydepot/${idDepot}`)
   }
   calculerStockDepotProduit(idDepot:String|undefined, nameProduct:String|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}calculerStockProduit/${idDepot}/${nameProduct}`)

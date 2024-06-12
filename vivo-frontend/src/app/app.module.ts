@@ -16,7 +16,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatSortModule} from "@angular/material/sort";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatNativeDateModule} from "@angular/material/core";
@@ -37,6 +37,11 @@ import { AddPrevisionComponent } from './ui/add-prevision/add-prevision.componen
 import { EditBacComponent } from './ui/edit-bac/edit-bac.component';
 import { PrevisionStockFormComponent } from './ui/prevision-stock-form/prevision-stock-form.component';
 import {MatCardModule} from "@angular/material/card";
+import { ChartModule } from 'angular-highcharts';
+import { DashboardComponent } from './ui/dashboard/dashboard.component';
+import { BarchartComponent } from './ui/charts/barchart/barchart.component';
+import { HighchartsChartModule } from 'highcharts-angular';
+
 
 
 
@@ -59,11 +64,15 @@ import {MatCardModule} from "@angular/material/card";
     AddPrevisionComponent,
     EditBacComponent,
     PrevisionStockFormComponent,
+    DashboardComponent,
+    BarchartComponent,
 
 
   ],
   imports: [
     BrowserModule,
+    ChartModule,
+    FormsModule,
     HttpClientModule,
     AppRoutingModule,
     MatToolbarModule,
@@ -85,6 +94,8 @@ import {MatCardModule} from "@angular/material/card";
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
+    HighchartsChartModule,
+
 
   ],
   providers: [

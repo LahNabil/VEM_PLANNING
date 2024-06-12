@@ -71,10 +71,31 @@ public class DepotController {
     @GetMapping("/calculerStock/{idDepot}")
     public ResponseEntity<Double> calculerStock(@PathVariable String idDepot){
         try{
-            double stock = depotService.CalculerStock(idDepot);
+            double stock = depotService.CalculerStockDepotAllProducts(idDepot);
             return ResponseEntity.ok(stock);
         }catch (EntityNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+    @GetMapping("/capacitydepot/{idDepot}")
+    public ResponseEntity<Double> calculerCapacityDepot(@PathVariable String idDepot){
+        double capacity = depotService.CalculerCapacityDepot(idDepot);
+        return ResponseEntity.ok(capacity);
+    }
+    @GetMapping("/capacities")
+    public ResponseEntity<List<Double>> calculerCapacities(){
+        List<Double> capacities = depotService.CalculerCapacites();
+        return ResponseEntity.ok(capacities);
+    }
+    @GetMapping("/stocks")
+    public ResponseEntity<List<Double>> calculerStock(){
+        List<Double> stockList = depotService.calculerStockDepot();
+        return ResponseEntity.ok(stockList);
+    }
+
+    @GetMapping("/calculerStockProduit/{idDepot}/{nameProduct}")
+    public ResponseEntity<Double>CalculerStockProduitDepot(@PathVariable String idDepot,@PathVariable String nameProduct){
+        double stock = depotService.CalculerStockProduitDepot(idDepot,nameProduct);
+        return ResponseEntity.ok(stock);
     }
 }

@@ -8,6 +8,7 @@ import {DepotComponent} from "./ui/depot/depot.component";
 import {DepotDetailsComponent} from "./ui/depot-details/depot-details.component";
 import {StockDepotComponent} from "./ui/stock-depot/stock-depot.component";
 import {PrevisionComponent} from "./ui/prevision/prevision.component";
+import {DashboardComponent} from "./ui/dashboard/dashboard.component";
 
 const routes: Routes = [
   {path: "products",component: ProductsComponent},
@@ -17,7 +18,8 @@ const routes: Routes = [
   {path: "depots", component: DepotComponent},
   {path: "depot-detail/:idDepot", component: DepotDetailsComponent},
   {path: "stock-depot", component: StockDepotComponent},
-  {path: "prevision", component:PrevisionComponent}
+  {path: "prevision", component:PrevisionComponent},
+  {path: "", component:DashboardComponent}
 ];
 
 @NgModule({

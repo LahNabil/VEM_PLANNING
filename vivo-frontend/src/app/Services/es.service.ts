@@ -14,4 +14,7 @@ export class ESService {
   getEs():Observable<any>{
     return this._http.get(`${this.baseUrl}`)
   }
+  getSortiesParProduitDepot(idDepot :string|undefined, nameProduct:string|undefined):Observable<any>{
+    return this._http.get(`${this.baseUrl}${idDepot}/${nameProduct}`)
+  }
 }

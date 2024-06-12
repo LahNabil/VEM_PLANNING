@@ -79,12 +79,64 @@ public class DepotService {
         return depotMapper.toModel(updatedDepot);
 
     }
+    public double CalculerStockProduitDepot(String idDepot,String nameProduct){
+        if (idDepot == null) {
+            throw new IllegalArgumentException("idDepot  must not be null");
+        }
+        if (nameProduct == null) {
+            throw new IllegalArgumentException("nameProduct  must not be null");
+        }
+        Depot depot = depotRepository.findById(idDepot).get();
+        List<Bac> bacList = depot.getBacs();
+        List<Bac> bacListFilteredByProductName = bacList.stream()
+                .filter(bac-> {
+                    String productName = bacService.getProductNameById(bac.getIdProduct());
+                    return productName.equals(nameProduct);
+                })
+                .collect(Collectors.toList());
+        double stock = bacListFilteredByProductName.stream()
+                .mapToDouble(Bac::getCapacityUsed)
+                .sum();
 
-    public double CalculerStock(String idDepot){
+        return stock;
+
+    }
+
+    public double CalculerStockDepotAllProducts(String idDepot){
         List<BacDto> bacDtos = bacService.getAllBacsForDepot(idDepot);
         double stock = bacDtos.stream().mapToDouble(BacDto::getCapacityUsed).sum();
         return stock;
 
+    }
+    public List<Double> calculerStockDepot(){
+        List<Depot> depots = depotRepository.findAll();
+        List<Double> stockList = new ArrayList<>();
+        for(Depot depot: depots){
+            double stock = CalculerStockDepotAllProducts(depot.getIdDepot());
+            stockList.add(stock);
+        }
+        return stockList;
+
+    }
+
+    public double CalculerCapacityDepot(String idDepot){
+        if(idDepot == null){
+            log.error("null values");
+            return 0;
+        }
+        List<BacDto> bacDtos = bacService.getAllBacsForDepot(idDepot);
+        double capacity = bacDtos.stream().mapToDouble(BacDto::getCapacity).sum();
+        return capacity;
+
+    }
+    public List<Double> CalculerCapacites(){
+        List<Depot> depots = depotRepository.findAll();
+        List<Double> capacities = new ArrayList<>();
+        for(Depot depot: depots){
+            double capacity = CalculerCapacityDepot(depot.getIdDepot());
+            capacities.add(capacity);
+        }
+        return capacities;
     }
 
     public boolean deleteDepotById(String idDepot)throws EntityNotFoundException{

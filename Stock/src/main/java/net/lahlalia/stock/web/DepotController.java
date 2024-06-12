@@ -82,6 +82,16 @@ public class DepotController {
         double capacity = depotService.CalculerCapacityDepot(idDepot);
         return ResponseEntity.ok(capacity);
     }
+    @GetMapping("/capacities")
+    public ResponseEntity<List<Double>> calculerCapacities(){
+        List<Double> capacities = depotService.CalculerCapacites();
+        return ResponseEntity.ok(capacities);
+    }
+    @GetMapping("/stocks")
+    public ResponseEntity<List<Double>> calculerStock(){
+        List<Double> stockList = depotService.calculerStockDepot();
+        return ResponseEntity.ok(stockList);
+    }
 
     @GetMapping("/calculerStockProduit/{idDepot}/{nameProduct}")
     public ResponseEntity<Double>CalculerStockProduitDepot(@PathVariable String idDepot,@PathVariable String nameProduct){

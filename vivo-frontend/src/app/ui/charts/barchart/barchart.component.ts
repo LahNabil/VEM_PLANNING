@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { DepotService } from "../../../Services/depot.service";
-import { Depot } from "../../../models/Depot";
+import { DepotService } from '../../../Services/depot.service';
+import { Depot } from '../../../models/Depot';
 
 @Component({
   selector: 'app-barchart',
@@ -15,71 +15,72 @@ export class BarchartComponent implements OnInit {
   capacityData: number[] = [];
   stockData: number[] = [];
 
+  chartOptions: any;
+
   constructor(private depotService: DepotService) {}
 
   ngOnInit() {
-    this.getAllDepot();
+    this.loadDepotData();
   }
 
-  getAllDepot() {
-    this.depotService.getDepots().subscribe(data => {
-      this.depots = data;
-      if (this.categories.length === 0) {
-        this.populateChartData();
-      }
+  loadDepotData() {
+    // Load all depots, capacities, and stock data before updating the chart
+    this.depotService.getDepots().subscribe(depots => {
+      this.depots = depots;
+      this.categories = this.depots.map(depot => depot.nameDepot).filter(name => name !== undefined) as string[];
+
+      this.loadCapacityData();
+      this.loadStockData();
     });
   }
 
-  populateChartData() {
-    this.categories = this.depots.map(depot => depot.nameDepot).filter(category => category !== undefined) as string[];
-
-    // Clearing the arrays before adding new data
-    this.capacityData = [];
-    this.stockData = [];
-
-    this.depots.forEach(depot => {
-      const idDepot = depot.idDepot;
-      this.depotService.calculerCapacity(idDepot).subscribe(capacity => {
-        this.capacityData.push(capacity);
-        this.updateChart();
-      });
-      this.depotService.calculerStocksProduits(idDepot).subscribe(stock => {
-        this.stockData.push(stock);
-        this.updateChart();
-      });
+  loadCapacityData() {
+    this.depotService.calculerCapacities().subscribe(capacities => {
+      this.capacityData = capacities;
+      this.updateChartIfReady();
     });
   }
 
-  updateChart() {
-    if (this.capacityData.length === this.depots.length && this.stockData.length === this.depots.length) {
-      this.chartOptions = {
-        chart: {
-          type: 'column'
-        },
-        title: {
-          text: 'Capacity vs Stock per Depot'
-        },
-        xAxis: {
-          categories: this.categories
-        },
-        yAxis: {
-          title: {
-            text: 'Values'
-          }
-        },
-        series: [
-          {
-            name: 'Capacity',
-            data: this.capacityData
-          },
-          {
-            name: 'Stock',
-            data: this.stockData
-          }
-        ]
-      };
+  loadStockData() {
+    this.depotService.calculerStocks().subscribe(stocks => {
+      this.stockData = stocks;
+      this.updateChartIfReady();
+    });
+  }
+
+  updateChartIfReady() {
+    // Ensure that both capacity and stock data are loaded before updating the chart
+    if (this.capacityData.length > 0 && this.stockData.length > 0) {
+      this.updateChart();
     }
   }
 
-  chartOptions: any;
+  updateChart() {
+    this.chartOptions = {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Capacity vs Stock per Depot'
+      },
+      xAxis: {
+        categories: this.categories
+      },
+      yAxis: {
+        title: {
+          text: 'Values'
+        }
+      },
+      series: [
+        {
+          name: 'Capacity',
+          data: this.capacityData
+        },
+        {
+          name: 'Stock',
+          data: this.stockData
+        }
+      ]
+    };
+  }
 }

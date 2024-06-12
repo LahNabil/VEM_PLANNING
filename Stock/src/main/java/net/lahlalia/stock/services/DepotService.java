@@ -108,6 +108,16 @@ public class DepotService {
         return stock;
 
     }
+    public List<Double> calculerStockDepot(){
+        List<Depot> depots = depotRepository.findAll();
+        List<Double> stockList = new ArrayList<>();
+        for(Depot depot: depots){
+            double stock = CalculerStockDepotAllProducts(depot.getIdDepot());
+            stockList.add(stock);
+        }
+        return stockList;
+
+    }
 
     public double CalculerCapacityDepot(String idDepot){
         if(idDepot == null){
@@ -118,6 +128,15 @@ public class DepotService {
         double capacity = bacDtos.stream().mapToDouble(BacDto::getCapacity).sum();
         return capacity;
 
+    }
+    public List<Double> CalculerCapacites(){
+        List<Depot> depots = depotRepository.findAll();
+        List<Double> capacities = new ArrayList<>();
+        for(Depot depot: depots){
+            double capacity = CalculerCapacityDepot(depot.getIdDepot());
+            capacities.add(capacity);
+        }
+        return capacities;
     }
 
     public boolean deleteDepotById(String idDepot)throws EntityNotFoundException{

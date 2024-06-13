@@ -1,0 +1,27 @@
+services:
+  vem-register-service:
+    build: ./Register
+    container_name: vem-register-service
+    ports:
+      - '8761:8761'
+    expose:
+      - '8761'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      retries: 4
+  vem-products-service:
+    build: ./Produit
+    container_name: vem-products-service
+    ports:
+      - '8081:8081'
+    expose:
+      - '8081'
+    environment:
+      - DISCOVERY_SERVICE_URL=http://vem-register-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/ms-customerdb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD:'BTlfo9malmo9atila10#'
+    depends_on:
+      vem-register-service:
+        condition: service_healthy

@@ -3,12 +3,8 @@ package net.lahlalia.stock.services;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.lahlalia.stock.dtos.BacDto;
 import net.lahlalia.stock.dtos.HistoryDto;
-import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.HistoryStock;
-import net.lahlalia.stock.mappers.DepotMapper;
-import net.lahlalia.stock.mappers.HistoryStockMapper;
 import net.lahlalia.stock.mappers.MapperDepot;
 import net.lahlalia.stock.mappers.MapperHistoryStock;
 import net.lahlalia.stock.repositories.HistoryStockRepository;
@@ -16,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j

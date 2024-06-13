@@ -20,19 +20,6 @@ public class StockApplication {
     public static void main(String[] args) {
         SpringApplication.run(StockApplication.class, args);
     }
-    /*@Bean
-    CommandLineRunner commandLineRunner(
-			BacRepository bacRepository,
-			ProductRestClient productRestClient
-	){
-        return args -> {
-            List<Product> allProducts = productRestClient.getAllProducts();
-            allProducts.forEach(
-                    p ->{
-                        System.out.println(p.getName());
-                    }
-            );
-        };
-    }*/
+
 
 }

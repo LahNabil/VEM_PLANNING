@@ -8,7 +8,6 @@ import net.lahlalia.stock.dtos.Product;
 import net.lahlalia.stock.entities.Bac;
 import net.lahlalia.stock.entities.Depot;
 import net.lahlalia.stock.entities.EntreSortie;
-import net.lahlalia.stock.mappers.BacMapper;
 import net.lahlalia.stock.mappers.MapperBac;
 import net.lahlalia.stock.repositories.BacRepository;
 import net.lahlalia.stock.repositories.DepotRepository;
@@ -17,7 +16,6 @@ import net.lahlalia.stock.restClients.ProductRestClient;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 

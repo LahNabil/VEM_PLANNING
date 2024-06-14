@@ -1,0 +1,40 @@
+<div mat-dialog-title class="title">
+  <h1>Product Form</h1>
+</div>
+<form [formGroup]="productForm" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content class="content">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" placeholder="Ex. Gasoil SH" formControlName="name">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Select me</mat-label>
+        <mat-select formControlName="regime">
+          <mat-option *ngFor="let regime of regimes" [value]="regime">{{regime.regime}}-{{regime.idRegime}}</mat-option>
+        </mat-select>
+        <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-radio-group aria-label="Select an option" formControlName="type">
+        <mat-label><b style="color: lightblue;">Grade</b></mat-label>
+        <mat-radio-button value="GASOIL">Gasoil</mat-radio-button>
+        <mat-radio-button value="SSP">SSP</mat-radio-button>
+        <mat-radio-button value="JETA1">JETA1</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="row">
+      <mat-radio-group aria-label="Select an option" formControlName="status">
+        <mat-label><b style="color: red;">Status</b></mat-label>
+        <mat-radio-button value="Actif">Actif</mat-radio-button>
+        <mat-radio-button value="Inactif">Inactif</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-raised-button type="button" class="cancel-button" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button class="save-button-update" type="submit">{{data ? 'Update' : 'Save'}}</button>
+  </div>
+</form>

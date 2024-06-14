@@ -1,0 +1,14 @@
+<div class="container mt-4">
+  <div *ngIf="product" class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ product.idProduit }}</h5>
+      <h5 class="card-title">{{ product.name }}</h5>
+      <p class="card-text"><strong>Status:</strong> ${{ product.status }}</p>
+      <p class="card-text"><strong>Type:</strong> {{ product.type }}</p>
+      <p class="card-text"><strong>Regime:</strong> {{ product.regime.regime }}</p>
+    </div>
+  </div>
+  <div *ngIf="!product" class="alert alert-danger mt-4">
+    Product not found
+  </div>
+</div>

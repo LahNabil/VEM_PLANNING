@@ -1,0 +1,26 @@
+.header{
+  height: 70px;
+  padding: 20px ;
+  background-color: #F3FBFD;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  overflow: hidden;
+  .logo img{
+    width: 150px;
+    height: auto;
+  }
+  .appName{
+    font-weight: bold;
+    font-size: 17px;
+    margin-right: auto;
+    margin-left: 20px;
+
+  }
+  .user img{
+    width: 40px;
+    height: auto;
+  }
+}

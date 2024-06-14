@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 600px;
+}
+  .action {
+    padding: 0 25px 20px;
+    display: flex;
+    button {
+      flex: 1;
+    }
+
+  }
+  .title{
+    color: #A1CD62;
+    font-size: 14px;
+  }
+
+
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <div *ngIf="depot" class="card depot-card">
+    <div class="card-header">
+      <h2 class="card-title">{{ depot.nameDepot }}</h2>
+      <p class="card-subtitle text-muted">{{ depot.zone }}</p>
+    </div>
+    <div class="card-body">
+      <div class="depot-info">
+        <p><strong>Area:</strong> {{ depot.area }}</p>
+        <p><strong>Stock</strong>{{depot.stock}}</p>
+      </div>
+
+      <div class="bac-list">
+        <h3 class="section-title">List of Bacs:</h3>
+        <div *ngFor="let bacDto of depot.bacDtos" class="bac-info">
+          <p><strong>Bac ID:</strong> {{ bacDto.idBac }}</p>
+          <p><strong>Capacity:</strong> {{ bacDto.capacity }}</p>
+          <p><strong>Total Impompable:</strong> {{ bacDto.totalImpom }}</p>
+          <p><strong>Status:</strong> {{ bacDto.status ? 'Active' : 'Inactive' }}</p>
+          <p><strong>Product:</strong> {{ bacDto.idProduct }}--{{bacDto.product?.name}}</p>
+          <p><strong>Capacity Used:</strong> {{ bacDto.capacityUsed }}</p>
+          <p><strong>Date d'ouverture:</strong> {{ bacDto.dateOuverture | date: 'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!depot" class="alert alert-danger mt-4">
+    Depot not found
+  </div>
+</div>

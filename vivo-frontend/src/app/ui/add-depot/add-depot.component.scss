@@ -1,0 +1,31 @@
+.content {
+  padding-top: 10px;
+}
+.row {
+  display: flex;
+  gap: 10px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+
+.action {
+  padding: 0 25px 20px;
+  button {
+    flex: 1;
+  }
+}
+.title{
+  color: #A1CD62;
+  font-size: 12px;
+}
+.save-button-update{
+  background-color: #A1CD62;
+  color: white;
+}
+.cancel-button{
+  background-color:white ;
+  color: #A1CD62;
+}

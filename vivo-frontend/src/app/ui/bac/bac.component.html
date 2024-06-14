@@ -1,0 +1,95 @@
+<div class="p-3">
+  <mat-toolbar class="bar">
+    <span>Bacs</span>
+    <span class="example-spacer"></span>
+    <button mat-raised-button class="add-button" (click)="openAddForm()">
+      ADD Bac
+    </button>
+    <button mat-raised-button class="download-button" (click)="exportExcel()" >
+      Download File
+    </button>
+  </mat-toolbar>
+  <div class="main-body">
+    <div class="input-container">
+    <mat-form-field class="filter">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Bac1" #input>
+    </mat-form-field>
+    </div>
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort id="table-data">
+        <ng-container matColumnDef="idBac">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="bluelight-header"> ID </th>
+          <td mat-cell *matCellDef="let row"> {{row.idBac}} </td>
+        </ng-container>
+        <ng-container matColumnDef="idDepot">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="greenlight-header"> ID Depot </th>
+          <td mat-cell *matCellDef="let row"> {{row.idDepot}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="capacity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="redlight-header"> Capacité </th>
+          <td mat-cell *matCellDef="let row"> {{row.capacity}} m3</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalImpom">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="bluelight-header"> total Impompable </th>
+          <td mat-cell *matCellDef="let row"> {{row.totalImpom}} m3</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="greenlight-header"> status </th>
+          <td mat-cell *matCellDef="let row">
+            <span *ngIf="row.status; else horsService">En Service</span>
+            <ng-template #horsService>Hors Service</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateOuverture">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="redlight-header"> Date d'ouverture </th>
+          <td mat-cell *matCellDef="let row"> {{row.dateOuverture | date:'yyyy/MM/dd'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="capacityUsed">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="bluelight-header"> capacité utilisé </th>
+          <td mat-cell *matCellDef="let row"> {{row.capacityUsed}} m3</td>
+        </ng-container>
+        <ng-container matColumnDef="idProduct">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="greenlight-header"> idProduct </th>
+          <td mat-cell *matCellDef="let row"> {{row.idProduct}}</td>
+        </ng-container>
+        <ng-container matColumnDef="productName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="redlight-header"> Product Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.product.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="creux">
+          <th mat-header-cell *matHeaderCellDef class="bluelight-header"> Creux </th>
+          <td mat-cell *matCellDef="let row"> {{row.creux}} m3 </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="greenlight-header" id="table-action"> Action </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button color="primary" (click)="openEditForm()">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteBac(row.idBac)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button color="green" (click)="openStockForm(row)">
+              <mat-icon>inventory_2</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+      </table>
+
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
+</div>

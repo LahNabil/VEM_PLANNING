@@ -1,0 +1,86 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.main-body {
+  padding-top: 20px;
+  margin: 0 auto;
+  max-width: 1348px;
+  height: 380px;
+  overflow: hidden;
+  .table-container {
+    height: 230px;
+    overflow-y: auto;
+  }
+  .bluelight-header{
+    color: deepskyblue;
+  }
+  .greenlight-header{
+    color: #A1CD62;
+  }
+  .redlight-header{
+    color: red;
+  }
+  mat-form-field {
+    width: 100%;
+  }
+  .input-container {
+    display: flex;
+    gap: 800px;
+    .filter {
+      height: 70px;
+      width: 150px;
+      border: none;
+
+      mat-label {
+        font-size: 14px;
+        color: #A1CD62;
+      }
+
+      input {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+.action {
+  display: flex;
+  gap: 5px;
+}
+.bar{
+  color:white;
+  background-color: #A1CD62;
+
+}
+.add-button {
+
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+ margin-right: 10px;
+  &:hover {
+    background-color: darken(#A1CD62, 10%);
+    color: white;
+  }
+
+}
+
+.download-button {
+
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: darken(#A1CD62, 10%);
+    color: white;
+  }
+
+}
+

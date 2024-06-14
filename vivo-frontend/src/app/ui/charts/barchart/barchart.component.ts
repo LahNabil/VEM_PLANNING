@@ -74,11 +74,13 @@ export class BarchartComponent implements OnInit {
       series: [
         {
           name: 'Capacity',
-          data: this.capacityData
+          data: this.capacityData,
+          color: 'green'
         },
         {
           name: 'Stock',
-          data: this.stockData
+          data: this.stockData,
+          color: '#A1CD62'
         }
       ]
     };

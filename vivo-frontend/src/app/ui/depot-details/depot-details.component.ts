@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {Depot} from "../../models/Depot";
 import {DepotService} from "../../Services/depot.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Depot} from "../../models/Depot";
+
 
 @Component({
   selector: 'app-depot-details',
@@ -31,7 +32,17 @@ export class DepotDetailsComponent implements OnInit{
       console.error("id incorrect");
     }
   }
+  selectedIndex = 0;
+  showPrev(i : number) {
+    if (this.selectedIndex > 0) {
+      this.selectedIndex = i - 1;
+    }
+  }
 
-
+  showNext(i : number) {
+    if (this.depot.bacDtos && this.selectedIndex < this.depot.bacDtos.length - 1) {
+      this.selectedIndex= i + 1;
+    }
+  }
 
 }

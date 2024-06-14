@@ -316,7 +316,30 @@ public IsStockDto isStockSufficientForPrevision(Long idPrevision) throws Previsi
     //Si le stock actuel (currentStock) est supérieur ou égal à la quantité prévue (forecastedQuantity), la méthode retourne true. Cela signifie que le stock est suffisant pour répondre à la prévision.
      return isStockDto;
 }
+    public double getTotalNextMonthPrevision(){
+        List<PrevisionDto> previsions = previsionRepository.findAll().stream().map(mapperPrevision::convertToDto).toList();
+        double totalPrevision=0;
+        Calendar now = Calendar.getInstance();
+        int currentMonth = now.get(Calendar.MONTH);
+        int currentYear = now.get(Calendar.YEAR);
 
+        // Calculate next month and handle year transition
+        int nextMonth = currentMonth + 1;
+        if (nextMonth > 11) {
+            nextMonth = 0;  // January
+            currentYear++;  // Increment year
+        }
+        for(PrevisionDto prevision :previsions){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(prevision.getDate());
+            int esMonth = cal.get(Calendar.MONTH);
+            int esYear = cal.get(Calendar.YEAR);
+            if (esMonth == nextMonth && esYear == currentYear ) {
+                totalPrevision += prevision.getForeCaste();
+            }
+        }
+        return totalPrevision;
+    }
 
 
 

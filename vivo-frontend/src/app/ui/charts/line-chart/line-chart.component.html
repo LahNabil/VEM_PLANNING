@@ -1,0 +1,20 @@
+<div class="spaced-form-field">
+  <mat-form-field appearance="fill">
+    <mat-label style="font-size: 14px; color: #A1CD62">Sélectionnez un dépôt</mat-label>
+    <mat-select [(ngModel)]="selectedDepot" (selectionChange)="onSelectionChange()">
+      <mat-option *ngFor="let depot of depots" [value]="depot.idDepot">
+        {{ depot.nameDepot }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label style="font-size: 14px; color: #A1CD62">Sélectionnez un produit</mat-label>
+    <mat-select [(ngModel)]="selectedProduct" (selectionChange)="onSelectionChange()">
+      <mat-option *ngFor="let product of products" [value]="product.name">
+        {{ product.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="lineChart" [chart]="lineChart"></div>

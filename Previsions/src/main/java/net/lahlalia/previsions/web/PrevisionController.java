@@ -113,6 +113,12 @@ public class PrevisionController {
         IsStockDto isStockDto = previsionService.isStockSufficientForPrevision(idPrevision);
         return ResponseEntity.ok(isStockDto);
     }
+    @GetMapping(value = "/NextMonthPrevision", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Double> getTotalNextMonthPrevision(){
+        double totalePrevision = previsionService.getTotalNextMonthPrevision();
+        return ResponseEntity.ok(totalePrevision);
+    }
+
 //    @GetMapping("/suffisant/{idPrevision}")
 //    public ResponseEntity<Boolean>isStockSufficientForPrevision(@PathVariable Long idPrevision){
 //        Boolean value = previsionService.isStockSufficientForPrevision(idPrevision);

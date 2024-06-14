@@ -16,6 +16,7 @@ import net.lahlalia.stock.repositories.EntreSortieRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,5 +96,45 @@ public class EsService {
         return esDtoList;
 //       return entreSortieRepository.findAll().stream().map(esMapper::toModel).toList();
     }
+
 //
+
+    public double GetEntreebymonth(){
+        List<EntreSortie> ESList = entreSortieRepository.findAll();
+        double totalQuantity = 0;
+        Calendar now = Calendar.getInstance();
+        int currentMonth = now.get(Calendar.MONTH);
+        int currentYear = now.get(Calendar.YEAR);
+        for(EntreSortie es : ESList){
+            ESDto esDto = esMapper.toModel(es);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(esDto.getDate());
+            int esMonth = cal.get(Calendar.MONTH);
+            int esYear = cal.get(Calendar.YEAR);
+            if (esMonth == currentMonth && esYear == currentYear && esDto.getTypeES() ==true ) {
+                totalQuantity += esDto.getQuantite();
+            }
+        }
+        return totalQuantity;
+    }
+    public double getSortiebymonth(){
+        List<EntreSortie> ESList = entreSortieRepository.findAll();
+        double totalQuantity = 0;
+        Calendar now = Calendar.getInstance();
+        int currentMonth = now.get(Calendar.MONTH);
+        int currentYear = now.get(Calendar.YEAR);
+        List<ESDto> esDtoList = new ArrayList<>();
+        for(EntreSortie es : ESList){
+            ESDto esDto = esMapper.toModel(es);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(esDto.getDate());
+            int esMonth = cal.get(Calendar.MONTH);
+            int esYear = cal.get(Calendar.YEAR);
+            if (esMonth == currentMonth && esYear == currentYear && esDto.getTypeES() ==false ) {
+                totalQuantity += esDto.getQuantite();
+            }
+        }
+        return totalQuantity;
+    }
 }
+

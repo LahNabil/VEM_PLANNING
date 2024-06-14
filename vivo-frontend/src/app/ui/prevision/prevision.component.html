@@ -1,60 +1,63 @@
 <div class="p-3">
-  <mat-toolbar color="primary">
+  <mat-toolbar class="bar">
     <span>Previsions</span>
     <span class="example-spacer"></span>
-    <button mat-raised-button (click)="openAddForm()">
-      ADD ForeCaste
+    <button mat-raised-button class="add-button" (click)="openAddForm()">
+      ADD Forcaste
+    </button>
+    <button mat-raised-button class="download-button" (click)="exportExcel()">
+      Download File
     </button>
   </mat-toolbar>
   <div class="main-body">
 
-    <mat-form-field>
-      <mat-label>Filter</mat-label>
+    <mat-form-field style="width: 180px; ">
+      <mat-label style="color: #A1CD62; ">Filter</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Gasoil" #input>
     </mat-form-field>
 
     <div class="table-container">
-      <table mat-table [dataSource]="dataSource" matSort>
+      <table mat-table [dataSource]="dataSource" matSort id="table-data">
         <ng-container matColumnDef="idPrevision">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="bluelight-header"> ID </th>
           <td mat-cell *matCellDef="let row"> {{row.idPrevision}} </td>
         </ng-container>
 
         <ng-container matColumnDef="business">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Business</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="greenlight-header"> Business</th>
           <td mat-cell *matCellDef="let row"> {{row.business}}</td>
         </ng-container>
         <ng-container matColumnDef="supplyEnveloppe">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> supply Enveloppe</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="redlight-header"> supply Enveloppe</th>
           <td mat-cell *matCellDef="let row"> {{row.supplyEnveloppe}}</td>
         </ng-container>
         <ng-container matColumnDef="nameProduct">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom du Produit</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="bluelight-header"> Nom du Produit</th>
           <td mat-cell *matCellDef="let row"> {{row.nameProduct}}</td>
         </ng-container>
         <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="greenlight-header"> Date </th>
           <td mat-cell *matCellDef="let row"> {{row.date | date:'yyyy/MM/dd'}}</td>
         </ng-container>
         <ng-container matColumnDef="foreCaste">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Prevision -ForeCaste </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="redlight-header"> Prevision -ForeCaste </th>
           <td mat-cell *matCellDef="let row"> {{row.foreCaste}}</td>
         </ng-container>
         <ng-container matColumnDef="vReel">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ventre Réel </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="bluelight-header"> Ventre Réel </th>
           <td mat-cell *matCellDef="let row"> {{row.vReel}}</td>
         </ng-container>
         <ng-container matColumnDef="ABS">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ABS </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="greenlight-header"> ABS </th>
           <td mat-cell *matCellDef="let row"> {{row.ABS}}</td>
         </ng-container>
         <ng-container matColumnDef="accuracy">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Accuracy </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="redlight-header"> Accuracy </th>
           <td mat-cell *matCellDef="let row"> {{row.accuracy}}%</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header id="table-action" class="bluelight-header"> Action </th>
           <td mat-cell *matCellDef="let row">
             <button mat-icon-button color="primary" (click)="openEditForm(row)">
               <mat-icon>edit</mat-icon>

@@ -42,4 +42,7 @@ export class PrevisionService {
   isStockSuffisant(idPrevision:number|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}suffisant/${idPrevision}`)
   }
+  getPrevisionNextMonth():Observable<any>{
+    return this._http.get(`${this.baseUrl}NextMonthPrevision`)
+  }
 }

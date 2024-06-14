@@ -1,0 +1,32 @@
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap:40px;
+  margin-left: 100px;
+  align-items: center;
+  width: 1000px;
+  margin-bottom: 10px;
+}
+.card{
+  width: 15rem;
+  box-shadow: 5px 5px 5px #939393;
+  height: 130px;
+  align-items: center;
+  color: white;
+
+  .icon {
+    width: 100px;
+    font-size: 40px;
+
+  }
+  .bottom {
+    font-size: 15px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  .top {
+    text-align: center;
+    margin-top: 5px;
+    font-size: 25px;
+
+  }}

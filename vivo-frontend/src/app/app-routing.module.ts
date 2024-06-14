@@ -9,17 +9,23 @@ import {DepotDetailsComponent} from "./ui/depot-details/depot-details.component"
 import {StockDepotComponent} from "./ui/stock-depot/stock-depot.component";
 import {PrevisionComponent} from "./ui/prevision/prevision.component";
 import {DashboardComponent} from "./ui/dashboard/dashboard.component";
+import {PlanningComponent} from "./ui/planning/planning.component";
+import {SliderDepotStockComponent} from "./ui/slider-depot-stock/slider-depot-stock.component";
 
 const routes: Routes = [
-  {path: "products",component: ProductsComponent},
+
   {path: "products_details/:idProduit", component: ProductDetailsComponent},
-  {path: "bac", component: BacComponent},
-  {path: "ess",component: EntreSortieComponent },
-  {path: "depots", component: DepotComponent},
-  {path: "depot-detail/:idDepot", component: DepotDetailsComponent},
-  {path: "stock-depot", component: StockDepotComponent},
-  {path: "prevision", component:PrevisionComponent},
-  {path: "", component:DashboardComponent}
+  {path:'', redirectTo:'dashboard',pathMatch:'full'},
+  {path:'dashboard', component: DashboardComponent},
+  {path:'products', component:ProductsComponent},
+  {path:'planning', component:PlanningComponent},
+  {path:'salesforcast', component:PrevisionComponent},
+  {path:'bac', component:BacComponent},
+  {path:'depot', component:DepotComponent},
+  {path:'stock', component:StockDepotComponent},
+  {path:'entresortie', component:EntreSortieComponent},
+  { path: 'depot-detail/:idDepot', component:DepotDetailsComponent},
+  { path: 'test/:idDepot', component:SliderDepotStockComponent},
 ];
 
 @NgModule({

@@ -28,5 +28,15 @@ public class ESController {
         List<ESDto> esDtoList = esService.getSortiesParProduitDepot(idDepot,nameProduct);
         return ResponseEntity.ok(esDtoList);
     }
+    @GetMapping(value = "/entreeByMonth", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Double> getEntreeByMonth() {
+        double totalQuantity = esService.GetEntreebymonth();
+        return ResponseEntity.ok(totalQuantity);
+    }
+    @GetMapping(value = "/sortieByMonth", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Double> getSortiebymonth(){
+        double totalQuantity = esService.getSortiebymonth();
+        return ResponseEntity.ok(totalQuantity);
+    }
 
 }

@@ -9,12 +9,12 @@ import net.lahlalia.produit.services.ProduitService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProduitController {
@@ -41,6 +41,10 @@ public class ProduitController {
     public ResponseEntity<ProductDto>updateProduct(@PathVariable Long id,@RequestBody ProductDto dto) throws EntityNotFoundException{
         ProductDto updatedProduct = produitService.updateProduct(id,dto);
         return ResponseEntity.ok(updatedProduct);
+    }
+    @GetMapping("/auth")
+    public Authentication authentication(Authentication authentication){
+        return authentication;
     }
 
 

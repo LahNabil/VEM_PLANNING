@@ -23,4 +23,24 @@
     width: 40px;
     height: auto;
   }
+  .mat-form-field {
+    background-color: #f0f0f0; /* Couleur de fond */
+    border-radius: 5px; /* Coins arrondis */
+    padding: 5px 10px; /* Espacement intérieur */
+    width: 50px; /* Largeur du champ */
+  }
+
+  /* Personnalisation du mat-select */
+  .mat-select {
+    color: #333; /* Couleur du texte */
+    font-size: 14px; /* Taille de police */
+    width: 100%; /* Largeur du select */
+  }
+
+  /* Style pour l'icône à l'intérieur du mat-label */
+  .mat-label img {
+    width: 24px; /* Taille de l'icône */
+    height: 24px;
+    margin-right: 10px; /* Espacement à droite */
+  }
 }

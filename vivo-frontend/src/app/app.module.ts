@@ -1,6 +1,9 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule, HammerModule} from '@angular/platform-browser';
 import {HttpClientModule} from "@angular/common/http";
+import {DropdownComponent, HeaderModule} from '@coreui/angular';
+import {MatMenuModule} from "@angular/material/menu";
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -49,8 +52,24 @@ import { SliderDepotStockComponent } from './ui/slider-depot-stock/slider-depot-
 import { BodyComponent } from './ui/body/body.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 
-
+function initializeKeycloak(keycloak: KeycloakService) {
+  return () =>
+    keycloak.init({
+      config: {
+        url: 'http://localhost:8080',
+        realm: 'vivo-realm',
+        clientId: 'front-end-angular-client'
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html'
+      }
+    });
+}
 
 
 @NgModule({
@@ -80,6 +99,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     PlanningComponent,
     SliderDepotStockComponent,
     BodyComponent,
+
 
 
   ],
@@ -113,12 +133,25 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     MatTooltipModule,
     HammerModule,
     MatExpansionModule,
-    MatCardModule
+    MatCardModule,
+    HeaderModule,
+    DropdownComponent,
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatMenuModule,
+    KeycloakAngularModule
+
 
 
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    }
   ],
   bootstrap: [AppComponent]
 })

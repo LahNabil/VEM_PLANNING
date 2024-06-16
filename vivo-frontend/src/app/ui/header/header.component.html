@@ -4,9 +4,21 @@
   </div>
   <div class="appName">VEM PLANNING</div>
   <div class="user" >
+    <button mat-button [matMenuTriggerFor]="user">
     <div class="userLogo">
       <img src="assets/images/userIcon.png">
+      <i class="material-icons">arrow_drop_down</i>
     </div>
+    </button>
   </div>
+  <mat-menu #user="matMenu">
+    <span mat-menu-item *ngIf="profile;else login">
+    <button mat-menu-item>{{keycloackService.getUsername()}}</button>
+    <button mat-menu-item (click)="logout()">Se deconnecter</button>
+    </span>
+    <ng-template #login>
+      <button mat-menu-item (click)="onLogin()">Se connecter</button>
+    </ng-template>
 
+  </mat-menu>
 </div>

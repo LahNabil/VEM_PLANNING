@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
   // lineChart!: Chart; // Utilisation de l'opérateur "!" pour indiquer que la propriété sera initialisée
 
   constructor(private produitService: ProductService, private esService: ESService, private router: Router, private depotService: DepotService) {
+
   }
 
 
@@ -70,6 +71,8 @@ export class DashboardComponent implements OnInit {
           }
           return acc;
         }, []);
+        const safetyStockValue = 5000;
+        const safetyStockLine = new Array(cumulativeQuantites.length).fill(safetyStockValue);
 
         this.lineChart = new Chart({
           chart: {
@@ -98,6 +101,13 @@ export class DashboardComponent implements OnInit {
               type: 'line',
               name: 'ES',
               data: cumulativeQuantites
+            },
+            {
+              type: 'line',
+              name: 'Safety Stock',
+              data: safetyStockLine,
+              dashStyle: 'Dash',
+              color: '#FF0000'
             }
           ]
         });

@@ -48,5 +48,9 @@ export class DepotService {
   calculerStocks():Observable<any>{
     return this._http.get(`${this.baseUrl}stocks`)
   }
+  calculerCapacityDepot(idDepot:String|undefined):Observable<any>{
+    return this._http.get(`${this.baseUrl}capacitydepot/${idDepot}`)
+  }
+
 
 }

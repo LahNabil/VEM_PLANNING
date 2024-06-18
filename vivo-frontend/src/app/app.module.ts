@@ -41,6 +41,7 @@ import { ChartModule } from 'angular-highcharts';
 import { DashboardComponent } from './ui/dashboard/dashboard.component';
 import { BarchartComponent } from './ui/charts/barchart/barchart.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { PlanningComponent } from './ui/planning/planning.component';
 
 
 
@@ -66,6 +67,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
     PrevisionStockFormComponent,
     DashboardComponent,
     BarchartComponent,
+    PlanningComponent,
 
 
   ],

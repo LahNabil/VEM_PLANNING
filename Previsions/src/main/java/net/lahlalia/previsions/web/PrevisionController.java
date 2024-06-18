@@ -113,6 +113,11 @@ public class PrevisionController {
         IsStockDto isStockDto = previsionService.isStockSufficientForPrevision(idPrevision);
         return ResponseEntity.ok(isStockDto);
     }
+    @GetMapping("/{city}/{product}")
+    public ResponseEntity<List<PrevisionDto>>getPrevisionsByCityProduct(@PathVariable String city,@PathVariable String product){
+        List<PrevisionDto> previsionDtos = previsionService.getPrevisionByCityProduit(city,product);
+        return ResponseEntity.ok(previsionDtos);
+    }
 //    @GetMapping("/suffisant/{idPrevision}")
 //    public ResponseEntity<Boolean>isStockSufficientForPrevision(@PathVariable Long idPrevision){
 //        Boolean value = previsionService.isStockSufficientForPrevision(idPrevision);

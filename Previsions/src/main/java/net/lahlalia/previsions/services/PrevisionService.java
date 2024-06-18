@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -165,6 +166,20 @@ public class PrevisionService {
         double ABS = Math.abs(forecaste - vReel);
 
         return ABS;
+    }
+    public List<PrevisionDto> getPrevisionByCityProduit(String ville,String produit)throws EntityNotFoundException{
+        if(ville == null ||produit == null){
+            log.error("value is null");
+            return null;
+        }
+        List<PrevisionDto> previsionDtos = getAllPrevision();
+        List<PrevisionDto> filteredPrevisions = previsionDtos.stream()
+                .filter(prevision -> ville.equals(prevision.getSupplyEnveloppe()) && produit.equals(prevision.getNameProduct()))
+                .collect(Collectors.toList());
+
+        return filteredPrevisions;
+
+
     }
     public double calculerAccuracy(Long idPrevision) throws EntityNotFoundException {
         if (idPrevision == null) {

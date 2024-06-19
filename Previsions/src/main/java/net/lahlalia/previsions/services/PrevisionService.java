@@ -181,6 +181,16 @@ public class PrevisionService {
 
 
     }
+    public double calculerSommePrevisionByCityProduit(String ville, String produit){
+        if(ville == null ||produit == null){
+            log.error("value is null");
+            return 0;
+        }
+        List<PrevisionDto> previsionDtos = getPrevisionByCityProduit(ville,produit);
+        double somme = previsionDtos.stream().mapToDouble(PrevisionDto::getForeCaste).sum();
+        return somme;
+
+    }
     public double calculerAccuracy(Long idPrevision) throws EntityNotFoundException {
         if (idPrevision == null) {
             log.error("value is null");

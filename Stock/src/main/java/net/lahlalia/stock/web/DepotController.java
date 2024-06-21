@@ -93,9 +93,9 @@ public class DepotController {
         return ResponseEntity.ok(stockList);
     }
 
-    @GetMapping("/calculerStockProduit/{idDepot}/{nameProduct}")
-    public ResponseEntity<Double>CalculerStockProduitDepot(@PathVariable String idDepot,@PathVariable String nameProduct){
-        double stock = depotService.CalculerStockProduitDepot(idDepot,nameProduct);
+    @GetMapping("/calculerStockProduit/{idDepot}/{nameProduct}/{year}/{month}")
+    public ResponseEntity<Double>CalculerStockProduitDepot(@PathVariable String idDepot,@PathVariable String nameProduct,@PathVariable int year,@PathVariable int month){
+        double stock = depotService.CalculerStockProduitDepot(idDepot,nameProduct,year,month);
         return ResponseEntity.ok(stock);
     }
 }

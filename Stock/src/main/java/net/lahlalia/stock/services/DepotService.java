@@ -32,6 +32,7 @@ public class DepotService {
     private final ProductRestClient productRestClient;
     private final HistoryStockRepository historyStockRepository;
     private final MapperHistoryStock historyStockMapper;
+    private final HistoryStockService historyStockService;
 
     public DepotDTO saveDepot(DepotDTO dto){
         return depotMapper.toModel(
@@ -79,27 +80,56 @@ public class DepotService {
         return depotMapper.toModel(updatedDepot);
 
     }
-    public double CalculerStockProduitDepot(String idDepot,String nameProduct){
+    public double CalculerStockProduitDepot(String idDepot, String nameProduct, int year, int month) {
+
+
         if (idDepot == null) {
-            throw new IllegalArgumentException("idDepot  must not be null");
+            throw new IllegalArgumentException("idDepot must not be null");
         }
         if (nameProduct == null) {
-            throw new IllegalArgumentException("nameProduct  must not be null");
+            throw new IllegalArgumentException("nameProduct must not be null");
         }
-        Depot depot = depotRepository.findById(idDepot).get();
-        List<Bac> bacList = depot.getBacs();
-        List<Bac> bacListFilteredByProductName = bacList.stream()
-                .filter(bac-> {
-                    String productName = bacService.getProductNameById(bac.getIdProduct());
-                    return productName.equals(nameProduct);
+
+        // Correct the month value (0-based index)
+        month = month - 1;
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date startDate = cal.getTime();
+        log.info("Start Date: {}", startDate);
+
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = cal.getTime();
+        log.info("End Date: {}", endDate);
+
+        // Get all history data
+        List<HistoryDto> historyDtoList = historyStockService.getAllHistoryDto();
+        log.info("Total History Records: {}", historyDtoList.size());
+
+        // Filter the list by idDepot, nameProduct, and date range
+        List<HistoryDto> filteredHistory = historyDtoList.stream()
+                .filter(history -> {
+                    boolean idDepotMatch = history.getIdDepot().equals(idDepot);
+                    boolean nameProductMatch = history.getNameProduct().equals(nameProduct);
+                    Date historyDate = history.getDateJour();
+                    boolean dateMatch = !historyDate.before(startDate) && !historyDate.after(endDate);
+                    log.info("History Record - ID: {}, Product: {}, Date: {}, ID Match: {}, Product Match: {}, Date Match: {}",
+                            history.getIdDepot(), history.getNameProduct(), historyDate, idDepotMatch, nameProductMatch, dateMatch);
+                    return idDepotMatch && nameProductMatch && dateMatch;
                 })
                 .collect(Collectors.toList());
-        double stock = bacListFilteredByProductName.stream()
-                .mapToDouble(Bac::getCapacityUsed)
+
+        log.info("Filtered History Records: {}", filteredHistory.size());
+
+        // Calculate the stock
+        double stock = filteredHistory.stream()
+                .mapToDouble(HistoryDto::getStock)
                 .sum();
+        log.info("Calculated Stock: {}", stock);
 
         return stock;
-
     }
 
     public double CalculerStockDepotAllProducts(String idDepot){
@@ -162,14 +192,9 @@ public class DepotService {
 
 
     }
-     // Exécuter à minuit tous les jours
+    //Executer chaque 24Heures
     @Scheduled(fixedRate = 86400000)
     public void saveDailyStock() {
-//        List<Depot> depots = depotRepository.findAll();
-//        for(Depot depot : depots){
-//            List<StockProduitDto> stockProduitDtos = calculerStocksProduitsDansDepot(depot);
-//
-//        }
         List<DepotDTO> depotDTOS = geAllDepots();
         for (DepotDTO depotDTO : depotDTOS) {
             List<StockProduitDto> stockProduitDtos = calculerStocksProduitsDansDepot(depotDTO);

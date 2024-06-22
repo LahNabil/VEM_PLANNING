@@ -25,6 +25,8 @@ export class PlanningComponent implements OnInit {
   depots: Depot[] = [];
   lineChart!: Chart;
   initialValue: number | undefined;
+  selectedYear: number | undefined;
+  selectedMonth: number | undefined;
 
   constructor(private produitService: ProductService, private esService: ESService, private router: Router, private depotService: DepotService) {}
 
@@ -54,8 +56,8 @@ export class PlanningComponent implements OnInit {
   }
 
   getStockData() {
-    if (this.selectedDepot && this.selectedProduct) {
-      this.depotService.calculerStockDepotProduit(this.selectedDepot, this.selectedProduct).subscribe(data => {
+    if (this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth) {
+      this.depotService.calculerStockDepotProduitDate(this.selectedDepot, this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe(data => {
         this.stockDepot = data;
       });
     }

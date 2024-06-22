@@ -92,10 +92,15 @@ public class DepotController {
         List<Double> stockList = depotService.calculerStockDepot();
         return ResponseEntity.ok(stockList);
     }
+    @GetMapping("/calculerStockProduitDepotDate/{idDepot}/{nameProduct}/{year}/{month}")
+    public ResponseEntity<Double>CalculerStockProduitDepotDate(@PathVariable String idDepot,@PathVariable String nameProduct,@PathVariable int year,@PathVariable int month){
+        double stock = depotService.CalculerStockProduitDepotYearMonth(idDepot,nameProduct,year,month);
+        return ResponseEntity.ok(stock);
+    }
 
-    @GetMapping("/calculerStockProduit/{idDepot}/{nameProduct}/{year}/{month}")
-    public ResponseEntity<Double>CalculerStockProduitDepot(@PathVariable String idDepot,@PathVariable String nameProduct,@PathVariable int year,@PathVariable int month){
-        double stock = depotService.CalculerStockProduitDepot(idDepot,nameProduct,year,month);
+    @GetMapping("/calculerStockProduit/{idDepot}/{nameProduct}")
+    public ResponseEntity<Double>CalculerStockProduitDepot(@PathVariable String idDepot,@PathVariable String nameProduct){
+        double stock = depotService.CalculerStockProduitDepot(idDepot,nameProduct);
         return ResponseEntity.ok(stock);
     }
 }

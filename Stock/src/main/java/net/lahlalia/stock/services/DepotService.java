@@ -80,7 +80,29 @@ public class DepotService {
         return depotMapper.toModel(updatedDepot);
 
     }
-    public double CalculerStockProduitDepot(String idDepot, String nameProduct, int year, int month) {
+    public double CalculerStockProduitDepot(String idDepot,String nameProduct){
+        if (idDepot == null) {
+            throw new IllegalArgumentException("idDepot  must not be null");
+        }
+        if (nameProduct == null) {
+            throw new IllegalArgumentException("nameProduct  must not be null");
+        }
+        Depot depot = depotRepository.findById(idDepot).get();
+        List<Bac> bacList = depot.getBacs();
+        List<Bac> bacListFilteredByProductName = bacList.stream()
+                .filter(bac-> {
+                    String productName = bacService.getProductNameById(bac.getIdProduct());
+                    return productName.equals(nameProduct);
+                })
+                .collect(Collectors.toList());
+        double stock = bacListFilteredByProductName.stream()
+                .mapToDouble(Bac::getCapacityUsed)
+                .sum();
+
+        return stock;
+
+    }
+    public double CalculerStockProduitDepotYearMonth(String idDepot, String nameProduct, int year, int month) {
 
 
         if (idDepot == null) {

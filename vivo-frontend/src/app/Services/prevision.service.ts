@@ -45,4 +45,7 @@ export class PrevisionService {
   getPrevisionNextMonth():Observable<any>{
     return this._http.get(`${this.baseUrl}NextMonthPrevision`)
   }
+  calculerSommePByCityProduitDate(idDepot:String|undefined, product: string, year: number, month: number): Observable<any> {
+    return this._http.get(`${this.baseUrl}sommes/${idDepot}/${product}/${year}/${month}`);
+  }
 }

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -339,6 +340,52 @@ public IsStockDto isStockSufficientForPrevision(Long idPrevision) throws Previsi
             }
         }
         return totalPrevision;
+    }
+    public List<PrevisionDto> getPrevisionByCityProduit(String ville,String produit)throws EntityNotFoundException{
+        if(ville == null ||produit == null){
+            log.error("value is null");
+            return null;
+        }
+        List<PrevisionDto> previsionDtos = getAllPrevision();
+        List<PrevisionDto> filteredPrevisions = previsionDtos.stream()
+                .filter(prevision -> ville.equals(prevision.getSupplyEnveloppe()) && produit.equals(prevision.getNameProduct()))
+                .collect(Collectors.toList());
+
+        return filteredPrevisions;
+
+
+    }
+    public double calculerSommePrevisionByCityProduitDate(String idDepot, String produit, int year, int month) {
+        if (idDepot == null || produit == null) {
+            log.error("value is null");
+            return 0;
+        }
+        String ville = stockRestClient.getCityDepot(idDepot);
+        int adjustedMonth = month - 1;
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, adjustedMonth);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date startDate = cal.getTime();
+        log.info("Start Date: {}", startDate);
+
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = cal.getTime();
+
+        List<PrevisionDto> previsionDtos = getPrevisionByCityProduit(ville, produit);
+
+        double somme = previsionDtos.stream()
+                .filter(previsionDto -> {
+                    Calendar previsionCal = Calendar.getInstance();
+                    previsionCal.setTime(previsionDto.getDate());
+                    int previsionYear = previsionCal.get(Calendar.YEAR);
+                    int previsionMonth = previsionCal.get(Calendar.MONTH);
+                    return previsionYear == year && previsionMonth == adjustedMonth;
+                })
+                .mapToDouble(PrevisionDto::getForeCaste)
+                .sum();
+        return somme;
     }
 
 

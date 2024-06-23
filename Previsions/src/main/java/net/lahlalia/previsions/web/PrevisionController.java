@@ -118,6 +118,14 @@ public class PrevisionController {
         double totalePrevision = previsionService.getTotalNextMonthPrevision();
         return ResponseEntity.ok(totalePrevision);
     }
+    @GetMapping("/sommes/{idDepot}/{product}/{year}/{month}")
+    public ResponseEntity<Double>calculerSommePByCityProduitDate(@PathVariable String idDepot,
+                                                                 @PathVariable String product,
+                                                                 @PathVariable int year,
+                                                                 @PathVariable int month){
+        double somme = previsionService.calculerSommePrevisionByCityProduitDate(idDepot,product,year,month);
+        return ResponseEntity.ok(somme);
+    }
 
 //    @GetMapping("/suffisant/{idPrevision}")
 //    public ResponseEntity<Boolean>isStockSufficientForPrevision(@PathVariable Long idPrevision){

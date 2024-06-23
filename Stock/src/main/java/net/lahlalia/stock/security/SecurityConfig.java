@@ -1,4 +1,4 @@
-package net.lahlalia.produit.security;
+package net.lahlalia.stock.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -49,3 +49,4 @@ public class SecurityConfig {
     }
 
 }
+

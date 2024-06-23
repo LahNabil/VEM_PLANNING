@@ -7,6 +7,7 @@ import { ProductService } from "../../Services/product.service";
 import { ESService } from "../../Services/es.service";
 import { Router } from "@angular/router";
 import { DepotService } from "../../Services/depot.service";
+import {PrevisionService} from "../../Services/prevision.service";
 
 @Component({
   selector: 'app-planning',
@@ -18,6 +19,7 @@ export class PlanningComponent implements OnInit {
   selectedProduct: string | undefined;
   capacity: number | undefined;
   stockDepot: number | undefined;
+  previsionData: number | undefined;
   sortie: EntreSortie[] = [];
   depot: Depot = new Depot();
   product: Product = new Product();
@@ -28,7 +30,7 @@ export class PlanningComponent implements OnInit {
   selectedYear: number | undefined;
   selectedMonth: number | undefined;
 
-  constructor(private produitService: ProductService, private esService: ESService, private router: Router, private depotService: DepotService) {}
+  constructor(private previsionService: PrevisionService,private produitService: ProductService, private esService: ESService, private router: Router, private depotService: DepotService) {}
 
   ngOnInit() {
     this.getAllProducts();
@@ -59,6 +61,21 @@ export class PlanningComponent implements OnInit {
     if (this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth) {
       this.depotService.calculerStockDepotProduitDate(this.selectedDepot, this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe(data => {
         this.stockDepot = data;
+      });
+    }
+  }
+  getPrevisionData() {
+    console.log('Selected Depot:', this.selectedDepot);  // Log selectedDepot
+    console.log('Selected Product:', this.selectedProduct);  // Log selectedProduct
+    console.log('Selected Year:', this.selectedYear);  // Log selectedYear
+    console.log('Selected Month:', this.selectedMonth);  // Log selectedMonth
+
+    if (this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth) {
+      this.previsionService.calculerSommePByCityProduitDate(this.selectedDepot, this.selectedProduct, this.selectedYear, this.selectedMonth).subscribe(data => {
+        console.log('Prevision data received: ', data);  // Log the received data
+        this.previsionData = data;
+      }, error => {
+        console.error('Error fetching prevision data: ', error);  // Log any errors
       });
     }
   }
@@ -128,5 +145,6 @@ export class PlanningComponent implements OnInit {
   onSelectionChange() {
     this.getCapacityData();
     this.getStockData();
+    this.getPrevisionData();
   }
 }

@@ -103,4 +103,9 @@ public class DepotController {
         double stock = depotService.CalculerStockProduitDepot(idDepot,nameProduct);
         return ResponseEntity.ok(stock);
     }
+    @GetMapping("/getcitydepot/{idDepot}")
+    public ResponseEntity<String> getCityDepot(@PathVariable String idDepot){
+        String city = depotService.getCity(idDepot);
+        return ResponseEntity.ok(city);
+    }
 }

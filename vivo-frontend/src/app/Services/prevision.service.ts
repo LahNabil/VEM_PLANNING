@@ -42,4 +42,7 @@ export class PrevisionService {
   isStockSuffisant(idPrevision:number|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}suffisant/${idPrevision}`)
   }
+  calculerSommePByCityProduitDate(idDepot:String|undefined, product: string, year: number, month: number): Observable<any> {
+    return this._http.get(`${this.baseUrl}sommes/${idDepot}/${product}/${year}/${month}`);
+  }
 }

@@ -302,6 +302,15 @@ public class DepotService {
         return depotDTOS;
 
     }
+    public String getCity(String idDepot)throws DepotNotFoundException{
+        if(idDepot == null){
+           log.error("value is null");
+            return null;
+        }
+        Depot depot = depotRepository.findById(idDepot).get();
+        String city = depot.getZone();
+        return city;
+    }
 
 
 

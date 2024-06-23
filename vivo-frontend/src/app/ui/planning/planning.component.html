@@ -38,6 +38,9 @@
 <div *ngIf="stockDepot !== undefined">
   <p>Stock: {{ stockDepot }}</p>
 </div>
+<div *ngIf="previsionData !== undefined">
+  <p>Previsions: {{ previsionData }}</p>
+</div>
 
 <div class="lineChart" [chart]="lineChart"></div>
 <button (click)="getSortieParDepotProduct()">Générer le graphique</button>

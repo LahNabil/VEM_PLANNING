@@ -1,24 +1,24 @@
-<div mat-dialog-title>
+<div mat-dialog-title class="title">
   <h1>Bac Form</h1>
 </div>
 <form [formGroup]="bacForm" (ngSubmit)="onFormSubmit()">
   <div mat-dialog-content class="content">
     <div class="row">
       <mat-form-field appearance="outline">
-        <mat-label>Id Bac</mat-label>
+        <mat-label style="color: blue">Id Bac</mat-label>
         <input matInput type="text" placeholder="Bac 102" formControlName="idBac">
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Capacité de Bac</mat-label>
+        <mat-label style="color: green">Capacité de Bac</mat-label>
         <input matInput type="text" placeholder="1000.0" formControlName="capacity">
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Total Impompable</mat-label>
+        <mat-label style="color: red">Total Impompable</mat-label>
         <input matInput type="text" placeholder="50" formControlName="totalImpom">
       </mat-form-field>
       <div class="row">
         <mat-radio-group aria-label="Select an option" formControlName="status">
-          <mat-label><b>Status</b></mat-label>
+          <mat-label><b style="color:blue;">Status</b></mat-label>
           <mat-radio-button value="true">En Service</mat-radio-button>
           <mat-radio-button value="false">Hors Service</mat-radio-button>
         </mat-radio-group>
@@ -35,7 +35,7 @@
     </div>
   </div>
   <div mat-dialog-actions class="action">
-    <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button color="primary" type="submit">Update</button>
+    <button mat-raised-button type="button" style="color: #A1CD62" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button style="color: white;background-color: #A1CD62" type="submit">Update</button>
   </div>
 </form>

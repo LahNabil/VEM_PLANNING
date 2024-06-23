@@ -1,0 +1,29 @@
+<div class="slider-container">
+  <div class="card-container"
+       *ngFor="let depot of depots; let i = index"
+       [ngClass]="{
+                  'selected': i === selectedIndex,
+                  'prev': i === selectedIndex - 1,
+                  'next': i === selectedIndex + 1,
+                  'hideLeft': i < selectedIndex - 1,
+                  'hideRight': i > selectedIndex + 1
+       }"
+  >
+    <mat-card class="cards" (panright)="showPrev(i)" (panleft)="showNext(i)">
+      <img mat-card-image src="https://elenaco-ma.com/wp-content/uploads/2021/04/AUTOMATIC-TANK-GAUGING-IN-VIVOENERGY-TANTAN-DEPOT-600x455.jpg"
+           alt="depot Agadir" class="card-image">
+      <mat-card-content>
+        <h1 class="card-title">{{ depot.nameDepot }}</h1>
+        <h3>{{ depot.idDepot }}</h3>
+        <h3 class="card-text">Ville: {{ depot.zone }}</h3>
+        <div *ngIf="stocks[depot.idDepot]">
+          <h4>Stocks:</h4>
+          <div *ngFor="let stock of stocks[depot.idDepot]">
+            <p>Nom du Produit : {{ stock.nameProduit }} : {{ stock.quantite }} m3</p>
+            <p>Stock de sécurité : {{ stock.stockSecurite }} m3</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,40 +1,61 @@
-.card-container {
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.main-body {
+  padding-top: 20px;
+  margin: 0 auto;
+  max-width: 1348px;
+  .bluelight-header{
+    color: deepskyblue;
+  }
+  .greenlight-header{
+    color: #A1CD62;
+  }
+  .redlight-header{
+    color: red;
+  }
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.action {
   display: flex;
-  justify-content: space-around;
-  margin-top: 3%;
-}
-.card-image {
-  width: 100%; /* Make the image fill the card width */
-  height: 150px; /* Adjust the height of the image */
-  border-top-left-radius: 16px; /* Match the card border radius */
-  border-top-right-radius: 16px; /* Match the card border radius */
-  object-fit: cover; /* Maintain aspect ratio and cover the card */
+  gap: 5px;
 }
 
-.card {
-  box-sizing: border-box;
-  width: 400px;
-  height: 450px;
-  margin-right: 10px; /* Adjust spacing between cards */
-  background: rgba(217, 217, 217, 0.58);
-  border: 1px solid white;
-  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(6px);
-  border-radius: 17px;
-  text-align: center;
+.bar{
+  color:white;
+  background-color: #A1CD62;
+  border-radius: 7%;
+}
+.add-button {
+
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
   cursor: pointer;
-  transition: all 0.5s;
-  align-items: center;
-  user-select: none;
-  font-weight: bolder;
-  color: black;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+  &:hover {
+    background-color: darken(#A1CD62, 10%);
+    color: white;
+  }
+
+}
+.download-button {
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: darken(#A1CD62, 10%);
+    color: white;
+  }
+
 }
 
-.card:hover {
-  border: 1px solid black;
-  transform: scale(1.05);
-}
-
-.card:active {
-  transform: scale(0.95) rotateZ(1.7deg);
-}

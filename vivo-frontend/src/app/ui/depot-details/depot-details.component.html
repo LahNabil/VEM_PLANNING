@@ -1,27 +1,42 @@
 <div class="container mt-4">
   <div *ngIf="depot" class="card depot-card">
-    <div class="card-header">
-      <h2 class="card-title">{{ depot.nameDepot }}</h2>
-      <p class="card-subtitle text-muted">{{ depot.zone }}</p>
+    <div class="card-header" style="background-color: #A1CD62 ; ">
+      <h2 class="card-title" style="color: white ; font-size: 24px">{{ depot.nameDepot }}</h2>
+      <p  class="card-subtitle text-muted" ><strong style="color: white">{{ depot.zone }}</strong></p>
     </div>
     <div class="card-body">
       <div class="depot-info">
-        <p><strong>Area:</strong> {{ depot.area }}</p>
-        <p><strong>Stock</strong>{{depot.stock}}</p>
+        <p><strong style="color: #A1CD62 ;">Area:</strong> <strong> {{ depot.area }}</strong></p>
+        <p><strong style="color: #A1CD62 ;">Stock</strong> <strong> {{depot.stock}}</strong> </p>
       </div>
+      <div class="slider-container">
 
-      <div class="bac-list">
-        <h3 class="section-title">List of Bacs:</h3>
-        <div *ngFor="let bacDto of depot.bacDtos" class="bac-info">
-          <p><strong>Bac ID:</strong> {{ bacDto.idBac }}</p>
-          <p><strong>Capacity:</strong> {{ bacDto.capacity }}</p>
-          <p><strong>Total Impompable:</strong> {{ bacDto.totalImpom }}</p>
-          <p><strong>Status:</strong> {{ bacDto.status ? 'Active' : 'Inactive' }}</p>
-          <p><strong>Product:</strong> {{ bacDto.idProduct }}--{{bacDto.product?.name}}</p>
-          <p><strong>Capacity Used:</strong> {{ bacDto.capacityUsed }}</p>
-          <p><strong>Date d'ouverture:</strong> {{ bacDto.dateOuverture | date: 'dd/MM/yyyy' }}</p>
+        <div class="card-container "
+             *ngFor="let bacDto of depot.bacDtos; let i = index"
+             [ngClass]="{
+                  'selected': i === selectedIndex,
+                  'prev': i === selectedIndex - 1,
+                  'next': i === selectedIndex + 1,
+                  'hideLeft': i < selectedIndex - 1,
+                  'hideRight': i > selectedIndex + 1
+       }"
+        >
+          <mat-card class="cards" (panright)="showPrev(i)" (panleft)="showNext(i)"
+          >
+            <mat-card-content>
+              <p><strong style="color: blue">Bac ID:</strong> {{ bacDto.idBac }}</p>
+              <p><strong style="color: green">Capacity:</strong> {{ bacDto.capacity }}</p>
+              <p><strong style="color: red">Total Impompable:</strong> {{ bacDto.totalImpom }}</p>
+              <p><strong style="color: blue">Status:</strong> {{ bacDto.status ? 'Active' : 'Inactive' }}</p>
+              <p><strong style="color: green">Product:</strong> {{ bacDto.idProduct }}--{{bacDto.product?.name}}</p>
+              <p><strong style="color: red">Capacity Used:</strong> {{ bacDto.capacityUsed }}</p>
+              <p><strong style="color: blue">Date d'ouverture:</strong> {{ bacDto.dateOuverture | date: 'dd/MM/yyyy' }}</p>
+            </mat-card-content>
+          </mat-card>
+
         </div>
       </div>
+
     </div>
   </div>
   <div *ngIf="!depot" class="alert alert-danger mt-4">

@@ -1,16 +1,16 @@
-<div mat-dialog-title>
+<div mat-dialog-title class="title">
   <h1>Prevision Form</h1>
 </div>
 <form [formGroup]="previsionForm" (ngSubmit)="onFormSubmit()">
   <div mat-dialog-content class="content">
     <div class="row">
       <mat-form-field appearance="outline">
-        <mat-label>ForeCaste</mat-label>
-        <input matInput type="text" placeholder="Ex. MJ71" formControlName="foreCaste">
+        <mat-label style="color: blue">ForeCaste</mat-label>
+        <input matInput type="text" placeholder="Ex. 10000" formControlName="foreCaste">
       </mat-form-field>
       <div class="row">
         <mat-form-field appearance="outline">
-          <mat-label>Date</mat-label>
+          <mat-label style="color: green">Date</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="date">
           <mat-hint>YYYY/MM/DD</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -19,7 +19,7 @@
       </div>
       <div class="row">
         <mat-radio-group aria-label="Select an option" formControlName="business">
-          <mat-label><b>Business</b></mat-label>
+          <mat-label><b style="color: red">Business</b></mat-label>
           <mat-radio-button value="FUELS">Fuels</mat-radio-button>
           <mat-radio-button value="RETAIL">Retail</mat-radio-button>
           <mat-radio-button value="AVIATION">Aviation</mat-radio-button>
@@ -29,14 +29,14 @@
       </div>
     </div>
     <mat-form-field>
-      <mat-label>Select Product</mat-label>
+      <mat-label style="color: blue">Select Product</mat-label>
       <mat-select formControlName="nameProduct">
         <mat-option *ngFor="let product of products" [value]="product.name">{{product.name}}</mat-option>
       </mat-select>
       <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="fill">
-      <mat-label>Selectionnez une ville</mat-label>
+      <mat-label style="color: green">Selectionnez une ville</mat-label>
       <mat-select formControlName="supplyEnveloppe">
         <mat-option *ngFor="let ville of villes" [value]="ville">
           {{ ville }}
@@ -45,7 +45,7 @@
     </mat-form-field>
   </div>
   <div mat-dialog-actions class="action">
-    <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button color="primary" type="submit">{{data ? 'Update' : 'Save'}}</button>
+    <button mat-raised-button type="button" style="color: white;background-color: #A1CD62" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button style="color: #A1CD62;" type="submit">{{data ? 'Update' : 'Save'}}</button>
   </div>
 </form>

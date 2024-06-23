@@ -113,6 +113,20 @@ public class PrevisionController {
         IsStockDto isStockDto = previsionService.isStockSufficientForPrevision(idPrevision);
         return ResponseEntity.ok(isStockDto);
     }
+    @GetMapping(value = "/NextMonthPrevision", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Double> getTotalNextMonthPrevision(){
+        double totalePrevision = previsionService.getTotalNextMonthPrevision();
+        return ResponseEntity.ok(totalePrevision);
+    }
+    @GetMapping("/sommes/{idDepot}/{product}/{year}/{month}")
+    public ResponseEntity<Double>calculerSommePByCityProduitDate(@PathVariable String idDepot,
+                                                                 @PathVariable String product,
+                                                                 @PathVariable int year,
+                                                                 @PathVariable int month){
+        double somme = previsionService.calculerSommePrevisionByCityProduitDate(idDepot,product,year,month);
+        return ResponseEntity.ok(somme);
+    }
+
 //    @GetMapping("/suffisant/{idPrevision}")
 //    public ResponseEntity<Boolean>isStockSufficientForPrevision(@PathVariable Long idPrevision){
 //        Boolean value = previsionService.isStockSufficientForPrevision(idPrevision);

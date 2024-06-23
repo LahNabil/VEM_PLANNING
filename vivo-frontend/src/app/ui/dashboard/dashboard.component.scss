@@ -1,4 +1,63 @@
-.lineChart{
-  width: 500px;
-  height: 400px;
+.top-section {
+  margin-bottom: 50px;
+  margin-top: 30px;
+  @media only screen and (max-width: 1400px) {
+    width: calc(100% - 10rem);
+  }
+  @media only screen and (max-width: 1300px) {
+    width: calc(100% - 12rem);
+  }
+  @media only screen and (max-width: 1200px) {
+    width: calc(100% - 15rem);
+  }
+  @media only screen and (max-width: 1000px) {
+    width: calc(100% - 18rem);
+  }
+}
+.middle-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Adjust as needed */
+  width: calc(100% - 5rem);
+
+  .widget {
+    height: 500px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 10px;
+    box-shadow: 5px 5px 5px #939393;
+    flex: 1; /* Equal width for both widgets */
+
+    &.left {
+      width: 300px; /* Initial width */
+      @media only screen and (max-width: 1600px) {
+        width: calc(50% - 10rem); /* Adjusted width for smaller screens */
+      }
+      @media only screen and (max-width: 1500px) {
+        width: calc(50% - 12rem);
+      }
+      @media only screen and (max-width: 1400px) {
+        width: calc(50% - 14rem);
+      }
+      @media only screen and (max-width: 1200px) {
+        width: calc(50% - 17rem);
+      }
+    }
+
+    &.right {
+      width: 500px; /* Initial width */
+      @media only screen and (max-width: 1600px) {
+        width: calc(50% - 10rem); /* Adjusted width for smaller screens */
+      }
+      @media only screen and (max-width: 1500px) {
+        width: calc(50% - 12rem);
+      }
+      @media only screen and (max-width: 1400px) {
+        width: calc(50% - 14rem);
+      }
+      @media only screen and (max-width: 1200px) {
+        width: calc(50% - 17rem);
+      }
+    }
+  }
 }

@@ -1,5 +1,5 @@
-<div mat-dialog-title>
-  <h1>Bac Form</h1>
+<div mat-dialog-title class="title">
+  <h1>Ajout entree sortie</h1>
 </div>
 <form [formGroup]="bacForm" (ngSubmit)="onFormSubmit()">
   <div mat-dialog-content class="content">
@@ -38,7 +38,7 @@
 
   </div>
   <div mat-dialog-actions class="action">
-    <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button color="primary" type="submit">Save</button>
+    <button mat-raised-button type="button" style="color: white;background-color: #A1CD62" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button style="color: #A1CD62" type="submit">Save</button>
   </div>
 </form>

@@ -1,4 +1,4 @@
-<div mat-dialog-title>
+<div mat-dialog-title class="title">
   <h1>Product Form</h1>
 </div>
 <form [formGroup]="productForm" (ngSubmit)="onFormSubmit()">
@@ -22,7 +22,7 @@
     </div>
     <div class="row">
       <mat-radio-group aria-label="Select an option" formControlName="type">
-        <mat-label><b>Grade</b></mat-label>
+        <mat-label><b style="color: lightblue;">Grade</b></mat-label>
         <mat-radio-button value="GASOIL">Gasoil</mat-radio-button>
         <mat-radio-button value="SSP">SSP</mat-radio-button>
         <mat-radio-button value="JETA1">JETA1</mat-radio-button>
@@ -30,7 +30,7 @@
     </div>
     <div class="row">
       <mat-radio-group aria-label="Select an option" formControlName="status">
-        <mat-label><b>Status</b></mat-label>
+        <mat-label><b style="color: red;">Status</b></mat-label>
         <mat-radio-button value="Actif">Actif</mat-radio-button>
         <mat-radio-button value="Inactif">Inactif</mat-radio-button>
       </mat-radio-group>
@@ -38,7 +38,7 @@
 
   </div>
   <div mat-dialog-actions class="action">
-    <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button color="primary" type="submit">{{data ? 'Update' : 'Save'}}</button>
+    <button mat-raised-button type="button" [mat-dialog-close]="false" style="background: white;color: #A1CD62">Cancel</button>
+    <button mat-raised-button color="primary" type="submit"  style="background-color: #A1CD62;color: white">{{data ? 'Update' : 'Save'}}</button>
   </div>
 </form>

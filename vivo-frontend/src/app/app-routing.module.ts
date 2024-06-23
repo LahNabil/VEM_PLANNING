@@ -9,17 +9,24 @@ import {DepotDetailsComponent} from "./ui/depot-details/depot-details.component"
 import {StockDepotComponent} from "./ui/stock-depot/stock-depot.component";
 import {PrevisionComponent} from "./ui/prevision/prevision.component";
 import {DashboardComponent} from "./ui/dashboard/dashboard.component";
+import {PlanningComponent} from "./ui/planning/planning.component";
+import {SliderDepotStockComponent} from "./ui/slider-depot-stock/slider-depot-stock.component";
+import {AuthGuard} from "./guards/auth.guard";
 
 const routes: Routes = [
-  {path: "products",component: ProductsComponent},
+
   {path: "products_details/:idProduit", component: ProductDetailsComponent},
-  {path: "bac", component: BacComponent},
-  {path: "ess",component: EntreSortieComponent },
-  {path: "depots", component: DepotComponent},
-  {path: "depot-detail/:idDepot", component: DepotDetailsComponent},
-  {path: "stock-depot", component: StockDepotComponent},
-  {path: "prevision", component:PrevisionComponent},
-  {path: "", component:DashboardComponent}
+  {path:'', redirectTo:'dashboard',pathMatch:'full'},
+  {path:'dashboard', component: DashboardComponent},
+  {path:'products', component:ProductsComponent, canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
+  {path:'planning', component:PlanningComponent, canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
+  {path:'salesforcast', component:PrevisionComponent, canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
+  {path:'bac', component:BacComponent,canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
+  {path:'depot', component:DepotComponent,canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
+  {path:'stock', component:StockDepotComponent,canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
+  {path:'entresortie', component:EntreSortieComponent,canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
+  { path: 'depot-detail/:idDepot', component:DepotDetailsComponent,canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
+  { path: 'test/:idDepot', component:SliderDepotStockComponent},
 ];
 
 @NgModule({

@@ -17,4 +17,10 @@ export class ESService {
   getSortiesParProduitDepot(idDepot :string|undefined, nameProduct:string|undefined):Observable<any>{
     return this._http.get(`${this.baseUrl}${idDepot}/${nameProduct}`)
   }
+  getEntreeBymonth():Observable<any>{
+    return this._http.get(`${this.baseUrl}entreeByMonth`)
+  }
+  getSortieByMonth():Observable<any>{
+    return this._http.get(`${this.baseUrl}sortieByMonth`)
+  }
 }

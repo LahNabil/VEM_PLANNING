@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,6 +71,72 @@ public class EsService {
                 .collect(Collectors.toList());
         return esDtoList;
     }
+    public List<ESDto> getSortiesParProduitDepotDate(String idDepot, String nameProduct, int year, int month) throws EntityNotFoundException {
+        if (idDepot == null) {
+            throw new IllegalArgumentException("idDepot must not be null");
+        }
+        if (nameProduct == null) {
+            throw new IllegalArgumentException("nameProduct must not be null");
+        }
+
+        // Correct the month value (0-based index)
+        month = month - 1;
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date startDate = cal.getTime();
+        log.info("Start Date: {}", startDate);
+
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = cal.getTime();
+        log.info("End Date: {}", endDate);
+
+        Depot depot = depotRepository.findById(idDepot).orElseThrow(() -> new EntityNotFoundException("Depot not found"));
+        List<Bac> bacList = depot.getBacs();
+        List<Bac> bacListFilteredByProductName = bacList.stream()
+                .filter(bac -> {
+                    String productName = bacService.getProductNameById(bac.getIdProduct());
+                    return productName.equals(nameProduct);
+                })
+                .collect(Collectors.toList());
+
+        List<EntreSortie> ESList = entreSortieRepository.findAll();
+
+        ESList = ESList.stream()
+                .filter(es -> {
+                    boolean matchesBac = bacListFilteredByProductName.stream()
+                            .anyMatch(bac -> bac.getIdBac().equals(es.getBac().getIdBac()));
+                    boolean matchesDate = !es.getDate().before(startDate) && !es.getDate().after(endDate);
+                    return matchesBac && matchesDate;
+                })
+                .collect(Collectors.toList());
+
+        List<ESDto> esDtoList = ESList.stream()
+                .map(es -> {
+                    ESDto esDto = esMapper.toModel(es);
+                    if (es.getQuantite() != 0) {
+                        if (Boolean.FALSE.equals(es.getTypeES())) {
+                            esDto.setQuantite(-es.getQuantite());
+                        } else {
+                            esDto.setQuantite(es.getQuantite());
+                        }
+                    }
+                    try {
+                        esDto.setIdBac(es.getBac().getIdBac());
+                        BacDto bacDto = bacService.getBacById(esDto.getIdBac());
+                        esDto.setNameProduct(bacService.getProductNameById(bacDto.getIdProduct()));
+                    } catch (EntityNotFoundException e) {
+                        log.error("Bac not found for Bac ID: " + es.getId());
+                    }
+                    return esDto;
+                })
+                .collect(Collectors.toList());
+
+        return esDtoList;
+    }
+
     public List<ESDto> getAllES(){
         List<EntreSortie> ESList = entreSortieRepository.findAll();
         List<ESDto> esDtoList = new ArrayList<>();

@@ -12,7 +12,7 @@ import {PrevisionService} from "../../Services/prevision.service";
 @Component({
   selector: 'app-planning',
   templateUrl: './planning.component.html',
-  styleUrls: ['./planning.component.scss']
+  styleUrl: './planning.component.scss'
 })
 export class PlanningComponent implements OnInit {
   selectedDepot: string | undefined;
@@ -26,6 +26,7 @@ export class PlanningComponent implements OnInit {
   products: Product[] = [];
   depots: Depot[] = [];
   lineChart!: Chart;
+  esList: EntreSortie[] = [];
   initialValue: number | undefined;
   selectedYear: number | undefined;
   selectedMonth: number | undefined;
@@ -35,6 +36,8 @@ export class PlanningComponent implements OnInit {
   ngOnInit() {
     this.getAllProducts();
     this.getAllDepots();
+    this.initializeEmptyChart();
+    this.getESParDepotProductDate();
   }
 
   getAllDepots() {
@@ -65,10 +68,6 @@ export class PlanningComponent implements OnInit {
     }
   }
   getPrevisionData() {
-    console.log('Selected Depot:', this.selectedDepot);  // Log selectedDepot
-    console.log('Selected Product:', this.selectedProduct);  // Log selectedProduct
-    console.log('Selected Year:', this.selectedYear);  // Log selectedYear
-    console.log('Selected Month:', this.selectedMonth);  // Log selectedMonth
 
     if (this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth) {
       this.previsionService.calculerSommePByCityProduitDate(this.selectedDepot, this.selectedProduct, this.selectedYear, this.selectedMonth).subscribe(data => {
@@ -79,13 +78,20 @@ export class PlanningComponent implements OnInit {
       });
     }
   }
+  getESParDepotProductDate(){
+    if(this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth){
+      this.depotService.calculerStockDepotProduitDate(this.selectedDepot, this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe(data=>{
+        this.esList = data;
+      })
+    }
+  }
 
-  getSortieParDepotProduct() {
+  getSortieParDepotProductDate() {
     if (this.selectedDepot && this.selectedProduct) {
-      this.depotService.calculerStockDepotProduit(this.selectedDepot, this.selectedProduct).subscribe(data => {
+      this.depotService.calculerStockDepotProduitDate(this.selectedDepot, this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe(data => {
         this.initialValue = data || 0;
 
-        this.esService.getSortiesParProduitDepot(this.selectedDepot, this.selectedProduct).subscribe((sorties: any[]) => {
+        this.esService.getSortiesParProduitDepotDate(this.selectedDepot, this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe((sorties: any[]) => {
           const dates = sorties.map(sortie => sortie.date);
           const quantites = sorties.map(sortie => sortie.quantite);
 
@@ -97,7 +103,7 @@ export class PlanningComponent implements OnInit {
             }
             return acc;
           }, []);
-          const safetyStockValue = 5000;
+          const safetyStockValue = 3000;
           const safetyStockLine = new Array(cumulativeQuantites.length).fill(safetyStockValue);
 
           this.lineChart = new Chart({
@@ -105,7 +111,7 @@ export class PlanningComponent implements OnInit {
               type: 'line'
             },
             title: {
-              text: 'Linechart'
+              text: 'Flux Mensuel des Stocks par Dépôt et Produit'
             },
             credits: {
               enabled: false
@@ -141,10 +147,52 @@ export class PlanningComponent implements OnInit {
       });
     }
   }
-
+  initializeEmptyChart() {
+    this.lineChart = new Chart({
+      chart: {
+        type: 'line'
+      },
+      title: {
+        text: 'Flux Mensuel des Stocks par Dépôt et Produit'
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        categories: [],
+        title: {
+          text: 'Dates'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'Quantités'
+        },
+        min: 0
+      },
+      series: [
+        {
+          type: 'line',
+          name: 'ES',
+          data: []
+        },
+        {
+          type: 'line',
+          name: 'Safety Stock',
+          data: [],
+          dashStyle: 'Dash',
+          color: '#FF0000'
+        }
+      ]
+    });
+  }
   onSelectionChange() {
     this.getCapacityData();
     this.getStockData();
     this.getPrevisionData();
+
+    if (this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth) {
+      this.getSortieParDepotProductDate();
+    }
   }
 }

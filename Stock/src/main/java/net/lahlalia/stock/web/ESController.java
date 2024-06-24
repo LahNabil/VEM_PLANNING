@@ -38,5 +38,11 @@ public class ESController {
         double totalQuantity = esService.getSortiebymonth();
         return ResponseEntity.ok(totalQuantity);
     }
+    @GetMapping(value = "/{idDepot}/{nameProduct}/{year}/{month}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ESDto>> getSortiesParProduitDepotDate(@PathVariable String idDepot,@PathVariable String nameProduct,@PathVariable int year,@PathVariable int month) {
+        List<ESDto> esDtoList = esService.getSortiesParProduitDepotDate(idDepot, nameProduct,year,month);
+        return ResponseEntity.ok(esDtoList);
+    }
+
 
 }

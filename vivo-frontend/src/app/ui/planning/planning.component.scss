@@ -1,0 +1,22 @@
+.form-field-container {
+  display: flex;
+  gap: 16px;
+
+
+}
+
+.mat-form-field {
+  flex: 1;
+}
+.container {
+  display: flex;
+  margin-bottom: 20px;
+
+}
+
+.info-container {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+  background-color: white;
+}

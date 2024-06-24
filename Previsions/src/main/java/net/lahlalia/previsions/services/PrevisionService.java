@@ -1,8 +1,5 @@
 package net.lahlalia.previsions.services;
 
-
-
-
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -273,7 +271,7 @@ public class PrevisionService {
                 .sum();
         return totalCapacityUsed;
     }
-//    public boolean isStockSufficientForPrevision(Long idPrevision) throws PrevisionNotFoundException {
+    //    public boolean isStockSufficientForPrevision(Long idPrevision) throws PrevisionNotFoundException {
 //        Prevision prevision = previsionRepository.findById(idPrevision)
 //                .orElseThrow(() -> new PrevisionNotFoundException("Prevision with ID " + idPrevision + " not found"));
 //        PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
@@ -285,37 +283,37 @@ public class PrevisionService {
 //        //Si le stock actuel (currentStock) est supérieur ou égal à la quantité prévue (forecastedQuantity), la méthode retourne true. Cela signifie que le stock est suffisant pour répondre à la prévision.
 //        return currentStock >= forecastedQuantity;
 //    }
-public IsStockDto isStockSufficientForPrevision(Long idPrevision) throws PrevisionNotFoundException {
-    Prevision prevision = previsionRepository.findById(idPrevision)
-            .orElseThrow(() -> new PrevisionNotFoundException("Prevision with ID " + idPrevision + " not found"));
-    PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
+    public IsStockDto isStockSufficientForPrevision(Long idPrevision) throws PrevisionNotFoundException {
+        Prevision prevision = previsionRepository.findById(idPrevision)
+                .orElseThrow(() -> new PrevisionNotFoundException("Prevision with ID " + idPrevision + " not found"));
+        PrevisionDto previsionDto = mapperPrevision.convertToDto(prevision);
 
 
 
-    double safetyStock = 1130;
-    double forecastedQuantity = previsionDto.getForeCaste();
-    double currentStock = calculerQuantiteStockProduitVille(idPrevision) - safetyStock;
-    List<BacItem> bacItems = previsionDto.getBacItems();
-    double creuxBacs = bacItems.stream()
-            .mapToDouble(bacItem->bacItem.getCapacity() - bacItem.getCapacityUsed())
-            .sum();
-    double capacityProduit = bacItems.stream()
-            .mapToDouble(BacItem::getCapacity)
-            .sum();
+        double safetyStock = 1130;
+        double forecastedQuantity = previsionDto.getForeCaste();
+        double currentStock = calculerQuantiteStockProduitVille(idPrevision) - safetyStock;
+        List<BacItem> bacItems = previsionDto.getBacItems();
+        double creuxBacs = bacItems.stream()
+                .mapToDouble(bacItem->bacItem.getCapacity() - bacItem.getCapacityUsed())
+                .sum();
+        double capacityProduit = bacItems.stream()
+                .mapToDouble(BacItem::getCapacity)
+                .sum();
 
-    IsStockDto isStockDto = IsStockDto.builder()
-            .stockActuel(currentStock)
-            .safetyStock(safetyStock)
-            .forecaste(forecastedQuantity)
-            .nameProduct(previsionDto.getNameProduct())
-            .creux(creuxBacs)
-            .ville(previsionDto.getSupplyEnveloppe())
-            .productCapacity(capacityProduit)
-            .build();
+        IsStockDto isStockDto = IsStockDto.builder()
+                .stockActuel(currentStock)
+                .safetyStock(safetyStock)
+                .forecaste(forecastedQuantity)
+                .nameProduct(previsionDto.getNameProduct())
+                .creux(creuxBacs)
+                .ville(previsionDto.getSupplyEnveloppe())
+                .productCapacity(capacityProduit)
+                .build();
 
-    //Si le stock actuel (currentStock) est supérieur ou égal à la quantité prévue (forecastedQuantity), la méthode retourne true. Cela signifie que le stock est suffisant pour répondre à la prévision.
-     return isStockDto;
-}
+        //Si le stock actuel (currentStock) est supérieur ou égal à la quantité prévue (forecastedQuantity), la méthode retourne true. Cela signifie que le stock est suffisant pour répondre à la prévision.
+        return isStockDto;
+    }
     public double getTotalNextMonthPrevision(){
         List<PrevisionDto> previsions = previsionRepository.findAll().stream().map(mapperPrevision::convertToDto).toList();
         double totalPrevision=0;
@@ -339,6 +337,52 @@ public IsStockDto isStockSufficientForPrevision(Long idPrevision) throws Previsi
             }
         }
         return totalPrevision;
+    }
+    public List<PrevisionDto> getPrevisionByCityProduit(String ville,String produit)throws EntityNotFoundException{
+        if(ville == null ||produit == null){
+            log.error("value is null");
+            return null;
+        }
+        List<PrevisionDto> previsionDtos = getAllPrevision();
+        List<PrevisionDto> filteredPrevisions = previsionDtos.stream()
+                .filter(prevision -> ville.equals(prevision.getSupplyEnveloppe()) && produit.equals(prevision.getNameProduct()))
+                .collect(Collectors.toList());
+
+        return filteredPrevisions;
+
+
+    }
+    public double calculerSommePrevisionByCityProduitDate(String idDepot, String produit, int year, int month) {
+        if (idDepot == null || produit == null) {
+            log.error("value is null");
+            return 0;
+        }
+        String ville = stockRestClient.getCityDepot(idDepot);
+        int adjustedMonth = month - 1;
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, adjustedMonth);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date startDate = cal.getTime();
+        log.info("Start Date: {}", startDate);
+
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = cal.getTime();
+
+        List<PrevisionDto> previsionDtos = getPrevisionByCityProduit(ville, produit);
+
+        double somme = previsionDtos.stream()
+                .filter(previsionDto -> {
+                    Calendar previsionCal = Calendar.getInstance();
+                    previsionCal.setTime(previsionDto.getDate());
+                    int previsionYear = previsionCal.get(Calendar.YEAR);
+                    int previsionMonth = previsionCal.get(Calendar.MONTH);
+                    return previsionYear == year && previsionMonth == adjustedMonth;
+                })
+                .mapToDouble(PrevisionDto::getForeCaste)
+                .sum();
+        return somme;
     }
 
 

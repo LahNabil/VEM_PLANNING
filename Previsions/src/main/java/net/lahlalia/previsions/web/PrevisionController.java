@@ -38,7 +38,7 @@ public class PrevisionController {
         String nameProduct = bacItemService.getProductNameByIDBac(idBac);
         return ResponseEntity.ok(nameProduct);
     }
-//    @GetMapping("/bac/{idPrevision}")
+    //    @GetMapping("/bac/{idPrevision}")
 //    public ResponseEntity<List<Bac>> getBacsByIdPrevision(@PathVariable Long idPrevision){
 //        List<Bac> bacs = previsionService.getBacsByProdZonePrevision(idPrevision);
 //        return ResponseEntity.ok(bacs);
@@ -76,7 +76,7 @@ public class PrevisionController {
         List<EsDto> esDtoList = previsionService.getEsDtos();
         return ResponseEntity.ok(esDtoList);
     }
-//    @GetMapping("/cdate/{date1}/{date2}")
+    //    @GetMapping("/cdate/{date1}/{date2}")
 //    public ResponseEntity<Boolean> checkSameMonthAndYear(@PathVariable Date date1, @PathVariable Date date2) {
 //        boolean result = previsionService.compareDatesByYearAndMonth(date1, date2);
 //        return ResponseEntity.ok(result);
@@ -118,6 +118,14 @@ public class PrevisionController {
         double totalePrevision = previsionService.getTotalNextMonthPrevision();
         return ResponseEntity.ok(totalePrevision);
     }
+    @GetMapping("/sommes/{idDepot}/{product}/{year}/{month}")
+    public ResponseEntity<Double>calculerSommePByCityProduitDate(@PathVariable String idDepot,
+                                                                 @PathVariable String product,
+                                                                 @PathVariable int year,
+                                                                 @PathVariable int month){
+        double somme = previsionService.calculerSommePrevisionByCityProduitDate(idDepot,product,year,month);
+        return ResponseEntity.ok(somme);
+    }
 
 //    @GetMapping("/suffisant/{idPrevision}")
 //    public ResponseEntity<Boolean>isStockSufficientForPrevision(@PathVariable Long idPrevision){
@@ -135,4 +143,3 @@ public class PrevisionController {
 //    }
 
 }
-

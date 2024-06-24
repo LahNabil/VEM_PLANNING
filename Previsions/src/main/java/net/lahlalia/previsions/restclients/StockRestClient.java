@@ -30,6 +30,7 @@ public interface StockRestClient {
     @GetMapping("/api/depot/bacs/{nameProduct}/{zoneDepot}")
     public List<Bac> getBacsByProductAndZone(@PathVariable("nameProduct") String nameProduct, @PathVariable("zoneDepot") String zoneDepot);
 
+    @GetMapping("/api/depot/getcitydepot/{idDepot}")
+    public String getCityDepot(@PathVariable String idDepot);
 
 }
-

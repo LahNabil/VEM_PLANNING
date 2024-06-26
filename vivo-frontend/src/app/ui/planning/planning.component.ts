@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { EntreSortie } from "../../models/EntreSortie";
 import { Depot } from "../../models/Depot";
 import { Product } from "../../models/Product";
@@ -8,6 +8,10 @@ import { ESService } from "../../Services/es.service";
 import { Router } from "@angular/router";
 import { DepotService } from "../../Services/depot.service";
 import {PrevisionService} from "../../Services/prevision.service";
+import {StockEsDto} from "../../models/StockEsDto";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-planning',
@@ -30,14 +34,35 @@ export class PlanningComponent implements OnInit {
   initialValue: number | undefined;
   selectedYear: number | undefined;
   selectedMonth: number | undefined;
+  stockEsDto: StockEsDto = new StockEsDto();
+  stockEsDtos: StockEsDto[] = [];
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
 
   constructor(private previsionService: PrevisionService,private produitService: ProductService, private esService: ESService, private router: Router, private depotService: DepotService) {}
-
+  displayedColumns: string[] = [
+    'dateJour',
+    'stockInitial',
+    'entre',
+    'sortie',
+    'stockFinale'
+  ];
   ngOnInit() {
     this.getAllProducts();
     this.getAllDepots();
     this.initializeEmptyChart();
     this.getESParDepotProductDate();
+  }
+  getMontlyReport(){
+    this.esService.generateMonthlyStockReport(this.selectedDepot,this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe({
+      next: (res)=>{
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      }
+    })
   }
 
   getAllDepots() {
@@ -190,9 +215,18 @@ export class PlanningComponent implements OnInit {
     this.getCapacityData();
     this.getStockData();
     this.getPrevisionData();
+    this.getMontlyReport();
 
     if (this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth) {
       this.getSortieParDepotProductDate();
+    }
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
 }

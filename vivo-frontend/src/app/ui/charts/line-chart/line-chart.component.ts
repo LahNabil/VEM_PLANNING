@@ -34,7 +34,7 @@ export class LineChartComponent implements OnInit {
     this.getAllProducts();
     this.getAllDepots();
     this.getSortieParDepotProduct();
-    this.initializeEmptyChart();
+    this.initializeChartWithStaticData();
 
   }
 
@@ -110,19 +110,22 @@ export class LineChartComponent implements OnInit {
       this.getSortieParDepotProduct();
     }
   }
-  initializeEmptyChart() {
+  initializeChartWithStaticData() {
+    const staticDates = ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01'];
+    const staticQuantites = [10, 15, 20, 25];
+
     this.lineChart = new Chart({
       chart: {
         type: 'line'
       },
       title: {
-        text: 'Empty Linechart'
+        text: 'Initial Linechart '
       },
       credits: {
         enabled: false
       },
       xAxis: {
-        categories: [],
+        categories: staticDates,
         title: {
           text: 'Dates'
         }
@@ -135,8 +138,8 @@ export class LineChartComponent implements OnInit {
       series: [
         {
           type: 'line',
-          name: 'ES',
-          data: []
+          name: 'Static Data',
+          data: staticQuantites
         }
       ]
     });

@@ -55,6 +55,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import { MontlyReportComponent } from './ui/montly-report/montly-report.component';
+import { WelcomePageComponent } from './ui/welcome-page/welcome-page.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -101,6 +102,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SliderDepotStockComponent,
     BodyComponent,
     MontlyReportComponent,
+    WelcomePageComponent,
 
 
 

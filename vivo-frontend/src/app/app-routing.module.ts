@@ -12,12 +12,14 @@ import {DashboardComponent} from "./ui/dashboard/dashboard.component";
 import {PlanningComponent} from "./ui/planning/planning.component";
 import {SliderDepotStockComponent} from "./ui/slider-depot-stock/slider-depot-stock.component";
 import {AuthGuard} from "./guards/auth.guard";
+import {WelcomePageComponent} from "./ui/welcome-page/welcome-page.component";
 
 const routes: Routes = [
 
   {path: "products_details/:idProduit", component: ProductDetailsComponent},
-  {path:'', redirectTo:'dashboard',pathMatch:'full'},
-  {path:'dashboard', component: DashboardComponent},
+  {path:'', redirectTo:'welcome',pathMatch:'full'},
+  {path: 'welcome',component:WelcomePageComponent},
+  {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
   {path:'products', component:ProductsComponent, canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
   {path:'planning', component:PlanningComponent, canActivate:[AuthGuard], data: {roles:["ADMIN"]}},
   {path:'salesforcast', component:PrevisionComponent, canActivate:[AuthGuard], data: {roles:["ADMIN"]}},

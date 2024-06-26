@@ -38,33 +38,31 @@
 
 <div class="lineChart" [chart]="lineChart"></div>
 <div class="container">
-  <div class="info-container">
-    <div *ngIf="capacity !== undefined">
-      <strong><p style="color: blue">Capacity: {{ capacity }}</p></strong>
-    </div>
-    <div *ngIf="stockDepot !== undefined">
-      <strong><p style="color: green">Stock: {{ stockDepot }}</p></strong>
-    </div>
-    <div *ngIf="previsionData !== undefined">
-      <strong><p style="color: red">Previsions: {{ previsionData }}</p></strong>
-    </div>
+  <div class="info-container" *ngIf="capacity !== undefined">
+    <strong><p style="color: blue">Capacity: {{ capacity }}</p></strong>
+  </div>
+  <div class="info-container" *ngIf="stockDepot !== undefined">
+    <strong><p style="color: green">Stock: {{ stockDepot }}</p></strong>
+  </div>
+  <div class="info-container" *ngIf="previsionData !== undefined">
+    <strong><p style="color: red">Previsions: {{ previsionData }}</p></strong>
   </div>
 </div>
+
 <!-- planning.component.html -->
 <div class="p-3">
-  <mat-toolbar class="bar">
-    <span>Products</span>
-    <span class="example-spacer"></span>
-    <button mat-raised-button class="download-button">
-      Download File
-    </button>
-  </mat-toolbar>
   <div class="main-body">
 
-    <mat-form-field style="width: 180px; ">
-      <mat-label style="color: #A1CD62; ">Filter</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ex.500" #input>
-    </mat-form-field>
+    <div class="filter-container">
+      <mat-form-field style="width: 180px;">
+        <mat-label style="color: #A1CD62;">Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex.500" #input>
+      </mat-form-field>
+      <button mat-raised-button class="download-button" (click)="exportExcel()">
+        Download File
+      </button>
+    </div>
+
 
     <div class="table-container">
       <table mat-table [dataSource]="dataSource" matSort id="table-data">

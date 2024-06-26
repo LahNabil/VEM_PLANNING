@@ -10,7 +10,9 @@
 }
 .container {
   display: flex;
+  gap: 20px;
   margin-bottom: 20px;
+  align-items: center;
 
 }
 
@@ -19,4 +21,30 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
   background-color: white;
+}
+
+.lineChart{
+  height: 80%;
+}
+.download-button {
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #A1CD62;
+  height: 50px;
+  &:hover {
+    background-color: darken(#A1CD62, 10%);
+    color: white;
+  }
+
+}
+
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }

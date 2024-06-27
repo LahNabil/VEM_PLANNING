@@ -53,7 +53,7 @@ export class PlanningComponent implements OnInit {
   ngOnInit() {
     this.getAllProducts();
     this.getAllDepots();
-    this.initializeStaticChart();
+    this.initializeEmptyChart();
     this.getESParDepotProductDate();
   }
   getMontlyReport(){
@@ -173,7 +173,7 @@ export class PlanningComponent implements OnInit {
       });
     }
   }
-  initializeStaticChart() {
+  initializeEmptyChart() {
     this.lineChart = new Chart({
       chart: {
         type: 'line'
@@ -185,7 +185,7 @@ export class PlanningComponent implements OnInit {
         enabled: false
       },
       xAxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        categories: [],
         title: {
           text: 'Dates'
         }
@@ -200,12 +200,12 @@ export class PlanningComponent implements OnInit {
         {
           type: 'line',
           name: 'ES',
-          data: [10, 20, 15, 30, 40, 35]
+          data: []
         },
         {
           type: 'line',
           name: 'Safety Stock',
-          data: [3000, 3000, 3000, 3000, 3000, 3000],
+          data: [],
           dashStyle: 'Dash',
           color: '#FF0000'
         }

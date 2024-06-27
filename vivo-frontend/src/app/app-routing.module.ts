@@ -11,11 +11,13 @@ import {PrevisionComponent} from "./ui/prevision/prevision.component";
 import {DashboardComponent} from "./ui/dashboard/dashboard.component";
 import {PlanningComponent} from "./ui/planning/planning.component";
 import {SliderDepotStockComponent} from "./ui/slider-depot-stock/slider-depot-stock.component";
+import {LandingPageComponent} from "./ui/landing-page/landing-page.component";
 
 const routes: Routes = [
 
   {path: "products_details/:idProduit", component: ProductDetailsComponent},
-  {path:'', redirectTo:'dashboard',pathMatch:'full'},
+  {path:'', redirectTo:'landing',pathMatch:'full'},
+  {path:'landing', component: LandingPageComponent},
   {path:'dashboard', component: DashboardComponent},
   {path:'products', component:ProductsComponent},
   {path:'planning', component:PlanningComponent},

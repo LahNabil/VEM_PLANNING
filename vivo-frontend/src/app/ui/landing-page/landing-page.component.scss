@@ -1,0 +1,40 @@
+
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  padding: 20px; /* Adjust padding as necessary */
+  box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
+}
+
+.text {
+  position: relative;
+  z-index: 1;
+  font-size: 3em;
+  letter-spacing: 2px; /* Adjust letter spacing as necessary */
+  font-family: monospace;
+  border-right: 2px solid; /* Adjust thickness as necessary */
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 4s steps(30, end) 1s infinite normal both, cursor .5s step-end infinite alternate;
+  line-height: 1; /* Ensures text line height matches font size */
+}
+
+
+@keyframes cursor {
+  50% {
+    border-color: transparent;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 32ch; /* Adjust this based on the number of characters */
+  }
+}

@@ -16,7 +16,7 @@ import {LandingPageComponent} from "./ui/landing-page/landing-page.component";
 const routes: Routes = [
 
   {path: "products_details/:idProduit", component: ProductDetailsComponent},
-  {path:'', redirectTo:'landing',pathMatch:'full'},
+  {path:'', redirectTo:'dashboard',pathMatch:'full'},
   {path:'landing', component: LandingPageComponent},
   {path:'dashboard', component: DashboardComponent},
   {path:'products', component:ProductsComponent},

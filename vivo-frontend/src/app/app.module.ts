@@ -50,6 +50,7 @@ import { BodyComponent } from './ui/body/body.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { LandingPageComponent } from './ui/landing-page/landing-page.component';
+import { MainComponent } from './main/main.component';
 
 
 
@@ -82,6 +83,7 @@ import { LandingPageComponent } from './ui/landing-page/landing-page.component';
     SliderDepotStockComponent,
     BodyComponent,
     LandingPageComponent,
+    MainComponent,
 
 
   ],

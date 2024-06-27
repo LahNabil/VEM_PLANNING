@@ -12,6 +12,7 @@ import {DashboardComponent} from "./ui/dashboard/dashboard.component";
 import {PlanningComponent} from "./ui/planning/planning.component";
 import {SliderDepotStockComponent} from "./ui/slider-depot-stock/slider-depot-stock.component";
 import {LandingPageComponent} from "./ui/landing-page/landing-page.component";
+import {AppComponent} from "./app.component";
 
 const routes: Routes = [
 
@@ -28,6 +29,7 @@ const routes: Routes = [
   {path:'entresortie', component:EntreSortieComponent},
   { path: 'depot-detail/:idDepot', component:DepotDetailsComponent},
   { path: 'test/:idDepot', component:SliderDepotStockComponent},
+  { path: 'app', component:AppComponent},
 ];
 
 @NgModule({

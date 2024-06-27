@@ -1,6 +1,14 @@
 <app-header></app-header>
-<app-side-bar (onToggleSideNav)="onToggleSideNav($event)"></app-side-bar>
-<app-body
-  [collapsed]="isSideNavCollapsed"
-  [screenWidth]="screenWidth">
-</app-body>
+
+<!-- Conditional rendering based on isConnected -->
+<div *ngIf="isConnected === 0; else loggedInTemplate">
+  <app-landing-page></app-landing-page>
+</div>
+
+<ng-template #loggedInTemplate>
+  <app-side-bar (onToggleSideNav)="onToggleSideNav($event)"></app-side-bar>
+  <app-body
+    [collapsed]="isSideNavCollapsed"
+    [screenWidth]="screenWidth">
+  </app-body>
+</ng-template>

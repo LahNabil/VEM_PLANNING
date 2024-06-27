@@ -5,17 +5,16 @@ interface SideNavToggle{
   collapsed: boolean;
 }
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrl: './main.component.scss'
 })
-export class AppComponent {
-  title = 'vivo-frontend';
+export class MainComponent {
   isSideNavCollapsed = false;
   screenWidth=0;
-  isConnected=1;
   onToggleSideNav(data: SideNavToggle):void{
     this.screenWidth=data.screenWidth;
     this.isSideNavCollapsed=data.collapsed;
+
   }
 }

@@ -12,8 +12,10 @@ import net.lahlalia.stock.exceptions.DepotNotFoundException;
 import net.lahlalia.stock.mappers.*;
 import net.lahlalia.stock.repositories.BacRepository;
 import net.lahlalia.stock.repositories.DepotRepository;
+import net.lahlalia.stock.repositories.EntreSortieRepository;
 import net.lahlalia.stock.repositories.HistoryStockRepository;
 import net.lahlalia.stock.restClients.ProductRestClient;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,8 @@ public class DepotService {
     private final HistoryStockRepository historyStockRepository;
     private final MapperHistoryStock historyStockMapper;
     private final HistoryStockService historyStockService;
+    private final EntreSortieRepository entreSortieRepository;
+    private final ESMapper esMapper;
 
     public DepotDTO saveDepot(DepotDTO dto){
         return depotMapper.toModel(
@@ -102,56 +106,110 @@ public class DepotService {
         return stock;
 
     }
-    public double CalculerStockProduitDepotYearMonth(String idDepot, String nameProduct, int year, int month) {
-
-
-        if (idDepot == null) {
-            throw new IllegalArgumentException("idDepot must not be null");
+    public List<ESDto> getSortiesParProduitDepot(String idDepot,String nameProduct)throws EntityNotFoundException{
+        if(nameProduct == null || idDepot == null){
+            return null;
         }
-        if (nameProduct == null) {
-            throw new IllegalArgumentException("nameProduct must not be null");
-        }
-
-        // Correct the month value (0-based index)
-        month = month - 1;
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date startDate = cal.getTime();
-        log.info("Start Date: {}", startDate);
-
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        Date endDate = cal.getTime();
-        log.info("End Date: {}", endDate);
-
-        // Get all history data
-        List<HistoryDto> historyDtoList = historyStockService.getAllHistoryDto();
-        log.info("Total History Records: {}", historyDtoList.size());
-
-        // Filter the list by idDepot, nameProduct, and date range
-        List<HistoryDto> filteredHistory = historyDtoList.stream()
-                .filter(history -> {
-                    boolean idDepotMatch = history.getIdDepot().equals(idDepot);
-                    boolean nameProductMatch = history.getNameProduct().equals(nameProduct);
-                    Date historyDate = history.getDateJour();
-                    boolean dateMatch = !historyDate.before(startDate) && !historyDate.after(endDate);
-                    log.info("History Record - ID: {}, Product: {}, Date: {}, ID Match: {}, Product Match: {}, Date Match: {}",
-                            history.getIdDepot(), history.getNameProduct(), historyDate, idDepotMatch, nameProductMatch, dateMatch);
-                    return idDepotMatch && nameProductMatch && dateMatch;
+        Depot depot = depotRepository.findById(idDepot).get();
+        List<Bac> bacList = depot.getBacs();
+        List<Bac> bacListFilteredByProductName = bacList.stream()
+                .filter(bac-> {
+                    String productName = bacService.getProductNameById(bac.getIdProduct());
+                    return productName.equals(nameProduct);
                 })
                 .collect(Collectors.toList());
+        List<EntreSortie> ESList = entreSortieRepository.findAll();
 
-        log.info("Filtered History Records: {}", filteredHistory.size());
+        ESList = ESList.stream()
+                .filter(es->bacListFilteredByProductName.stream()
+                        .anyMatch(bac->bac.getIdBac().equals(es.getBac().getIdBac())))
+                .collect(Collectors.toList());
+        List<ESDto> esDtoList = ESList.stream()
+                .map(es -> {
+                    ESDto esDto = esMapper.toModel(es);
+                    if (es.getQuantite() != 0) {
+                        if (Boolean.FALSE.equals(es.getTypeES())) {
+                            esDto.setQuantite(-es.getQuantite());
+                        } else {
+                            esDto.setQuantite(es.getQuantite());
+                        }
+                    }
+                    try {
+                        esDto.setIdBac(es.getBac().getIdBac());
+                        BacDto bacDto = bacService.getBacById(esDto.getIdBac());
+                        esDto.setNameProduct(bacService.getProductNameById(bacDto.getIdProduct()));
+                    } catch (EntityNotFoundException e) {
+                        log.error("Bac not found for Bac ID: " + es.getId());
+                    }
+                    return esDto;
+                })
+                .collect(Collectors.toList());
+        return esDtoList;
+    }
+    public double CalculerStockProduitDepotYearMonth(String idDepot, String nameProduct, int year, int month) {
 
-        // Calculate the stock
-        double stock = filteredHistory.stream()
-                .mapToDouble(HistoryDto::getStock)
-                .sum();
-        log.info("Calculated Stock: {}", stock);
+            List<HistoryDto> historyDtoList = historyStockService.getAllHistoryDto();
+            List<HistoryDto> filteredHistoryList = historyDtoList.stream()
+                    .filter(history -> history.getIdDepot().equals(idDepot) && history.getNameProduct().equals(nameProduct))
+                    .collect(Collectors.toList());
+            List<ESDto> esDtoList = getSortiesParProduitDepot(idDepot,nameProduct);
+            List<StockEsDto> stockEsDtoList = new ArrayList<>();
+            double stockInitial = 0.0; // Initialiser avec une valeur par défaut
 
-        return stock;
+            Calendar cal = Calendar.getInstance();
+            cal.set(year, month - 1, 1);
+            int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+            double entre = 0.0;
+            double sortie = 0.0;
+
+            for (int day = 1; day <= maxDay; day++) {
+
+
+                cal.set(year, month - 1, day);
+                Date dateJour = cal.getTime();
+                for(ESDto esDto : esDtoList){
+                    Calendar esCal = Calendar.getInstance();
+                    esCal.setTime(esDto.getDate());
+                    if(esCal.get(Calendar.YEAR) == year && esCal.get(Calendar.MONTH) == month - 1
+                            && esCal.get(Calendar.DAY_OF_MONTH) == day
+                    ){
+                        if (esDto.getTypeES() == true){
+                            entre += esDto.getQuantite();
+                        } else if(esDto.getTypeES() == false){
+                            sortie += esDto.getQuantite();
+                        }
+                    }
+                }
+                // Rechercher les données historiques pour la date actuelle
+                boolean found = false;
+
+                // Rechercher les données historiques pour la date actuelle
+                for (HistoryDto history : filteredHistoryList) {
+                    Calendar historyCal = Calendar.getInstance();
+                    historyCal.setTime(history.getDateJour());
+                    if (historyCal.get(Calendar.YEAR) == year &&
+                            historyCal.get(Calendar.MONTH) == month - 1 &&
+                            historyCal.get(Calendar.DAY_OF_MONTH) == day) {
+                        stockInitial = history.getStock(); // Met à jour le stockInitial si une entrée correspondante est trouvée
+                        found = true;
+                        break; // On peut arrêter la boucle après avoir trouvé la correspondance
+                    }
+                }
+
+
+                double stockFinale = stockInitial + entre - sortie;
+
+
+
+
+                // Mettre à jour le stock initial pour le jour suivant
+                stockInitial = stockFinale;
+                entre = 0;
+                sortie = 0;
+            }
+
+            return stockInitial;
+
     }
 
     public double CalculerStockDepotAllProducts(String idDepot){

@@ -339,5 +339,18 @@ public class EsService {
 
         return stockEsDtoList;
     }
+    public double CalculerStockProduitDepotYearMonth(String idDepot, String nameProduct, int year, int month) {
+        List<StockEsDto> stockEsDtoList = generateMonthlyStockReport(idDepot,nameProduct,year,month);
+        double stock;
+        if (!stockEsDtoList.isEmpty()) {
+            StockEsDto lastStockEsDto = stockEsDtoList.get(stockEsDtoList.size() - 1);
+            stock = lastStockEsDto.getStockFinale();  // Assuming getStock() method returns the stock value
+            return stock;
+        }else {
+            return 0;
+        }
+
+    }
+
 }
 

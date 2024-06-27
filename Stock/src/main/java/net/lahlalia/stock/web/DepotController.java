@@ -7,6 +7,7 @@ import net.lahlalia.stock.dtos.DepotDTO;
 import net.lahlalia.stock.dtos.StockProduitDto;
 import net.lahlalia.stock.entities.Depot;
 import net.lahlalia.stock.services.DepotService;
+import net.lahlalia.stock.services.EsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.List;
 public class DepotController {
 
     private final DepotService depotService;
+    private final EsService esService;
 
     @PostMapping(value = "/",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DepotDTO>saveDepot(@RequestBody DepotDTO dto){
@@ -94,7 +96,7 @@ public class DepotController {
     }
     @GetMapping("/calculerStockProduitDepotDate/{idDepot}/{nameProduct}/{year}/{month}")
     public ResponseEntity<Double>CalculerStockProduitDepotDate(@PathVariable String idDepot,@PathVariable String nameProduct,@PathVariable int year,@PathVariable int month){
-        double stock = depotService.CalculerStockProduitDepotYearMonth(idDepot,nameProduct,year,month);
+        double stock = esService.CalculerStockProduitDepotYearMonth(idDepot,nameProduct,year,month);
         return ResponseEntity.ok(stock);
     }
 

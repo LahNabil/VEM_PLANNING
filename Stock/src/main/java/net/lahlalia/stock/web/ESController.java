@@ -2,6 +2,7 @@ package net.lahlalia.stock.web;
 
 import lombok.RequiredArgsConstructor;
 import net.lahlalia.stock.dtos.ESDto;
+import net.lahlalia.stock.dtos.StockEsDto;
 import net.lahlalia.stock.services.EsService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +39,19 @@ public class ESController {
         double totalQuantity = esService.getSortiebymonth();
         return ResponseEntity.ok(totalQuantity);
     }
+    @GetMapping(value = "/{idDepot}/{nameProduct}/{year}/{month}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ESDto>> getSortiesParProduitDepotDate(@PathVariable String idDepot,@PathVariable String nameProduct,@PathVariable int year,@PathVariable int month) {
+        List<ESDto> esDtoList = esService.getSortiesParProduitDepotDate(idDepot, nameProduct,year,month);
+        return ResponseEntity.ok(esDtoList);
+    }
+    @GetMapping("montly/{idDepot}/{nameProduct}/{year}/{month}")
+    public ResponseEntity<List<StockEsDto>>generateMonthlyStockReport(@PathVariable String idDepot,
+                                                                      @PathVariable String nameProduct,
+                                                                      @PathVariable int year,
+                                                                      @PathVariable int month){
+        List<StockEsDto> stockEsDtoList = esService.generateMonthlyStockReport(idDepot,nameProduct,year,month);
+        return ResponseEntity.ok(stockEsDtoList);
+    }
+
 
 }

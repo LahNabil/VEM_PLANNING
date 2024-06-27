@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { EntreSortie } from "../../models/EntreSortie";
 import { Depot } from "../../models/Depot";
 import { Product } from "../../models/Product";
@@ -8,11 +8,16 @@ import { ESService } from "../../Services/es.service";
 import { Router } from "@angular/router";
 import { DepotService } from "../../Services/depot.service";
 import {PrevisionService} from "../../Services/prevision.service";
+import {StockEsDto} from "../../models/StockEsDto";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: 'app-planning',
   templateUrl: './planning.component.html',
-  styleUrls: ['./planning.component.scss']
+  styleUrl: './planning.component.scss'
 })
 export class PlanningComponent implements OnInit {
   selectedDepot: string | undefined;
@@ -26,15 +31,39 @@ export class PlanningComponent implements OnInit {
   products: Product[] = [];
   depots: Depot[] = [];
   lineChart!: Chart;
+  esList: EntreSortie[] = [];
   initialValue: number | undefined;
   selectedYear: number | undefined;
   selectedMonth: number | undefined;
+  stockEsDto: StockEsDto = new StockEsDto();
+  stockEsDtos: StockEsDto[] = [];
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
 
   constructor(private previsionService: PrevisionService,private produitService: ProductService, private esService: ESService, private router: Router, private depotService: DepotService) {}
-
+  displayedColumns: string[] = [
+    'dateJour',
+    'stockInitial',
+    'entre',
+    'sortie',
+    'stockFinale'
+  ];
   ngOnInit() {
     this.getAllProducts();
     this.getAllDepots();
+    this.initializeStaticChart();
+    this.getESParDepotProductDate();
+  }
+  getMontlyReport(){
+    this.esService.generateMonthlyStockReport(this.selectedDepot,this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe({
+      next: (res)=>{
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      }
+    })
   }
 
   getAllDepots() {
@@ -65,10 +94,6 @@ export class PlanningComponent implements OnInit {
     }
   }
   getPrevisionData() {
-    console.log('Selected Depot:', this.selectedDepot);  // Log selectedDepot
-    console.log('Selected Product:', this.selectedProduct);  // Log selectedProduct
-    console.log('Selected Year:', this.selectedYear);  // Log selectedYear
-    console.log('Selected Month:', this.selectedMonth);  // Log selectedMonth
 
     if (this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth) {
       this.previsionService.calculerSommePByCityProduitDate(this.selectedDepot, this.selectedProduct, this.selectedYear, this.selectedMonth).subscribe(data => {
@@ -79,13 +104,21 @@ export class PlanningComponent implements OnInit {
       });
     }
   }
+  getESParDepotProductDate(){
+    if(this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth){
+      this.depotService.calculerStockDepotProduitDate(this.selectedDepot, this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe(data=>{
+        this.esList = data;
+      })
+    }
+  }
 
-  getSortieParDepotProduct() {
+  getSortieParDepotProductDate() {
     if (this.selectedDepot && this.selectedProduct) {
-      this.depotService.calculerStockDepotProduit(this.selectedDepot, this.selectedProduct).subscribe(data => {
+      this.depotService.calculerStockDepotProduitDate(this.selectedDepot, this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe(data => {
         this.initialValue = data || 0;
+        //5000
 
-        this.esService.getSortiesParProduitDepot(this.selectedDepot, this.selectedProduct).subscribe((sorties: any[]) => {
+        this.esService.getSortiesParProduitDepotDate(this.selectedDepot, this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe((sorties: any[]) => {
           const dates = sorties.map(sortie => sortie.date);
           const quantites = sorties.map(sortie => sortie.quantite);
 
@@ -97,7 +130,7 @@ export class PlanningComponent implements OnInit {
             }
             return acc;
           }, []);
-          const safetyStockValue = 5000;
+          const safetyStockValue = 3000;
           const safetyStockLine = new Array(cumulativeQuantites.length).fill(safetyStockValue);
 
           this.lineChart = new Chart({
@@ -105,7 +138,7 @@ export class PlanningComponent implements OnInit {
               type: 'line'
             },
             title: {
-              text: 'Linechart'
+              text: 'Flux Mensuel des Stocks par Dépôt et Produit'
             },
             credits: {
               enabled: false
@@ -141,10 +174,105 @@ export class PlanningComponent implements OnInit {
       });
     }
   }
-
+  initializeStaticChart() {
+    this.lineChart = new Chart({
+      chart: {
+        type: 'line'
+      },
+      title: {
+        text: 'Flux Mensuel des Stocks par Dépôt et Produit'
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        title: {
+          text: 'Dates'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'Quantités'
+        },
+        min: 0
+      },
+      series: [
+        {
+          type: 'line',
+          name: 'ES',
+          data: [10, 20, 15, 30, 40, 35]
+        },
+        {
+          type: 'line',
+          name: 'Safety Stock',
+          data: [3000, 3000, 3000, 3000, 3000, 3000],
+          dashStyle: 'Dash',
+          color: '#FF0000'
+        }
+      ]
+    });
+  }
   onSelectionChange() {
     this.getCapacityData();
     this.getStockData();
     this.getPrevisionData();
+    this.getMontlyReport();
+
+    if (this.selectedDepot && this.selectedProduct && this.selectedYear && this.selectedMonth) {
+      this.getSortieParDepotProductDate();
+    }
   }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  fileName = "PlanningExcelSheet.xlsx";
+  exportExcel(){
+    let data = document.getElementById("table-data");
+    if (data) {
+      // Clone the table
+      const clonedTable = data.cloneNode(true) as HTMLElement;
+      const columnIdToRemove = "table-action";
+
+      // Remove the "Action" column from the cloned table
+      this.removeColumnById(clonedTable, columnIdToRemove);
+
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(clonedTable);
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      XLSX.writeFile(wb, this.fileName);
+    }
+
+  }
+  /** This method removes the column with the specified ID from the cloned table. **/
+  removeColumnById(table: HTMLElement, columnId: string): void {
+    const columnIndex = this.getColumnIndexById(table, columnId);
+    if (columnIndex !== -1) {
+      const rows = table.querySelectorAll('tr');
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('th, td');
+        if (cells[columnIndex]) {
+          cells[columnIndex].remove();
+        }
+      });
+    }
+  }
+  /** This method returns the index of the column with the specified ID. This index is used to identify which column to remove.**/
+  getColumnIndexById(table: HTMLElement, columnId: string): number {
+    const thElements = table.querySelectorAll('thead th');
+    for (let i = 0; i < thElements.length; i++) {
+      if (thElements[i].id === columnId) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+
 }

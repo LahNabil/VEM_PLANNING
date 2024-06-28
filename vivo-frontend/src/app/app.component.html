@@ -1,3 +1,14 @@
 <app-header></app-header>
-<app-side-bar *ngIf="isAuthenticated" (onToggleSideNav)="onToggleSideNav($event)"></app-side-bar>
-<app-body [collapsed]="isSideNavCollapsed" [screenWidth]="screenWidth"></app-body>
+
+<!-- Conditional rendering based on isAuthenticated -->
+<div *ngIf="!isAuthenticated; else loggedInTemplate">
+  <app-welcome-page></app-welcome-page>
+</div>
+
+<ng-template #loggedInTemplate>
+  <app-side-bar (onToggleSideNav)="onToggleSideNav($event)"></app-side-bar>
+  <app-body
+    [collapsed]="isSideNavCollapsed"
+    [screenWidth]="screenWidth">
+  </app-body>
+</ng-template>

@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output,HostListener} from '@angular/core';
 import {navbarData} from "./nav-data";
 import {animate, keyframes, style, transition, trigger} from "@angular/animations";
+import {KeycloakService} from "keycloak-angular";
 
 interface SideNavToggle{
   screenWidth: number;
@@ -38,6 +39,9 @@ interface SideNavToggle{
   ]
 })
 export class SideBarComponent implements OnInit{
+  public profile : any;
+
+
   @Output() onToggleSideNav : EventEmitter<SideNavToggle> = new EventEmitter();
   collapsed = false;
   screenWidth =0;
@@ -51,7 +55,14 @@ export class SideBarComponent implements OnInit{
     }
   }
 
+  constructor(public keycloackService : KeycloakService) {
+  }
   ngOnInit() {
+      if(this.keycloackService.isLoggedIn()){
+        this.keycloackService.loadUserProfile().then(profile=>{
+          this.profile=profile;
+        });
+      }
     this.screenWidth = window.innerWidth;
     this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
   }

@@ -61,7 +61,7 @@ export class BarchartComponent implements OnInit {
         type: 'column'
       },
       title: {
-        text: 'Capacity vs Stock per Depot'
+        text: 'Comparaison de la Capacité et du Stock par Dépôt'
       },
       xAxis: {
         categories: this.categories

@@ -68,7 +68,7 @@
       <table mat-table [dataSource]="dataSource" matSort id="table-data">
         <ng-container matColumnDef="dateJour">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="bluelight-header"> Date </th>
-          <td mat-cell *matCellDef="let row"> {{row.dateJour}} </td>
+          <td mat-cell *matCellDef="let row"> {{ row.dateJour | date: 'yyyy-MM-dd' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="stockInitial">

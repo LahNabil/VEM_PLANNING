@@ -111,6 +111,13 @@ export class PlanningComponent implements OnInit {
       })
     }
   }
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Mois de 0 à 11, donc ajouter 1
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   getSortieParDepotProductDate() {
     if (this.selectedDepot && this.selectedProduct) {
@@ -119,7 +126,7 @@ export class PlanningComponent implements OnInit {
         //5000
 
         this.esService.getSortiesParProduitDepotDate(this.selectedDepot, this.selectedProduct,this.selectedYear,this.selectedMonth).subscribe((sorties: any[]) => {
-          const dates = sorties.map(sortie => sortie.date);
+          const dates = sorties.map(sortie => this.formatDate(sortie.date));
           const quantites = sorties.map(sortie => sortie.quantite);
 
           let cumulativeQuantites = quantites.reduce((acc, qty, index) => {

@@ -49,6 +49,13 @@ export class LineChartComponent implements OnInit {
       this.products = data;
     })
   }
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Mois de 0 à 11, donc ajouter 1
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
 
   getSortieParDepotProduct() {
@@ -60,7 +67,7 @@ export class LineChartComponent implements OnInit {
       }
 
       this.esService.getSortiesParProduitDepot(this.selectedDepot, this.selectedProduct).subscribe((sorties: any[]) => {
-        const dates = sorties.map(sortie => sortie.date);
+        const dates = sorties.map(sortie => this.formatDate(sortie.date));
         const quantites = sorties.map(sortie => sortie.quantite);
 
         let cumulativeQuantites = quantites.reduce((acc, qty, index) => {
@@ -77,7 +84,7 @@ export class LineChartComponent implements OnInit {
             type: 'line'
           },
           title: {
-            text: 'Linechart'
+            text: 'Évolution Cumulative des Sorties de Produit par Dépôt au Fil du Temps'
           },
           credits: {
             enabled: false
@@ -97,7 +104,7 @@ export class LineChartComponent implements OnInit {
           series: [
             {
               type: 'line',
-              name: 'ES',
+              name: 'Entrées Sorties',
               data: cumulativeQuantites
             }
           ]
@@ -119,7 +126,7 @@ export class LineChartComponent implements OnInit {
         type: 'line'
       },
       title: {
-        text: 'Initial Linechart '
+        text: 'Évolution Cumulative des Sorties de Produit par Dépôt au Fil du Temps '
       },
       credits: {
         enabled: false

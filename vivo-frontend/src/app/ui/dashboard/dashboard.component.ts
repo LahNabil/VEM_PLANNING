@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
             type: 'line'
           },
           title: {
-            text: 'Linechart'
+            text: 'Évolution Cumulative des Sorties de Produit par Dépôt au Fil du Temps'
           },
           credits: {
             enabled: false

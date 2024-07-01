@@ -1,3 +1,72 @@
+version: "3.8"
 services:
   vem-register-service:
     build: ./Register
+    container_name: vem-register-service
+    ports:
+      - '8761:8761'
+    expose:
+      - '8761'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      retries: 4
+    networks:
+      - vem-network
+
+  vem-mysql-db:
+    image: mysql:latest
+    container_name: vem-mysql-db
+    ports:
+      - '3307:3306'
+    expose:
+      - '3307'
+    environment:
+      MYSQL_USER: vemuser
+      MYSQL_PASSWORD: vempassword
+      MYSQL_DATABASE: vem_produit
+      MYSQL_ROOT_PASSWORD: vempassword
+      MYSQL_HOST: 127.0.0.1
+    networks:
+      - vem-network
+  vem-product-service:
+    build: ./Produit
+    container_name: vem-product-service
+    ports:
+      - '8081:8081'
+    expose:
+      - '8081'
+    environment:
+      - DISCOVERY_SERVICE_URL=http://my-discovery-service:8761/eureka
+    depends_on:
+      vem-register-service:
+        condition: service_healthy
+      vem-mysql-db:
+        condition: service_started
+      keycloak:
+        condition: service_started
+    networks:
+      - vem-network
+
+  keycloak:
+    container_name: keycloak-bsn
+    image: quay.io/keycloak/keycloak:24.0.2
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    networks:
+      - vem-network
+    command:
+      - "start-dev"
+volumes:
+  vem-mysql-db:
+    driver: local
+  keycloak:
+    driver: local
+
+networks:
+  vem-network:
+    driver: bridge
+
